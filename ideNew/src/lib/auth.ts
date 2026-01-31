@@ -13,7 +13,7 @@ type AuthHeader = {
 };
 
 type AuthUser = {
-  id: string; // Account ID is string (UUID)
+  id: string; // Account ID is string (BigInt)
   email: string;
   role: string;
   isAdmin: boolean;
@@ -97,7 +97,6 @@ export const requireUser = async (req: NextApiRequest): Promise<AuthUser> => {
       meta: {
         path: req.url,
         hasSessionToken: Boolean(sessionToken || cookieToken),
-        hasApiToken: Boolean(apiToken)
       }
     });
     const err = new Error('Unauthorized');

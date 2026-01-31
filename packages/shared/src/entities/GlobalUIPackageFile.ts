@@ -12,8 +12,11 @@ import { GlobalUIPackage } from './GlobalUIPackage';
 @Entity({ name: 'global_ui_package_files' })
 @Index(['project', 'path'], { unique: true })
 export class GlobalUIPackageFile {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn({ type: 'bigint' })
   id!: string;
+
+  @Column({ type: 'uuid', generated: 'uuid', unique: true })
+  uuid!: string;
 
   @ManyToOne(() => GlobalUIPackage, { onDelete: 'CASCADE' })
   project!: GlobalUIPackage;

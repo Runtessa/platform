@@ -3,8 +3,11 @@ import { Account } from "./Account";
 
 @Entity("login_sessions")
 export class LoginSession {
-  @PrimaryGeneratedColumn()
-  id!: number;
+  @PrimaryGeneratedColumn({ type: 'bigint' })
+  id!: string;
+
+  @Column({ type: 'uuid', generated: 'uuid', unique: true })
+  uuid!: string;
 
   @Column({ name: "account_id" })
   accountId!: string;

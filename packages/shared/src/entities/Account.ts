@@ -16,8 +16,11 @@ export enum AccountRole {
 @Entity({ name: 'accounts' })
 @Unique(['email', 'tenantId'])
 export class Account {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn({ type: 'bigint' })
   id!: string;
+
+  @Column({ type: 'uuid', generated: 'uuid', unique: true })
+  uuid!: string;
 
   @Column()
   email!: string;

@@ -10,8 +10,11 @@ import {
 @Entity({ name: 'global_ui_packages' })
 @Index(['name', 'version'], { unique: true })
 export class GlobalUIPackage {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn({ type: 'bigint' })
   id!: string;
+
+  @Column({ type: 'uuid', generated: 'uuid', unique: true })
+  uuid!: string;
 
   @Column()
   name!: string;

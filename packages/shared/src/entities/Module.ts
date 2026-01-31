@@ -20,8 +20,11 @@ export enum HttpMethod {
 @Entity({ name: 'modules' })
 @Index(['tenant', 'routePath', 'method'], { unique: true })
 export class ModuleEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn({ type: 'bigint' })
   id!: string;
+
+  @Column({ type: 'uuid', generated: 'uuid', unique: true })
+  uuid!: string;
 
   @Column()
   routePath!: string;

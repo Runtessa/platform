@@ -12,8 +12,11 @@ import { ModuleEntity, HttpMethod } from './Module';
 @Entity({ name: 'module_revisions' })
 @Index(['module', 'revision'], { unique: true })
 export class ModuleRevision {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn({ type: 'bigint' })
   id!: string;
+
+  @Column({ type: 'uuid', generated: 'uuid', unique: true })
+  uuid!: string;
 
   @ManyToOne(() => ModuleEntity, { onDelete: 'CASCADE' })
   module!: ModuleEntity;

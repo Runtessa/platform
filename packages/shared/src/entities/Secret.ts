@@ -12,8 +12,11 @@ import type { Tenant } from './Tenant';
 @Entity({ name: 'secrets' })
 @Unique(['keyName', 'tenant'])
 export class Secret {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn({ type: 'bigint' })
   id!: string;
+
+  @Column({ type: 'uuid', generated: 'uuid', unique: true })
+  uuid!: string;
 
   @Column()
   keyName!: string;

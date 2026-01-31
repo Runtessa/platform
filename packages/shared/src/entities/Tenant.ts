@@ -13,8 +13,11 @@ import { ModuleEntity } from "./Module";
 @Entity({ name: "tenants" })
 @Unique(["hostname"])
 export class Tenant {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn({ type: "bigint" })
   id!: string;
+
+  @Column({ type: "uuid", generated: "uuid", unique: true })
+  uuid!: string;
 
   @Column()
   hostname!: string;

@@ -12,8 +12,11 @@ import { UIPackage } from './UIEntities';
 @Entity({ name: 'ui_package_revisions' })
 @Index(['uiPackage', 'revision'], { unique: true })
 export class UIPackageRevision {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn({ type: 'bigint' })
   id!: string;
+
+  @Column({ type: 'uuid', generated: 'uuid', unique: true })
+  uuid!: string;
 
   @ManyToOne(() => UIPackage, { onDelete: 'CASCADE' })
   uiPackage!: UIPackage;

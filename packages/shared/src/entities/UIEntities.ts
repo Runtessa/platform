@@ -13,8 +13,11 @@ import { Tenant } from './Tenant';
 @Entity({ name: 'ui_packages' })
 @Index(['tenant', 'name', 'version'], { unique: true })
 export class UIPackage {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn({ type: 'bigint' })
   id!: string;
+
+  @Column({ type: 'uuid', generated: 'uuid', unique: true })
+  uuid!: string;
 
   @ManyToOne(() => Tenant, (tenant) => tenant.id, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'tenant_id' })
