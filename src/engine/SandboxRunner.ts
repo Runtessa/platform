@@ -60,26 +60,26 @@ export class SandboxRunner {
         const module = { exports: {} };
         const exports = module.exports;
         ${code}
-        module.exports;
+
+        let handler = module.exports;
+        if (handler && typeof handler === 'object' && handler.default) {
+          handler = handler.default;
+        }
+
+        if (typeof handler !== 'function') {
+          throw new Error('Module must export a function');
+        }
+
+        handler(request, adapters);
       `,
       { filename: 'tenant-module.js' },
     );
 
-    let exported: unknown;
     try {
-      exported = script.runInContext(vmContext, { timeout: effectiveTimeout });
-    } catch (error) {
-      throw new AppError(`Sandbox execution failed: ${(error as Error).message}`, 500);
-    }
+      const resultPromise = script.runInContext(vmContext, { timeout: effectiveTimeout });
 
-    const handler = this.resolveHandler(exported);
-    if (typeof handler !== 'function') {
-      throw new AppError('Module must export a function', 400);
-    }
-
-    try {
       const result = await Promise.race([
-        Promise.resolve(handler(frozenRequest, frozenAdapters)),
+        Promise.resolve(resultPromise),
         new Promise<never>((_, reject) =>
           setTimeout(() => reject(new Error('Execution timed out')), effectiveTimeout),
         ),
@@ -96,20 +96,12 @@ export class SandboxRunner {
 
       return { statusCode: 200, body: result };
     } catch (error) {
-      throw new AppError(`Module error: ${(error as Error).message}`, 500);
+      const message = (error as Error).message;
+      if (message === 'Script execution timed out.') {
+        throw new AppError('Execution timed out', 500);
+      }
+      throw new AppError(`Module error: ${message}`, 500);
     }
-  }
-
-  private resolveHandler(exported: unknown): unknown {
-    if (typeof exported === 'function') {
-      return exported;
-    }
-
-    if (exported && typeof exported === 'object' && (exported as Record<string, unknown>).default) {
-      return (exported as Record<string, unknown>).default;
-    }
-
-    return null;
   }
 
   private sanitizeRequest(request: SandboxRequestContext): SandboxRequestContext {

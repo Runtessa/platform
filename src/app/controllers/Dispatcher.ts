@@ -80,12 +80,16 @@ export class Dispatcher {
         throw new AppError('Authentication required', 401);
       }
 
-      const aclAllowed = this.checkEndpointAccess(
-        req.tenant as Tenant,
-        req.account.role,
-        module,
-        req.account.groups ?? [],
-      );
+      // Developers/Admins bypass ACL checks
+      const aclAllowed =
+        isDev ||
+        this.checkEndpointAccess(
+          req.tenant as Tenant,
+          req.account.role,
+          module,
+          req.account.groups ?? [],
+        );
+
       if (!aclAllowed) {
         throw new AppError('Access denied', 403);
       }
