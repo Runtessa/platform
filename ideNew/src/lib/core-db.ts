@@ -1,6 +1,5 @@
 import 'reflect-metadata';
 import { DataSource, DataSourceOptions } from 'typeorm';
-import { Account } from '@idp/shared';
 import { ModuleEntity } from '@idp/shared';
 import { Secret } from '@idp/shared';
 import { Tenant } from '@idp/shared';
@@ -40,7 +39,6 @@ const baseOptions = {
   logging: false,
   entities: [
     Tenant,
-    Account,
     Secret,
     ModuleEntity,
     UIPackage,
@@ -83,9 +81,7 @@ export const ensureCoreSchema = async () => {
         const hasAclRoles = hasTenantTable && (await queryRunner.hasColumn('tenants', 'aclRoles'));
         const hasAclEndpoints =
           hasTenantTable && (await queryRunner.hasColumn('tenants', 'aclEndpoints'));
-        const hasAccountsTable = await queryRunner.hasTable('accounts');
-        const hasAccountGroups =
-          hasAccountsTable && (await queryRunner.hasColumn('accounts', 'groups'));
+
         if (
           !hasGlobalTable ||
           !hasFileTable ||
@@ -94,8 +90,7 @@ export const ensureCoreSchema = async () => {
           !hasAdapterConfig ||
           !hasAclPermissions ||
           !hasAclRoles ||
-          !hasAclEndpoints ||
-          !hasAccountGroups
+          !hasAclEndpoints
         ) {
           await CoreDataSource.synchronize();
         }

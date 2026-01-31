@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import 'reflect-metadata';
-import { AppDataSource, initializeDataSource } from './core/datasource';
+import { CoreDataSource, UserDataSource, initializeDataSources } from './core/datasource';
 import { CryptoService } from './core/security/CryptoService';
 import { Tenant } from '@idp/shared';
 import { Account, AccountRole } from '@idp/shared';
@@ -45,21 +45,22 @@ const seedTenants = [
 ];
 
 const bootstrapSeed = async () => {
-  await initializeDataSource();
+  await initializeDataSources();
 
   for (const tenantSeed of seedTenants) {
     await seedTenant(tenantSeed);
   }
 
-  await AppDataSource.destroy();
+  if (CoreDataSource.isInitialized) await CoreDataSource.destroy();
+  if (UserDataSource.isInitialized) await UserDataSource.destroy();
   console.log('Seeding completed');
 };
 
 const seedTenant = async (seed: (typeof seedTenants)[number]) => {
-  const tenantRepo = AppDataSource.getRepository(Tenant);
-  const accountRepo = AppDataSource.getRepository(Account);
-  const secretRepo = AppDataSource.getRepository(Secret);
-  const moduleRepo = AppDataSource.getRepository(ModuleEntity);
+  const tenantRepo = CoreDataSource.getRepository(Tenant);
+  const accountRepo = UserDataSource.getRepository(Account);
+  const secretRepo = CoreDataSource.getRepository(Secret);
+  const moduleRepo = CoreDataSource.getRepository(ModuleEntity);
 
   let tenant = await tenantRepo.findOne({ where: { hostname: seed.hostname } });
   if (!tenant) {
@@ -77,14 +78,15 @@ const seedTenant = async (seed: (typeof seedTenants)[number]) => {
     console.log(`Updated tenant ${seed.hostname}`);
   }
 
-  let admin = await accountRepo.findOne({ where: { email: seed.adminEmail, tenant: { id: tenant.id } } });
+  // Use tenantId for Account check and creation
+  let admin = await accountRepo.findOne({ where: { email: seed.adminEmail, tenantId: tenant.id } });
   if (!admin) {
     const passwordHash = await cryptoService.hashPassword('changeme');
     admin = accountRepo.create({
       email: seed.adminEmail,
       passwordHash,
       role: AccountRole.ADMIN,
-      tenant,
+      tenantId: tenant.id,
     });
     await accountRepo.save(admin);
     console.log(`Created admin account ${seed.adminEmail}`);

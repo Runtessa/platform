@@ -10,7 +10,7 @@ export interface AuthGuardOptions {
 }
 
 export const AuthGuard =
-  (dataSource: DataSource, cryptoService: CryptoService) =>
+  (userDataSource: DataSource, cryptoService: CryptoService) =>
   async (req: TenantRequest, res: Response, next: NextFunction) => {
     try {
       if (!req.tenant) {
@@ -35,13 +35,12 @@ export const AuthGuard =
       }
 
       if (requiresAuth && payload) {
-        const accountRepo = dataSource.getRepository(Account);
+        const accountRepo = userDataSource.getRepository(Account);
         const account = await accountRepo.findOne({
           where: { id: payload.sub },
-          relations: ["tenant"],
         });
 
-        if (!account || account.tenant.id !== req.tenant.id) {
+        if (!account || account.tenantId !== req.tenant.id) {
           return res.status(403).json({ error: "Account not part of tenant" });
         }
 

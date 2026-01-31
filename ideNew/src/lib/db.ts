@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { DataSource, DataSourceOptions } from "typeorm";
-import { User } from '@idp/shared';
+import { Account, AccountRole } from '@idp/shared';
 import { LoginSession } from '@idp/shared';
 import { SystemLog } from '@idp/shared';
 import { hashPassword } from "./password";
@@ -20,7 +20,8 @@ const normalizeDatabaseUrl = (rawUrl?: string, name?: string) => {
     return rawUrl;
   }
 };
-const databaseUrl = normalizeDatabaseUrl(process.env.DATABASE_URL, dbName);
+// Use USER_DATABASE_URL or fallback to DATABASE_URL
+const databaseUrl = normalizeDatabaseUrl(process.env.USER_DATABASE_URL || process.env.DATABASE_URL, dbName);
 
 const baseOptions = {
   type: dbType,
@@ -28,7 +29,7 @@ const baseOptions = {
   database: dbName,
   synchronize: true,
   logging: false,
-  entities: [User, LoginSession, SystemLog],
+  entities: [Account, LoginSession, SystemLog],
 } as DataSourceOptions;
 
 export const AppDataSource = new DataSource(baseOptions);
@@ -45,23 +46,26 @@ export const ensureSchema = async () => {
 
 export const ensureAdminUser = async () => {
   await ensureSchema();
-  const repo = AppDataSource.getRepository(User);
-  const token = process.env.ADMIN_TOKEN;
+  const repo = AppDataSource.getRepository(Account);
   const email = process.env.ADMIN_EMAIL || "admin@example.com";
   const password = process.env.ADMIN_PASSWORD;
 
-  if (!token) throw new Error("ADMIN_TOKEN is required to bootstrap the admin user.");
   if (!password) throw new Error("ADMIN_PASSWORD is required to bootstrap the admin user.");
 
   let admin = await repo.findOne({ where: { email } });
   const passwordHash = await hashPassword(password);
 
+  // For IDE admin, we assume null tenantId or a system tenant
   if (!admin) {
-    admin = repo.create({ email, token, passwordHash, role: "admin" });
+    admin = repo.create({
+      email,
+      passwordHash,
+      role: AccountRole.ADMIN,
+      tenantId: undefined // Platform admin has no tenant? Or nullable?
+    });
   } else {
-    admin.token = token;
     admin.passwordHash = passwordHash;
-    admin.role = "admin";
+    admin.role = AccountRole.ADMIN;
   }
   await repo.save(admin);
 };

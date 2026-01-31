@@ -1,17 +1,17 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, JoinColumn } from "typeorm";
-import { User } from "./User";
+import { Account } from "./Account";
 
 @Entity("login_sessions")
 export class LoginSession {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column({ name: "user_id", type: "int" })
-  userId!: number;
+  @Column({ name: "account_id" })
+  accountId!: string;
 
-  @ManyToOne(() => User, { onDelete: "CASCADE" })
-  @JoinColumn({ name: "user_id" })
-  user!: User;
+  @ManyToOne(() => Account, { onDelete: "CASCADE" })
+  @JoinColumn({ name: "account_id" })
+  account!: Account;
 
   @Column({ unique: true, type: "varchar" })
   token!: string;

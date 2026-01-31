@@ -7,7 +7,6 @@ import {
   Unique,
   UpdateDateColumn,
 } from "typeorm";
-import { Account } from "./Account";
 import { Secret } from "./Secret";
 import { ModuleEntity } from "./Module";
 
@@ -51,9 +50,6 @@ export class Tenant {
 
   @Column({ default: false })
   isSuspended!: boolean;
-
-  @OneToMany(() => Account, (account) => account.tenant, { cascade: true })
-  accounts!: Account[];
 
   @OneToMany(() => Secret, (secret) => secret.tenant, { cascade: true })
   secrets!: Secret[];

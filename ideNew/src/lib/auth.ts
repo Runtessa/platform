@@ -4,7 +4,7 @@ import { AppDataSource, ensureSchema } from './db';
 import { verifyPassword } from './password';
 import redis from './redis';
 import { logger } from './logger';
-import { User } from '@idp/shared';
+import { Account, AccountRole } from '@idp/shared';
 import { LoginSession } from '@idp/shared';
 
 type AuthHeader = {
@@ -13,11 +13,11 @@ type AuthHeader = {
 };
 
 type AuthUser = {
-  id: number;
+  id: string; // Account ID is string (UUID)
   email: string;
   role: string;
-  token?: string | null;
   isAdmin: boolean;
+  tenantId?: string;
 };
 
 const parseAuthHeader = (req: NextApiRequest): AuthHeader => {
@@ -41,59 +41,53 @@ const getSessionTokenFromCookie = (req: NextApiRequest) => {
   return decodeURIComponent(match.split('=')[1] || '');
 };
 
-const toAuthUser = (user: User, token?: string | null): AuthUser => ({
-  id: user.id,
-  email: user.email,
-  role: user.role,
-  token: token ?? null,
-  isAdmin: user.role === 'admin'
+const toAuthUser = (account: Account): AuthUser => ({
+  id: account.id,
+  email: account.email,
+  role: account.role,
+  isAdmin: account.role === AccountRole.ADMIN,
+  tenantId: account.tenantId
 });
 
+/* API Token support removed as Account does not have token column */
+/*
 const getUserByApiToken = async (token: string) => {
-  await ensureSchema();
-  const repo = AppDataSource.getRepository(User);
-  const user = await repo.findOne({ where: { token } });
-  if (!user) return null;
-  return toAuthUser(user, token);
+  // ...
 };
+*/
 
 const getUserBySessionToken = async (token: string) => {
   await ensureSchema();
   const cached = await redis.get(`session:${token}`);
-  let userId: number | null = null;
+  let accountId: string | null = null;
 
   if (cached) {
-    userId = parseInt(cached, 10);
+    accountId = cached;
   } else {
     const sessionRepo = AppDataSource.getRepository(LoginSession);
     const session = await sessionRepo.findOne({ where: { token } });
     if (session) {
-      userId = session.userId;
-      await redis.set(`session:${token}`, userId, 'EX', 30 * 24 * 60 * 60);
+      accountId = session.accountId;
+      await redis.set(`session:${token}`, accountId, 'EX', 30 * 24 * 60 * 60);
     }
   }
 
-  if (!userId) return null;
-  const userRepo = AppDataSource.getRepository(User);
-  const user = await userRepo.findOne({ where: { id: userId } });
-  if (!user) return null;
-  return toAuthUser(user, token);
+  if (!accountId) return null;
+  const userRepo = AppDataSource.getRepository(Account);
+  const account = await userRepo.findOne({ where: { id: accountId } });
+  if (!account) return null;
+  return toAuthUser(account);
 };
 
 export const requireUser = async (req: NextApiRequest): Promise<AuthUser> => {
-  const { sessionToken, apiToken } = parseAuthHeader(req);
+  const { sessionToken } = parseAuthHeader(req);
   const cookieToken = getSessionTokenFromCookie(req);
   let user: AuthUser | null = null;
 
   if (sessionToken) user = await getUserBySessionToken(sessionToken);
   else if (cookieToken) user = await getUserBySessionToken(cookieToken);
 
-  if (!user && apiToken) {
-    user = await getUserByApiToken(apiToken);
-    if (user) {
-      user.token = apiToken;
-    }
-  }
+  // API Token support removed
 
   if (!user) {
     await logger.warn({
@@ -143,24 +137,24 @@ export const requireAdmin = async (req: NextApiRequest) => {
 
 export const authenticateUser = async ({ email, password }: { email: string; password: string }) => {
   await ensureSchema();
-  const repo = AppDataSource.getRepository(User);
-  const user = await repo.findOne({ where: { email } });
-  if (!user || !user.passwordHash) {
+  const repo = AppDataSource.getRepository(Account);
+  const account = await repo.findOne({ where: { email } });
+  if (!account || !account.passwordHash) {
     await logger.warn({
       source: 'auth',
       action: 'authenticateUser',
-      message: 'Login failed: user not found',
+      message: 'Login failed: account not found',
       meta: { email }
     });
     return null;
   }
-  const ok = await verifyPassword(password, user.passwordHash);
+  const ok = await verifyPassword(password, account.passwordHash);
   if (!ok) {
     await logger.warn({
       source: 'auth',
       action: 'authenticateUser',
       message: 'Login failed: invalid credentials',
-      meta: { email, userId: user.id }
+      meta: { email, accountId: account.id }
     });
     return null;
   }
@@ -168,17 +162,17 @@ export const authenticateUser = async ({ email, password }: { email: string; pas
     source: 'auth',
     action: 'authenticateUser',
     message: 'Login successful',
-    meta: { userId: user.id, email }
+    meta: { accountId: account.id, email }
   });
-  return toAuthUser(user);
+  return toAuthUser(account);
 };
 
-export const createLoginSession = async (userId: number) => {
+export const createLoginSession = async (accountId: string) => {
   await ensureSchema();
   const token = crypto.randomBytes(24).toString('hex');
   const sessionRepo = AppDataSource.getRepository(LoginSession);
-  const session = sessionRepo.create({ userId, token });
+  const session = sessionRepo.create({ accountId, token });
   await sessionRepo.save(session);
-  await redis.set(`session:${token}`, userId, 'EX', 30 * 24 * 60 * 60);
+  await redis.set(`session:${token}`, accountId, 'EX', 30 * 24 * 60 * 60);
   return token;
 };

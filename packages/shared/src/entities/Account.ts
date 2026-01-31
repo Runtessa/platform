@@ -2,12 +2,10 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToOne,
   PrimaryGeneratedColumn,
   Unique,
   UpdateDateColumn,
 } from 'typeorm';
-import type { Tenant } from './Tenant';
 
 export enum AccountRole {
   ADMIN = 'ADMIN',
@@ -16,7 +14,7 @@ export enum AccountRole {
 }
 
 @Entity({ name: 'accounts' })
-@Unique(['email', 'tenant'])
+@Unique(['email', 'tenantId'])
 export class Account {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
@@ -33,8 +31,9 @@ export class Account {
   @Column({ type: 'jsonb', nullable: true })
   groups?: string[];
 
-  @ManyToOne('Tenant', 'accounts', { onDelete: 'CASCADE' })
-  tenant!: Tenant;
+  // Decoupled from Tenant entity to allow split databases
+  @Column({ nullable: true })
+  tenantId?: string;
 
   @CreateDateColumn()
   createdAt!: Date;

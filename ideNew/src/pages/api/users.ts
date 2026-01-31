@@ -4,108 +4,82 @@ import { withApiHandler } from '@/lib/api-helpers';
 import { requireAdmin } from '@/lib/auth';
 import { AppDataSource, ensureSchema } from '@/lib/db';
 import { hashPassword } from '@/lib/password';
-import { User } from '@idp/shared';
+import { Account, AccountRole } from '@idp/shared';
 
 export default withApiHandler(async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
     await requireAdmin(req);
     await ensureSchema();
-    const repo = AppDataSource.getRepository(User);
+    const repo = AppDataSource.getRepository(Account);
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 20;
     const offset = (page - 1) * limit;
 
-    const [users, total] = await repo.findAndCount({
+    const [accounts, total] = await repo.findAndCount({
       order: { createdAt: 'DESC' },
       skip: offset,
       take: limit
     });
 
-    res.status(200).json({ users, total });
+    res.status(200).json({ users: accounts, total });
     return;
   }
 
   if (req.method === 'POST') {
     await requireAdmin(req);
-    const { email, token, role = 'user', password } = req.body || {};
+    const { email, role = 'user', password } = req.body || {};
     if (!email || !password) {
       res.status(400).json({ error: 'email and password are required' });
       return;
     }
-    if (!['admin', 'user'].includes(role)) {
-      res.status(400).json({ error: 'role must be admin or user' });
-      return;
-    }
+
+    const accountRole = role === 'admin' ? AccountRole.ADMIN : AccountRole.DEVELOPER;
 
     await ensureSchema();
-    const repo = AppDataSource.getRepository(User);
-    const apiToken = token || crypto.randomBytes(16).toString('hex');
+    const repo = AppDataSource.getRepository(Account);
     const passwordHash = await hashPassword(password);
 
-    let user = await repo.findOne({ where: { email } });
-    if (!user) {
-      user = repo.create({ email, token: apiToken, passwordHash, role });
+    let account = await repo.findOne({ where: { email } });
+    if (!account) {
+      account = repo.create({
+        email,
+        passwordHash,
+        role: accountRole,
+        tenantId: undefined // TODO: Handle tenant assignment if needed
+      });
     } else {
-      user.token = apiToken;
-      user.passwordHash = passwordHash;
-      user.role = role;
+      account.passwordHash = passwordHash;
+      account.role = accountRole;
     }
 
-    await repo.save(user);
+    await repo.save(account);
 
-    res.status(201).json({ user: { email: user.email, role: user.role, token: user.token } });
+    res.status(201).json({ user: { email: account.email, role: account.role } });
     return;
   }
 
   if (req.method === 'PUT') {
     await requireAdmin(req);
-    const { email, token, role, password } = req.body || {};
+    const { email, role, password } = req.body || {};
     if (!email) {
       res.status(400).json({ error: 'email is required' });
       return;
     }
-    const updates: string[] = [];
-    const values: any[] = [];
-
-    if (role) {
-      if (!['admin', 'user'].includes(role)) {
-        res.status(400).json({ error: 'role must be admin or user' });
-        return;
-      }
-      updates.push(`role = $${values.length + 1}`);
-      values.push(role);
-    }
-
-    if (token) {
-      updates.push(`token = $${values.length + 1}`);
-      values.push(token);
-    }
-
-    if (password) {
-      const passwordHash = await hashPassword(password);
-      updates.push(`password_hash = $${values.length + 1}`);
-      values.push(passwordHash);
-    }
-
-    if (!updates.length) {
-      res.status(400).json({ error: 'nothing to update' });
-      return;
-    }
 
     await ensureSchema();
-    const repo = AppDataSource.getRepository(User);
+    const repo = AppDataSource.getRepository(Account);
     const existing = await repo.findOne({ where: { email } });
     if (!existing) {
-      res.status(404).json({ error: 'User not found' });
+      res.status(404).json({ error: 'Account not found' });
       return;
     }
 
     if (role) {
-      existing.role = role;
+       existing.role = role === 'admin' ? AccountRole.ADMIN : AccountRole.DEVELOPER;
     }
-    if (token) {
-      existing.token = token;
-    }
+
+    // Token updates removed
+
     if (password) {
       const passwordHash = await hashPassword(password);
       existing.passwordHash = passwordHash;
@@ -113,7 +87,7 @@ export default withApiHandler(async (req: NextApiRequest, res: NextApiResponse) 
 
     const saved = await repo.save(existing);
     res.status(200).json({
-      user: { email: saved.email, role: saved.role, token: saved.token, createdAt: saved.createdAt }
+      user: { email: saved.email, role: saved.role, createdAt: saved.createdAt }
     });
     return;
   }

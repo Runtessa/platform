@@ -3,7 +3,7 @@ import { withApiHandler } from '@/lib/api-helpers';
 import { requireUser } from '@/lib/auth';
 import { AppDataSource, ensureSchema } from '@/lib/db';
 import { hashPassword } from '@/lib/password';
-import { User } from '@idp/shared';
+import { Account, AccountRole } from '@idp/shared';
 
 export default withApiHandler(async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
@@ -23,10 +23,10 @@ export default withApiHandler(async (req: NextApiRequest, res: NextApiResponse) 
     }
 
     await ensureSchema();
-    const repo = AppDataSource.getRepository(User);
+    const repo = AppDataSource.getRepository(Account);
     const current = await repo.findOne({ where: { id: user.id } });
     if (!current) {
-      res.status(404).json({ error: 'User not found' });
+      res.status(404).json({ error: 'Account not found' });
       return;
     }
 
@@ -44,7 +44,7 @@ export default withApiHandler(async (req: NextApiRequest, res: NextApiResponse) 
     }
 
     const saved = await repo.save(current);
-    res.status(200).json({ user: { ...saved, isAdmin: saved.role === 'admin' } });
+    res.status(200).json({ user: { ...saved, isAdmin: saved.role === AccountRole.ADMIN } });
     return;
   }
 

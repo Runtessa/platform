@@ -4,7 +4,7 @@ import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import path from "path";
 import { AppError } from "./common/AppError";
-import { initializeDataSource, AppDataSource } from "./core/datasource";
+import { initializeDataSources, CoreDataSource, UserDataSource } from "./core/datasource";
 import { CryptoService } from "./core/security/CryptoService";
 import { AdapterFactory } from "./engine/AdapterFactory";
 import { SandboxRunner } from "./engine/SandboxRunner";
@@ -62,26 +62,26 @@ const getKeyFromEnv = (envName: string, expectedBytes: number): Buffer => {
 };
 
 const bootstrap = async () => {
-  await initializeDataSource();
+  await initializeDataSources();
   const cryptoService = buildCryptoService();
 
-  const adapterFactory = new AdapterFactory(AppDataSource, cryptoService);
+  const adapterFactory = new AdapterFactory(CoreDataSource, cryptoService);
   const sandboxRunner = new SandboxRunner(30_000);
-  const authController = new AuthController(AppDataSource, cryptoService);
-  const adminController = new AdminController(AppDataSource);
+  const authController = new AuthController(UserDataSource, cryptoService);
+  const adminController = new AdminController(CoreDataSource);
   const dispatcher = new Dispatcher(
-    AppDataSource,
+    CoreDataSource,
     adapterFactory,
     sandboxRunner
   );
-  const registryController = new RegistryController(AppDataSource);
-  const moduleController = new ModuleController(AppDataSource);
-  const uiEntityController = new UIEntityController(AppDataSource);
-  const tenantAclController = new TenantAclController(AppDataSource);
+  const registryController = new RegistryController(CoreDataSource);
+  const moduleController = new ModuleController(CoreDataSource);
+  const uiEntityController = new UIEntityController(CoreDataSource);
+  const tenantAclController = new TenantAclController(CoreDataSource);
 
-  const contextMiddleware = ContextMiddleware(AppDataSource);
-  const optionalContextMiddleware = OptionalContextMiddleware(AppDataSource);
-  const authGuard = AuthGuard(AppDataSource, cryptoService);
+  const contextMiddleware = ContextMiddleware(CoreDataSource);
+  const optionalContextMiddleware = OptionalContextMiddleware(CoreDataSource);
+  const authGuard = AuthGuard(UserDataSource, cryptoService);
 
   app.post("/admin/tenants", adminController.createTenant);
   app.post("/auth/register", contextMiddleware, authController.register);

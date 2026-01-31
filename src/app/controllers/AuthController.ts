@@ -6,7 +6,7 @@ import { Account, AccountRole } from '@idp/shared';
 import { TenantRequest } from '../../types/RequestContext';
 
 export class AuthController {
-  constructor(private readonly dataSource: DataSource, private readonly cryptoService: CryptoService) {}
+  constructor(private readonly userDataSource: DataSource, private readonly cryptoService: CryptoService) {}
 
   register = async (req: TenantRequest, res: Response, next: NextFunction) => {
     try {
@@ -22,10 +22,9 @@ export class AuthController {
       const normalizedEmail = String(email).toLowerCase();
       const resolvedRole = Object.values(AccountRole).includes(role) ? role : AccountRole.DEVELOPER;
 
-      const accountRepo = this.dataSource.getRepository(Account);
+      const accountRepo = this.userDataSource.getRepository(Account);
       const existing = await accountRepo.findOne({
-        where: { email: normalizedEmail, tenant: { id: req.tenant.id } },
-        relations: ['tenant'],
+        where: { email: normalizedEmail, tenantId: req.tenant.id },
       });
 
       if (existing) {
@@ -37,7 +36,7 @@ export class AuthController {
         email: normalizedEmail,
         passwordHash,
         role: resolvedRole as AccountRole,
-        tenant: req.tenant,
+        tenantId: req.tenant.id,
       });
 
       await accountRepo.save(account);
@@ -58,10 +57,9 @@ export class AuthController {
         return res.status(400).json({ error: 'Email and password are required' });
       }
 
-      const accountRepo = this.dataSource.getRepository(Account);
+      const accountRepo = this.userDataSource.getRepository(Account);
       const account = await accountRepo.findOne({
-        where: { email: String(email).toLowerCase(), tenant: { id: req.tenant.id } },
-        relations: ['tenant'],
+        where: { email: String(email).toLowerCase(), tenantId: req.tenant.id },
       });
 
       if (!account) {

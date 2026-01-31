@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import 'reflect-metadata';
-import { AppDataSource, initializeDataSource } from './core/datasource';
+import { CoreDataSource, initializeDataSources } from './core/datasource';
 import { Tenant } from '@idp/shared';
 import { UIPackage } from '@idp/shared';
 
@@ -48,9 +48,9 @@ const dashboardPackage = {
 const packages = [themePackage, dashboardPackage];
 
 const seedPackages = async () => {
-  await initializeDataSource();
-  const tenantRepo = AppDataSource.getRepository(Tenant);
-  const pkgRepo = AppDataSource.getRepository(UIPackage);
+  await initializeDataSources();
+  const tenantRepo = CoreDataSource.getRepository(Tenant);
+  const pkgRepo = CoreDataSource.getRepository(UIPackage);
 
   const tenants = await tenantRepo.find();
   if (!tenants.length) {
@@ -63,12 +63,12 @@ const seedPackages = async () => {
     }
   }
 
-  await AppDataSource.destroy();
+  if (CoreDataSource.isInitialized) await CoreDataSource.destroy();
   console.log('Package registry seeded.');
 };
 
 const upsertPackage = async (
-  repo: ReturnType<typeof AppDataSource.getRepository<UIPackage>>,
+  repo: ReturnType<typeof CoreDataSource.getRepository<UIPackage>>,
   tenantId: string,
   pkg: { name: string; version: string; code: string; dependencies: string[] },
 ) => {
