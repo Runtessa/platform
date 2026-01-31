@@ -70,6 +70,7 @@ export class SandboxRunner {
           throw new Error('Module must export a function');
         }
 
+        // request and adapters are injected via sandboxGlobals
         handler(request, adapters);
       `,
       { filename: 'tenant-module.js' },
