@@ -38,35 +38,35 @@ const navItems: NavItem[] = [
     href: "/admin/tenants",
     icon: FiLayers,
     match: "/admin/tenants",
-    roles: ["admin"],
+    roles: ["ADMIN", "admin"],
   },
   {
     label: "Shared Projects",
     href: "/admin/shared-packages",
     icon: FiPackage,
     match: "/admin/shared-packages",
-    roles: ["admin"],
+    roles: ["ADMIN", "admin"],
   },
   {
     label: "Users",
     href: "/admin/users",
     icon: FiUsers,
     match: "/admin/users",
-    roles: ["admin"],
+    roles: ["ADMIN", "admin"],
   },
   {
     label: "Logs",
     href: "/admin/logs",
     icon: FiAlertCircle,
     match: "/admin/logs",
-    roles: ["admin"],
+    roles: ["ADMIN", "admin"],
   },
   {
     label: "System Settings",
     href: "/admin/settings",
     icon: FiSettings,
     match: "/admin/settings",
-    roles: ["admin"],
+    roles: ["ADMIN", "admin"],
   },
 ];
 
@@ -94,7 +94,7 @@ export const Sidebar = ({ open, onClose }: SidebarProps) => {
   }, [token, ready]);
 
   const visibleNavItems = useMemo(
-    () => navItems.filter((item) => !item.roles || item.roles.includes(role)),
+    () => navItems.filter((item) => !item.roles || item.roles.includes(role) || item.roles.includes(role.toUpperCase())),
     [role]
   );
 
