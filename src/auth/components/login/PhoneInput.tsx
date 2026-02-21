@@ -37,12 +37,15 @@ export const PhoneInput = ({
       <label htmlFor={fieldId} className={`mb-1 block text-sm font-medium text-[#202124] ${isRtl ? 'text-right' : 'text-left'}`}>
         {phoneLabel}
       </label>
-      <div className="relative flex min-h-[48px] items-center overflow-visible rounded-2xl border border-[#DADCE0] bg-white shadow-[0_1px_2px_0_rgba(60,64,67,.12)] focus-within:border-[#1A73E8] focus-within:ring-2 focus-within:ring-[#1A73E8]/20">
+      <div
+        className="relative flex min-h-[48px] items-center overflow-visible rounded-2xl border border-[#DADCE0] bg-white shadow-[0_1px_2px_0_rgba(60,64,67,.12)] focus-within:border-[#1A73E8] focus-within:ring-2 focus-within:ring-[#1A73E8]/20"
+        dir="ltr"
+      >
         <div className="relative shrink-0" ref={countryPickerRef}>
           <button
             type="button"
             onClick={() => setCountryPickerOpen(!countryPickerOpen)}
-            className={`flex h-[48px] items-center gap-2 rounded-l-2xl px-3 transition-colors hover:bg-[#F8F9FA] ${isRtl ? 'border-l border-[#E6EBF2]' : 'border-r border-[#E6EBF2]'}`}
+            className="flex h-[48px] items-center gap-2 rounded-l-2xl border-r border-[#E6EBF2] px-3 transition-colors hover:bg-[#F8F9FA]"
             aria-haspopup="listbox"
             aria-expanded={countryPickerOpen}
           >

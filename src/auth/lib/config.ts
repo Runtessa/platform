@@ -39,8 +39,8 @@ const host = (process.env.AUTH_HOST || '').trim() || '0.0.0.0';
 const cookieSecure = asBool(process.env.AUTH_COOKIE_SECURE, true);
 const allowInsecureLocalhost = asBool(process.env.AUTH_ALLOW_INSECURE_LOCALHOST, false);
 
-if (isProduction && !cookieSecure) {
-  throw new Error('AUTH_COOKIE_SECURE must be true in production');
+if (isProduction && !cookieSecure && !allowInsecureLocalhost) {
+  throw new Error('AUTH_COOKIE_SECURE must be true in production unless AUTH_ALLOW_INSECURE_LOCALHOST=true');
 }
 
 const defaultAllowedOrigins = [baseUrl];

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   CountryCode,
   CountryOption,
@@ -26,27 +26,27 @@ export const usePhoneNumberState = () => {
     return normalized ? `${selectedCountry.dialCode}${normalized}` : '';
   }, [selectedCountry, phoneNationalDigits]);
 
-  const applyPhoneValue = (value: string) => {
+  const applyPhoneValue = useCallback((value: string) => {
     const parsed = parsePhoneNumber(value);
     setSelectedCountryCode(parsed.countryCode);
     setPhoneNationalDigits(parsed.nationalDigits);
-  };
+  }, []);
 
-  const handleCountryChange = (nextCode: string) => {
+  const handleCountryChange = useCallback((nextCode: string) => {
     const nextCountry = countryByCode(nextCode);
     setSelectedCountryCode(nextCountry.code);
     setPhoneNationalDigits((current) => normalizeNationalDigits(nextCountry, current));
     setCountryPickerOpen(false);
-  };
+  }, []);
 
-  const handlePhoneInputChange = (value: string) => {
+  const handlePhoneInputChange = useCallback((value: string) => {
     const trimmed = value.trim();
     if (trimmed.startsWith('+')) {
       applyPhoneValue(trimmed);
       return;
     }
     setPhoneNationalDigits(normalizeNationalDigits(selectedCountry, value));
-  };
+  }, [applyPhoneValue, selectedCountry]);
 
   useEffect(() => {
     if (!countryPickerOpen) return;

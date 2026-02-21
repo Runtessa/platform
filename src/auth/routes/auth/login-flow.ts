@@ -95,19 +95,28 @@ export const completeLoginForUser = async (
   issueSessionCookie(req, res, sessionToken, resolveTenantHostForCookie(req, context.returnTo));
 
   if (context.tenantName) {
-    const tenantContext = await resolveTenantOrgContext({
-      tenantName: context.tenantName,
-      tenantOrgRandId: context.tenantOrgRandId || null,
-    });
-    await upsertUserTenantMembership({
-      userRandId: user.randId,
-      tenantName: tenantContext.tenantName || context.tenantName,
-      tenantRandId: tenantContext.tenantRandId,
-      orgRandId: tenantContext.effectiveOrgRandId,
-      source: 'login',
-      actorUserRandId: user.randId,
-      actorTenantRandId: tenantContext.tenantRandId || null,
-    });
+    try {
+      const tenantContext = await resolveTenantOrgContext({
+        tenantName: context.tenantName,
+        tenantOrgRandId: context.tenantOrgRandId || null,
+      });
+      await upsertUserTenantMembership({
+        userRandId: user.randId,
+        tenantName: tenantContext.tenantName || context.tenantName,
+        tenantRandId: tenantContext.tenantRandId,
+        orgRandId: tenantContext.effectiveOrgRandId,
+        source: 'login',
+        actorUserRandId: user.randId,
+        actorTenantRandId: tenantContext.tenantRandId || null,
+      });
+    } catch (error) {
+      console.warn('[auth.login] tenant membership sync skipped', {
+        tenantName: context.tenantName,
+        tenantOrgRandId: context.tenantOrgRandId || null,
+        userRandId: user.randId,
+        error: toErrorMessage(error, 'tenant membership sync failed'),
+      });
+    }
   }
 
   await logActivity({

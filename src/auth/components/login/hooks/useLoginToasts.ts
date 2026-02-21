@@ -1,11 +1,11 @@
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { ToastEntry, ToastType } from '../config';
 
 export const useLoginToasts = () => {
   const [toasts, setToasts] = useState<ToastEntry[]>([]);
   const toastIdRef = useRef(1);
 
-  const pushToast = (type: ToastType, message: string) => {
+  const pushToast = useCallback((type: ToastType, message: string) => {
     const text = String(message || '').trim();
     if (!text) return;
     const id = toastIdRef.current++;
@@ -13,7 +13,7 @@ export const useLoginToasts = () => {
     window.setTimeout(() => {
       setToasts((prev) => prev.filter((entry) => entry.id !== id));
     }, 4200);
-  };
+  }, []);
 
   return {
     toasts,
