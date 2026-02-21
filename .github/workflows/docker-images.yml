@@ -21,25 +21,48 @@ jobs:
           - name: core
             context: .
             dockerfile: src/core/Dockerfile
+            prebuild: npm --prefix src/kernel ci && npm --prefix src/kernel run build && rm -rf src/core/public && mkdir -p src/core/public && cp -a src/public/. src/core/public/ && npm --prefix src/core ci && npm --prefix src/core run build
+            use_prebuilt: "true"
           - name: auth
             context: src/auth
             dockerfile: src/auth/Dockerfile
+            prebuild: npm --prefix src/auth ci && npm --prefix src/auth run build
+            use_prebuilt: "true"
           - name: ide
             context: .
             dockerfile: src/ideNew/Dockerfile
+            prebuild: npm ci && npm run build:shared && npm --prefix src/ideNew run build
+            use_prebuilt: "true"
           - name: monitoring
             context: src/monitoring
             dockerfile: src/monitoring/Dockerfile
+            prebuild: ""
+            use_prebuilt: "false"
           - name: container-agent
             context: src/container-agent
             dockerfile: src/container-agent/Dockerfile
+            prebuild: ""
+            use_prebuilt: "false"
           - name: codex-gateway
             context: src/codex-gateway
             dockerfile: src/codex-gateway/Dockerfile
+            prebuild: ""
+            use_prebuilt: "false"
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        if: matrix.service.prebuild != ''
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Prebuild source
+        if: matrix.service.prebuild != ''
+        run: ${{ matrix.service.prebuild }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -69,5 +92,7 @@ jobs:
           push: ${{ github.event_name == 'push' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            USE_PREBUILT=${{ matrix.service.use_prebuilt }}
           cache-from: type=gha,scope=${{ matrix.service.name }}
           cache-to: type=gha,mode=max,scope=${{ matrix.service.name }}

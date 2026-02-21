@@ -11,6 +11,8 @@
 # Required by src/ideNew file dependency @idp/shared (package main/types point to dist)
 !src/packages/shared/dist
 !src/packages/shared/dist/**
+!src/ideNew/.next
+!src/ideNew/.next/**
 
 docs/site/build
 docs/site/.docusaurus
