@@ -21,7 +21,7 @@ jobs:
           - name: core
             context: .
             dockerfile: src/core/Dockerfile
-            prebuild: npm --prefix src/kernel ci && npm --prefix src/kernel run build && rm -rf src/core/public && mkdir -p src/core/public && cp -a src/public/. src/core/public/ && npm --prefix src/core ci && npm --prefix src/core run build
+            prebuild: npm --prefix src/kernel ci && npm --prefix src/kernel run build && rm -rf src/core/public && mkdir -p src/core/public && cp -a src/public/. src/core/public/ && npm --prefix src/core ci && npm --prefix src/core run build:shared && npm --prefix src/core run build
             use_prebuilt: "true"
           - name: auth
             context: src/auth
