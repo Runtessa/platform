@@ -28,6 +28,7 @@ RUN npm ci --omit=dev --ignore-scripts \
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/public ./public
+COPY --from=builder /app/migrations ./migrations
 COPY --from=builder /app/next.config.mjs ./next.config.mjs
 COPY --from=builder /app/branding.json ./branding.json
 

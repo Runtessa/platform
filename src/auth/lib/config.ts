@@ -1,3 +1,4 @@
+import fs from 'fs';
 import path from 'path';
 
 export const asBool = (value: unknown, fallback = false): boolean => {
@@ -31,6 +32,26 @@ const splitCsv = (raw: unknown): string[] => {
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isProduction = nodeEnv === 'production';
 const isDevelopment = nodeEnv === 'development';
+const resolveMigrationDir = (): string => {
+  const configured = (process.env.AUTH_MIGRATION_DIR || '').trim();
+  if (configured) return configured;
+
+  const candidates = [
+    path.resolve(process.cwd(), 'migrations'),
+    path.resolve(process.cwd(), 'src/auth/migrations'),
+    path.resolve(__dirname, '..', 'migrations'),
+  ];
+
+  for (const candidate of candidates) {
+    if (fs.existsSync(candidate)) {
+      return candidate;
+    }
+  }
+
+  return candidates[0];
+};
+
+const migrationDir = resolveMigrationDir();
 
 const baseUrl = (process.env.AUTH_BASE_URL || '').trim() || 'http://localhost:3015';
 const port = asInt(process.env.AUTH_PORT, 3015, 1, 65535);
@@ -188,7 +209,7 @@ export const config: AuthConfig = {
     onStart: asBool(process.env.AUTH_BOOTSTRAP_ON_START, !isProduction),
   },
   allowedOrigins,
-  migrationDir: path.resolve(__dirname, '..', 'migrations'),
+  migrationDir,
 };
 
 if (!config.session.secret || config.session.secret.length < 32) {
