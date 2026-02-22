@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import 'reflect-metadata';
+import path from 'path';
 import next from 'next';
 import express, { Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
@@ -19,7 +20,7 @@ import { registerOAuthRoutes } from './routes/oauth';
 import { clearLoginUiState, LOGIN_UI_STATE_COOKIE, setLoginUiState } from './routes/login-ui-state';
 
 const dev = config.nodeEnv !== 'production';
-const nextApp = next({ dev, dir: __dirname });
+const nextApp = next({ dev, dir: path.resolve(process.cwd()) });
 const nextHandler = nextApp.getRequestHandler();
 
 const requireInternalApiToken = (

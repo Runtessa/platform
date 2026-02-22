@@ -5,8 +5,10 @@
   "private": true,
   "scripts": {
     "dev": "tsx watch server.ts",
-    "build": "next build",
-    "start": "NODE_ENV=production tsx server.ts",
+    "build:web": "next build",
+    "build:server": "tsc -p tsconfig.server.json",
+    "build": "npm run build:web && npm run build:server",
+    "start": "NODE_ENV=production node dist/server.js",
     "type-check": "tsc --noEmit",
     "migrate": "tsx scripts/migrate.ts",
     "seed": "tsx scripts/seed.ts"
