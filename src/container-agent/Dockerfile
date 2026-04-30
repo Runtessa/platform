@@ -20,6 +20,7 @@ RUN --mount=type=cache,target=/root/.npm,id=npm-container-agent,sharing=locked \
     && npm cache clean --force
 
 COPY .docker-build/container-agent/dist ./dist
+COPY .docker-build/container-agent/package.json ./dist/package.json
 
 RUN mkdir -p /app/certs
 RUN chown -R node:node /app

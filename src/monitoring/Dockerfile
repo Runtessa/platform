@@ -20,6 +20,7 @@ RUN --mount=type=cache,target=/root/.npm,id=npm-monitoring,sharing=locked \
     && npm cache clean --force
 
 COPY .docker-build/monitoring/dist ./dist
+COPY .docker-build/monitoring/package.json ./dist/package.json
 
 RUN mkdir -p /app/certs && chown -R node:node /app
 USER node
