@@ -1,18 +1,5 @@
-FROM node:20-bullseye-slim AS builder
-
-WORKDIR /app
-
-ENV NEXT_TELEMETRY_DISABLED=1
-ARG USE_PREBUILT=false
-
-COPY package.json package-lock.json ./
-RUN npm ci
-
-COPY . .
-
-RUN if [ "$USE_PREBUILT" != "true" ]; then npm run build; fi
-
-FROM node:20-bullseye-slim AS runner
+# syntax=docker/dockerfile:1.7
+FROM node:22-alpine AS runner
 
 WORKDIR /app
 
@@ -20,17 +7,28 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV AUTH_HOST=0.0.0.0
 ENV AUTH_PORT=3015
+ENV NPM_CONFIG_UPDATE_NOTIFIER=false
+ENV NPM_CONFIG_FUND=false
+ENV NPM_CONFIG_AUDIT=false
+ENV NPM_CONFIG_PROGRESS=false
+ENV NPM_CONFIG_PREFER_OFFLINE=true
+ENV NPM_CONFIG_FETCH_RETRIES=10
+ENV NPM_CONFIG_FETCH_RETRY_MINTIMEOUT=30000
+ENV NPM_CONFIG_FETCH_RETRY_MAXTIMEOUT=300000
+ENV NPM_CONFIG_FETCH_TIMEOUT=1800000
 
-COPY package.json package-lock.json ./
-RUN npm ci --omit=dev --ignore-scripts \
+COPY .docker-build/auth/package.json ./
+COPY .docker-build/auth/package-lock.json ./
+RUN --mount=type=cache,target=/root/.npm,id=npm-auth,sharing=locked \
+    npm ci --omit=dev --ignore-scripts --no-audit --no-fund \
     && npm cache clean --force
 
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/migrations ./migrations
-COPY --from=builder /app/next.config.mjs ./next.config.mjs
-COPY --from=builder /app/branding.json ./branding.json
+COPY .docker-build/auth/.next ./.next
+COPY .docker-build/auth/dist ./dist
+COPY .docker-build/auth/public ./public
+COPY .docker-build/auth/migrations ./migrations
+COPY .docker-build/auth/next.config.mjs ./next.config.mjs
+COPY .docker-build/auth/branding.json ./branding.json
 
 EXPOSE 3015
 

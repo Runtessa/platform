@@ -2,19 +2,17 @@ version: "3.9"
 
 services:
   postgres:
-    image: postgres:16-alpine
+    image: postgres:17
     restart: unless-stopped
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
+    env_file:
+      - ./docker/env/postgres.env
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
   redis:
-    image: redis:7-alpine
+    image: redis:latest
     restart: unless-stopped
     ports:
       - "6379:6379"
@@ -26,84 +24,73 @@ services:
       context: .
       dockerfile: src/core/Dockerfile
     restart: unless-stopped
-    env_file:
-      - src/core/.env
-    environment:
-      PORT: 3005
-      DATABASE_URL: postgres://postgres:postgres@postgres:5432/idpcore2
     depends_on:
       - postgres
       - redis
     ports:
       - "3005:3005"
+    volumes:
+      - ./docker/env/core.env:/app/src/core/.env:ro
 
   auth:
     build:
-      context: src/auth
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: src/auth/Dockerfile
     restart: unless-stopped
-    env_file:
-      - src/auth/.env
-    environment:
-      AUTH_HOST: 0.0.0.0
-      AUTH_PORT: 3015
-      DATABASE_URL: postgres://postgres:postgres@postgres:5432/idp_auth
-      AUTH_ALLOWED_ORIGINS: http://localhost:3015,http://localhost:3002,http://localhost:3005
     depends_on:
       - postgres
       - redis
     ports:
       - "3015:3015"
+    volumes:
+      - ./docker/env/auth.env:/app/.env:ro
 
   ide:
     build:
       context: .
       dockerfile: src/ideNew/Dockerfile
     restart: unless-stopped
-    env_file:
-      - src/ideNew/.env
     depends_on:
       - core
       - auth
     ports:
       - "3002:3000"
+    volumes:
+      - ./docker/env/ide.env:/app/src/ideNew/.env:ro
 
   monitoring:
     build:
-      context: src/monitoring
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: src/monitoring/Dockerfile
     restart: unless-stopped
-    env_file:
-      - src/monitoring/.env
-    environment:
-      MONITORING_HOST: 0.0.0.0
-      MONITORING_PORT: 3011
     ports:
       - "3011:3011"
+    volumes:
+      - ./docker/env/monitoring.env:/app/.env:ro
 
   codex-gateway:
     profiles: ["codex"]
     build:
-      context: src/codex-gateway
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: src/codex-gateway/Dockerfile
     restart: unless-stopped
     ports:
       - "4040:4040"
     volumes:
+      - ./docker/env/codex-gateway.env:/app/.env:ro
       - ./src/codex-gateway/data:/data
       - .:/workspace
 
   container-agent:
     profiles: ["agent"]
     build:
-      context: src/container-agent
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: src/container-agent/Dockerfile
     restart: unless-stopped
-    env_file:
-      - src/container-agent/.env
     ports:
       - "4070:4070"
     volumes:
+      - ./docker/env/container-agent.env:/app/.env:ro
       - /var/run/docker.sock:/var/run/docker.sock
       - .:/srv/idp
 

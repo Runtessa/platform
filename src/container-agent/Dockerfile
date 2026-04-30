@@ -1,12 +1,25 @@
-FROM node:20-alpine
+# syntax=docker/dockerfile:1.7
+FROM node:22-alpine
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
-RUN npm ci --omit=dev
+ENV NPM_CONFIG_UPDATE_NOTIFIER=false
+ENV NPM_CONFIG_FUND=false
+ENV NPM_CONFIG_AUDIT=false
+ENV NPM_CONFIG_PROGRESS=false
+ENV NPM_CONFIG_PREFER_OFFLINE=true
+ENV NPM_CONFIG_FETCH_RETRIES=10
+ENV NPM_CONFIG_FETCH_RETRY_MINTIMEOUT=30000
+ENV NPM_CONFIG_FETCH_RETRY_MAXTIMEOUT=300000
+ENV NPM_CONFIG_FETCH_TIMEOUT=1800000
 
-COPY index.js ./
-COPY lib ./lib
+COPY .docker-build/container-agent/package.json ./
+COPY .docker-build/container-agent/package-lock.json ./
+RUN --mount=type=cache,target=/root/.npm,id=npm-container-agent,sharing=locked \
+    npm ci --omit=dev --ignore-scripts --no-audit --no-fund \
+    && npm cache clean --force
+
+COPY .docker-build/container-agent/dist ./dist
 
 RUN mkdir -p /app/certs
 RUN chown -R node:node /app
@@ -23,4 +36,4 @@ ENV NODE_ENV=production \
 
 EXPOSE 4070
 
-CMD ["node", "index.js"]
+CMD ["node", "dist/index.js"]

@@ -3,6 +3,7 @@ node_modules/
 
 # Build outputs
 dist/
+.docker-build/
 
 # Env and secrets
 .env
