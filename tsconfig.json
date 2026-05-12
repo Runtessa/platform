@@ -3,13 +3,13 @@
     "target": "ES2020",
     "module": "commonjs",
     "lib": ["ES2020"],
-    "rootDir": "src/core",
+    "rootDir": "./src/core",
     "outDir": "dist",
     "strict": true,
     "esModuleInterop": true,
     "paths": {
       "@idp/shared": ["./src/packages/shared/dist/index.d.ts"],
-      "@idp/shared/*": ["src/packages/shared/dist/*"]
+      "@idp/shared/*": ["./src/packages/shared/dist/*"]
     },
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -17,5 +17,5 @@
     "resolveJsonModule": true,
     "skipLibCheck": true
   },
-  "include": ["src/core/**/*"]
+  "include": ["./src/core/**/*"]
 }
