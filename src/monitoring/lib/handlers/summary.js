@@ -4,7 +4,10 @@ const { listInstanceKeys, readSnapshots, readAlerts, readRules } = require('../r
 const summaryHandler = async (req, res) => {
   const minutes = toMinutes(req.query.minutes);
   const sampleIntervalSec = 4;
-  const defaultPointLimit = Math.max(Math.ceil((minutes * 60) / sampleIntervalSec), 360);
+  const defaultPointLimit = Math.min(
+    Math.max(Math.ceil((minutes * 60) / (sampleIntervalSec * 2)), 120),
+    360
+  );
   const pointLimit = toLimit(req.query.pointLimit, defaultPointLimit, 30000);
   const alertLimit = toLimit(req.query.alertLimit, 50, 500);
   const serverName = str(req.query.serverName).trim();
@@ -13,7 +16,7 @@ const summaryHandler = async (req, res) => {
   const sinceTs = Date.now() - minutes * 60_000;
 
   const instanceKeys = await listInstanceKeys();
-  const fetchPerInstance = Math.min(Math.max(pointLimit, 100), 30000);
+  const fetchPerInstance = Math.min(Math.max(pointLimit, 60), 2000);
   const snapshotsByInstance = await Promise.all(
     instanceKeys.map(async (key) => ({ key, rows: await readSnapshots(key, fetchPerInstance) })),
   );

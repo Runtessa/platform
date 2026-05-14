@@ -15,6 +15,9 @@ redis.on('error', (err) => {
 });
 
 const ingestSnapshot = async (snapshot, retention, ttlSec) => {
+  const dedupKey = `monitoring:ingest:dedup:snapshot:${snapshot.id}`;
+  const inserted = await redis.set(dedupKey, '1', 'EX', 60 * 60 * 24, 'NX');
+  if (inserted !== 'OK') return;
   const instanceKey = `${snapshot.serverName}::${snapshot.instanceId}`;
   await redis
     .multi()
@@ -35,6 +38,9 @@ const ingestSnapshot = async (snapshot, retention, ttlSec) => {
 };
 
 const ingestAlert = async (alert, retention) => {
+  const dedupKey = `monitoring:ingest:dedup:alert:${alert.id}`;
+  const inserted = await redis.set(dedupKey, '1', 'EX', 60 * 60 * 24, 'NX');
+  if (inserted !== 'OK') return;
   await redis.multi().lpush(KEY.alerts, JSON.stringify(alert)).ltrim(KEY.alerts, 0, Math.max(retention - 1, 0)).exec();
 };
 

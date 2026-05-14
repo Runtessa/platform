@@ -19,6 +19,13 @@ const createManagedServiceDefinitionResolver = ({
   resolveCodexWorkspaceHostPath,
   resolveCodexGatewayIndexHostPath,
 }) => {
+  const asBool = (value, fallback = false) => {
+    if (typeof value !== 'string') return fallback;
+    const normalized = value.trim().toLowerCase();
+    if (!normalized) return fallback;
+    return normalized === '1' || normalized === 'true' || normalized === 'yes' || normalized === 'on';
+  };
+
   const ensureCodexConfig = async (userKey, userName, preferredPort) => {
     const workspaceRoot = await resolveCodexWorkspaceHostPath();
     const image = codeGatewayImage();
@@ -62,6 +69,22 @@ const createManagedServiceDefinitionResolver = ({
       65535
     );
     const dataVolume = monitoringDataVolumeName();
+    const tlsEnabledRaw = String(
+      pickEnv(
+        'CONTAINER_MANAGER_MONITORING_TLS_ENABLED',
+        'CONTAINER_AGENT_MONITORING_TLS_ENABLED'
+      ) || 'true'
+    ).trim();
+    const tlsEnabled = asBool(tlsEnabledRaw, true);
+    const tlsRequiredRaw = String(
+      pickEnv(
+        'CONTAINER_MANAGER_MONITORING_TLS_REQUIRED',
+        'CONTAINER_AGENT_MONITORING_TLS_REQUIRED'
+      ) || 'true'
+    ).trim();
+    const tlsRequired = asBool(tlsRequiredRaw, true);
+    const protocol = tlsEnabled || tlsRequired ? 'https' : 'http';
+
     const env = [
       `MONITORING_PORT=${defaultMonitoringPort}`,
       `REDIS_URL=${String(
@@ -78,18 +101,8 @@ const createManagedServiceDefinitionResolver = ({
           'MONITORING_INGEST_TOKEN'
         )
       ).trim()}`,
-      `MONITORING_TLS_REQUIRED=${String(
-        pickEnv(
-          'CONTAINER_MANAGER_MONITORING_TLS_REQUIRED',
-          'CONTAINER_AGENT_MONITORING_TLS_REQUIRED'
-        ) || 'true'
-      ).trim()}`,
-      `MONITORING_TLS_ENABLED=${String(
-        pickEnv(
-          'CONTAINER_MANAGER_MONITORING_TLS_ENABLED',
-          'CONTAINER_AGENT_MONITORING_TLS_ENABLED'
-        ) || 'true'
-      ).trim()}`,
+      `MONITORING_TLS_REQUIRED=${tlsRequiredRaw}`,
+      `MONITORING_TLS_ENABLED=${tlsEnabledRaw}`,
       `MONITORING_TLS_AUTO_SELF_SIGNED=${String(
         pickEnv(
           'CONTAINER_MANAGER_MONITORING_TLS_AUTO_SELF_SIGNED',
@@ -113,6 +126,7 @@ const createManagedServiceDefinitionResolver = ({
       name: containerName,
       image,
       port,
+      protocol,
       binds: [`${dataVolume}:/app/certs`],
       env,
     };
@@ -146,7 +160,7 @@ const createManagedServiceDefinitionResolver = ({
         image: config.image,
         containerPort: defaultMonitoringPort,
         hostPort: config.port,
-        protocol: 'https',
+        protocol: config.protocol,
         publicHost: monitoringPublicHost(),
         env: config.env,
         binds: config.binds,

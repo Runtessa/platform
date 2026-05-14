@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const express = require('express');
 const Docker = require('dockerode');
 const pkg = require('./package.json');
@@ -26,6 +27,13 @@ const { createSelfMountResolver } = require('./lib/selfMounts');
 const { registerRoutes } = require('./lib/routes');
 const { createManagerConfig } = require('./lib/config');
 const { createManagedRuntime } = require('./lib/managedRuntime');
+const { createOrchestratorCommandHandlers } = require('./lib/orchestrator-command-handlers');
+const { createRedisOrchestratorWorker } = require('./lib/redis-orchestrator-worker');
+
+const envPath = path.resolve(__dirname, '.env');
+if (typeof process.loadEnvFile === 'function' && fs.existsSync(envPath)) {
+  process.loadEnvFile(envPath);
+}
 
 const DEFAULT_TLS_REQUIRED = true;
 const app = express();
@@ -134,6 +142,43 @@ registerRoutes({
   resolveAllowUnmanagedActions: managerConfig.resolveAllowUnmanagedActions,
 });
 
+const orchestratorHandlers = createOrchestratorCommandHandlers({
+  pkg,
+  startedAt: STARTED_AT,
+  resolveEngineLabel: managerConfig.resolveEngineLabel,
+  getExtraServices: managerConfig.getExtraServices,
+  sanitizeSegment,
+  userKeyFromInput: managerConfig.userKeyFromInput,
+  resolveManagedServiceDefinition: managedRuntime.resolveManagedServiceDefinition,
+  buildStateForService: managedRuntime.buildStateForService,
+  ensureManagedService: managedRuntime.ensureManagedService,
+  allowedActions: managedRuntime.allowedActions,
+  applyAction: managedRuntime.applyAction,
+  parseQueryBool,
+  asBool,
+  managedLabelValues: managerConfig.MANAGED_LABEL_VALUES,
+  docker,
+  formatContainerSummary,
+  inspectContainer: managedRuntime.inspectContainer,
+  isManagedContainer: managedRuntime.isManagedContainer,
+  parseIntBounded,
+  containerFromName: managedRuntime.containerFromName,
+  readDockerLogBuffer,
+  demuxDockerLogs,
+  parseEnvList,
+  parseEnvMap,
+  managerLabel: managerConfig.MANAGER_LABEL,
+  ensureImage: managedRuntime.ensureImage,
+  resolveManagedSecurityOpts: managerConfig.resolveManagedSecurityOpts,
+  resolveAllowUnmanagedActions: managerConfig.resolveAllowUnmanagedActions,
+});
+
+const orchestratorWorker = createRedisOrchestratorWorker({
+  pickEnv,
+  sanitizeSegment,
+  handlers: orchestratorHandlers,
+});
+
 app.use((error, _req, res, _next) => {
   const message = String(error?.message || error || 'Internal error');
   console.error(`[container-manager] ${message}`);
@@ -154,4 +199,8 @@ server.listen(port, host, () => {
   console.log(
     `[container-manager] listening on ${protocol}://${host}:${port} (engine=${managerConfig.resolveEngineLabel()}, version=${pkg.version})`
   );
+  orchestratorWorker.start().catch((error) => {
+    const message = String(error?.message || error || 'failed to start redis orchestration worker');
+    console.error(`[container-manager] ${message}`);
+  });
 });
