@@ -24,13 +24,17 @@ export const SidebarNav = ({
 }: SidebarNavProps) => {
   return (
     <aside className="hidden w-[280px] shrink-0 md:block">
-      <nav
-        className={`${cardClass} md:fixed md:top-6 md:w-[280px] md:max-h-[calc(100vh-3rem)] md:overflow-y-auto md:hide-scrollbar p-3`}
+      <div
+        className="fixed top-3 z-[60] hidden md:block"
         style={isRtl ? { right: desktopRailLeft } : { left: desktopRailLeft }}
       >
-        <div className="grid h-24 place-items-center" style={{ marginBottom: '32px' }}>
-          <img src="/images/lw_dark.png" alt="ADA" className="h-14 w-auto" />
-        </div>
+        <img src="/images/lw_dark.png" alt="ADA" className="h-12 w-auto" />
+      </div>
+
+      <nav
+        className={`${cardClass} md:fixed md:top-1/2 md:z-20 md:w-[280px] md:max-h-[calc(100vh-2rem)] md:-translate-y-1/2 md:overflow-y-auto md:hide-scrollbar p-3`}
+        style={isRtl ? { right: desktopRailLeft } : { left: desktopRailLeft }}
+      >
         <ul className="space-y-1">
           {railItems.map((item) => {
             const Icon = item.icon;

@@ -22,6 +22,7 @@ export const useProfileData = ({ copy, pushToast }: UseProfileDataArgs) => {
   const [loading, setLoading] = useState(true);
 
   const [detailsSaving, setDetailsSaving] = useState(false);
+  const [contactSaving, setContactSaving] = useState(false);
   const [passwordSaving, setPasswordSaving] = useState(false);
   const [twoFaSaving, setTwoFaSaving] = useState(false);
 
@@ -42,6 +43,7 @@ export const useProfileData = ({ copy, pushToast }: UseProfileDataArgs) => {
   });
 
   const [twoFaCode, setTwoFaCode] = useState('');
+  const [contactEmail, setContactEmail] = useState('');
   const [twoFaSetup, setTwoFaSetup] = useState<TwoFactorSetupState | null>(null);
   const [twoFaQrDataUrl, setTwoFaQrDataUrl] = useState('');
   const [twoFaQrLoading, setTwoFaQrLoading] = useState(false);
@@ -51,6 +53,7 @@ export const useProfileData = ({ copy, pushToast }: UseProfileDataArgs) => {
 
   const applyProfileState = (next: ProfilePayload['profile']) => {
     setProfile(next);
+    setContactEmail(next.user.email || '');
     setDetailsForm({
       firstName: next.user.firstName || '',
       lastName: next.user.lastName || '',
@@ -175,7 +178,37 @@ export const useProfileData = ({ copy, pushToast }: UseProfileDataArgs) => {
         throw new Error(uploadData.error || copy.errors.avatarLoadFailed);
       }
 
-      setDetailsForm((prev) => ({ ...prev, avatarUrl: uploadData.avatarUrl || '' }));
+      const persistRes = await fetch('/api/profile/details', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken,
+        },
+        body: JSON.stringify({
+          firstName: (detailsForm.firstName || profile?.user.firstName || '').trim(),
+          lastName: (detailsForm.lastName || profile?.user.lastName || '').trim(),
+          nationalId: (detailsForm.nationalId || profile?.user.nationalId || '').trim(),
+          phoneNumber: (detailsForm.phoneNumber || profile?.user.phoneNumber || '').trim(),
+          avatarUrl: uploadData.avatarUrl,
+          birthday: detailsForm.birthday || profile?.user.birthday || '',
+          gender: detailsForm.gender || profile?.user.gender || '',
+        }),
+      });
+      const persistData = (await persistRes.json()) as {
+        ok?: boolean;
+        profile?: ProfilePayload['profile'];
+        error?: string;
+      };
+      if (!persistRes.ok) {
+        throw new Error(persistData.error || copy.errors.updateProfileFailed);
+      }
+
+      if (persistData.profile) {
+        applyProfileState(persistData.profile);
+      } else {
+        setDetailsForm((prev) => ({ ...prev, avatarUrl: uploadData.avatarUrl || '' }));
+      }
       pushToast('success', copy.toasts.avatarSelected);
     } catch (uploadError) {
       pushToast('error', uploadError instanceof Error ? uploadError.message : copy.errors.avatarLoadFailed);
@@ -285,6 +318,69 @@ export const useProfileData = ({ copy, pushToast }: UseProfileDataArgs) => {
     }
   };
 
+  const handleSaveContactEmail = async (emailValue: string): Promise<boolean> => {
+    if (!csrfToken) return false;
+
+    const normalizedEmail = String(emailValue || '').trim();
+    const firstName = (detailsForm.firstName || profile?.user.firstName || '').trim();
+    const lastName = (detailsForm.lastName || profile?.user.lastName || '').trim();
+    const nationalId = (detailsForm.nationalId || profile?.user.nationalId || '').trim();
+    const phoneNumber = (detailsForm.phoneNumber || profile?.user.phoneNumber || '').trim();
+
+    setContactSaving(true);
+    try {
+      let res = await fetch('/api/profile/contact', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken,
+        },
+        body: JSON.stringify({
+          email: normalizedEmail,
+        }),
+      });
+      if (res.status === 404) {
+        if (!firstName || !lastName || !nationalId) {
+          pushToast('error', copy.toasts.requiredProfileFields);
+          return false;
+        }
+        if (!phoneNumber) {
+          pushToast('error', copy.toasts.requiredPhone);
+          return false;
+        }
+        res = await fetch('/api/profile/details', {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrfToken,
+          },
+          body: JSON.stringify({
+            firstName,
+            lastName,
+            nationalId,
+            phoneNumber,
+            email: normalizedEmail,
+            avatarUrl: detailsForm.avatarUrl || profile?.user.avatarUrl || '',
+            birthday: detailsForm.birthday || profile?.user.birthday || '',
+            gender: detailsForm.gender || profile?.user.gender || '',
+          }),
+        });
+      }
+      const data = (await res.json()) as { ok?: boolean; profile?: ProfilePayload['profile']; error?: string };
+      if (!res.ok) throw new Error(data.error || copy.errors.updateProfileFailed);
+      if (data.profile) applyProfileState(data.profile);
+      pushToast('success', copy.toasts.profileUpdated);
+      return true;
+    } catch (submitError) {
+      pushToast('error', submitError instanceof Error ? submitError.message : copy.errors.updateProfileFailed);
+      return false;
+    } finally {
+      setContactSaving(false);
+    }
+  };
+
   const handleGenerateTwoFactorSetup = async () => {
     if (!csrfToken) return;
     setTwoFaSaving(true);
@@ -363,14 +459,44 @@ export const useProfileData = ({ copy, pushToast }: UseProfileDataArgs) => {
     }
   };
 
+  const handleRevokeSession = async (sessionRandId: string): Promise<boolean> => {
+    if (!csrfToken) return false;
+    if (!sessionRandId) return false;
+    if (session?.sessionRandId && session.sessionRandId === sessionRandId) {
+      pushToast('error', copy.securitySection.cannotRevokeCurrent);
+      return false;
+    }
+
+    try {
+      const res = await fetch(`/api/profile/sessions/${encodeURIComponent(sessionRandId)}/revoke`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'X-CSRF-Token': csrfToken,
+        },
+      });
+      const data = (await res.json()) as { ok?: boolean; profile?: ProfilePayload['profile']; error?: string };
+      if (!res.ok) throw new Error(data.error || copy.securitySection.sessionRevokeFailed);
+      if (data.profile) applyProfileState(data.profile);
+      pushToast('success', copy.securitySection.sessionRevokedSuccess);
+      return true;
+    } catch (submitError) {
+      pushToast('error', submitError instanceof Error ? submitError.message : copy.securitySection.sessionRevokeFailed);
+      return false;
+    }
+  };
+
   return {
     session,
     profile,
     loading,
     csrfToken,
     detailsSaving,
+    contactSaving,
     passwordSaving,
     twoFaSaving,
+    contactEmail,
+    setContactEmail,
     detailsForm,
     setDetailsForm,
     passwordForm,
@@ -384,7 +510,9 @@ export const useProfileData = ({ copy, pushToast }: UseProfileDataArgs) => {
     handleAvatarFileChange,
     logout,
     handleSaveDetails,
+    handleSaveContactEmail,
     handleChangePassword,
+    handleRevokeSession,
     handleGenerateTwoFactorSetup,
     handleEnableTwoFactor,
     handleDisableTwoFactor,

@@ -39,7 +39,7 @@ const mobileBeforeKeys: Array<NavItem['key']> = ['tenants'];
 const mobileAfterKeys: Array<NavItem['key']> = ['profile'];
 const mobileHomeKey: NavItem['key'] = 'dashboard';
 const railCardClass = 'rounded-[24px] p-6';
-const desktopRailLeft = 'max(0.75rem, calc((100vw - 1400px) / 2 + 0.75rem))';
+const desktopRailLeft = '0.75rem';
 
 export const AdminShell = ({ children }: AdminShellProps) => {
   const router = useRouter();
@@ -139,15 +139,19 @@ export const AdminShell = ({ children }: AdminShellProps) => {
         <LanguageToggle locale={locale} onChange={setLocale} />
       </div>
 
+      <div
+        className="fixed top-3 z-[60] hidden md:block"
+        style={isRtl ? { right: desktopRailLeft } : { left: desktopRailLeft }}
+      >
+        <img src="/images/lw_dark.png" alt="ADA" className="h-12 w-auto" />
+      </div>
+
       <div className="mx-auto flex min-h-[calc(100vh-8rem)] w-full max-w-[1400px] items-stretch gap-6 px-3 sm:px-4">
         <aside className="hidden w-[280px] shrink-0 md:block">
           <nav
-            className={`${railCardClass} md:fixed md:top-6 md:w-[280px] md:max-h-[calc(100vh-3rem)] md:overflow-y-auto md:hide-scrollbar p-3`}
+            className={`${railCardClass} md:fixed md:top-1/2 md:z-20 md:w-[280px] md:max-h-[calc(100vh-2rem)] md:-translate-y-1/2 md:overflow-y-auto md:hide-scrollbar p-3`}
             style={isRtl ? { right: desktopRailLeft } : { left: desktopRailLeft }}
           >
-            <div className="grid h-24 place-items-center" style={{ marginBottom: '24px' }}>
-              <img src="/images/lw_dark.png" alt="ADA" className="h-14 w-auto" />
-            </div>
             <ul className="space-y-1">
               {navItems.map((item) => {
                 const Icon = item.icon;

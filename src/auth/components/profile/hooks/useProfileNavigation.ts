@@ -13,7 +13,6 @@ interface UseProfileNavigationParams {
       home: string;
       personalInfo: string;
       contactInfo: string;
-      dataPrivacy: string;
       security: string;
       twoFactor: string;
     };
@@ -58,24 +57,15 @@ export const useProfileNavigation = ({
       home: copy.nav.home,
       'personal-info': copy.nav.personalInfo,
       'contact-info': copy.nav.contactInfo,
-      'data-privacy': copy.nav.dataPrivacy,
       security: copy.nav.security,
       'two-factor': copy.nav.twoFactor,
     }),
     [copy],
   );
 
-  const handleSectionNav = useCallback((key: RailKey, sectionId: string) => {
+  const handleSectionNav = useCallback((key: RailKey, _sectionId: string) => {
     setActiveRail(key);
     setMobileMenuOpen(false);
-    window.requestAnimationFrame(() => {
-      const node = document.getElementById(sectionId);
-      if (node) {
-        node.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        return;
-      }
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
   }, []);
 
   const closeMobileMenu = useCallback(() => {

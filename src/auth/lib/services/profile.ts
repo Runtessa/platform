@@ -1,6 +1,7 @@
 import { AuthDataSource } from '../db';
 import { hashPassword, verifyPassword } from '../crypto';
-import { assertPassword, assertPhone, requireString } from '../validation';
+import { IsNull, MoreThan } from 'typeorm';
+import { assertEmail, assertPassword, assertPhone, requireString } from '../validation';
 import { schemas, upsertVersionedRecord } from './versioning';
 import {
   ActivityEntity,
@@ -78,9 +79,18 @@ export interface UserProfileSnapshot {
     lastLoginUserAgent: string | null;
     lastSeenAt: string | null;
   };
+  sessions: Array<{
+    randId: string;
+    ipAddress: string | null;
+    userAgent: string | null;
+    lastSeenAt: string | null;
+    createdAt: string | null;
+    expiresAt: string | null;
+  }>;
 }
 
 export interface UpdateProfileDetailsInput {
+  email?: string;
   firstName?: string;
   lastName?: string;
   nationalId?: string;
@@ -101,7 +111,10 @@ export interface TwoFactorSetupPayload {
   otpauthUri: string;
 }
 
-export const getUserProfileSnapshot = async (userRandId: string): Promise<UserProfileSnapshot> => {
+export const getUserProfileSnapshot = async (
+  userRandId: string,
+  currentSessionRandId?: string | null,
+): Promise<UserProfileSnapshot> => {
   const user = await readCurrentUser(userRandId);
 
   const roleAssignmentRepo = AuthDataSource.getRepository(UserRoleEntity);
@@ -111,7 +124,7 @@ export const getUserProfileSnapshot = async (userRandId: string): Promise<UserPr
   const activityRepo = AuthDataSource.getRepository(ActivityEntity);
   const sessionRepo = AuthDataSource.getRepository(AuthSessionEntity);
 
-  const [roleAssignments, orgAssignments, roles, orgs, lastLogin, lastSession] = await Promise.all([
+  const [roleAssignments, orgAssignments, roles, orgs, lastLogin, lastSession, activeSessions] = await Promise.all([
     roleAssignmentRepo.find({
       where: { userRandId, isCurrent: true },
       order: { changedAt: 'DESC' },
@@ -129,6 +142,16 @@ export const getUserProfileSnapshot = async (userRandId: string): Promise<UserPr
     sessionRepo.findOne({
       where: { userRandId },
       order: { lastSeenAt: 'DESC' },
+    }),
+    sessionRepo.find({
+      where: {
+        userRandId,
+        revokedAt: IsNull(),
+        expiresAt: MoreThan(new Date()),
+        idleExpiresAt: MoreThan(new Date()),
+      },
+      order: { lastSeenAt: 'DESC' },
+      take: 20,
     }),
   ]);
 
@@ -186,6 +209,20 @@ export const getUserProfileSnapshot = async (userRandId: string): Promise<UserPr
       : null;
   const hasPassword = typeof credentialsMeta.hasPassword === 'boolean' ? credentialsMeta.hasPassword : true;
 
+  const sessionList = [...activeSessions];
+  if (currentSessionRandId && !sessionList.some((session) => session.randId === currentSessionRandId)) {
+    const currentSession = await sessionRepo.findOne({
+      where: {
+        randId: currentSessionRandId,
+        userRandId,
+        revokedAt: IsNull(),
+      },
+    });
+    if (currentSession) {
+      sessionList.unshift(currentSession);
+    }
+  }
+
   return {
     user: {
       randId: user.randId,
@@ -222,6 +259,14 @@ export const getUserProfileSnapshot = async (userRandId: string): Promise<UserPr
       lastLoginUserAgent: lastLogin?.userAgent || null,
       lastSeenAt: toIso(lastSession?.lastSeenAt || lastSession?.createdAt || null),
     },
+    sessions: sessionList.map((session) => ({
+      randId: session.randId,
+      ipAddress: session.ipAddress || null,
+      userAgent: session.userAgent || null,
+      lastSeenAt: toIso(session.lastSeenAt),
+      createdAt: toIso(session.createdAt),
+      expiresAt: toIso(session.expiresAt),
+    })),
   };
 };
 
@@ -233,6 +278,7 @@ export const updateProfileDetails = async (
   const user = await readCurrentUser(userRandId);
 
   const patch: Record<string, unknown> = {};
+  if (input.email !== undefined) patch.email = assertEmail(input.email);
   if (input.firstName !== undefined) patch.firstName = requireString(input.firstName, 'firstName', 1, 120);
   if (input.lastName !== undefined) patch.lastName = requireString(input.lastName, 'lastName', 1, 120);
   if (input.nationalId !== undefined) patch.nationalId = requireString(input.nationalId, 'nationalId', 4, 96);
@@ -319,4 +365,19 @@ export const updateProfilePassword = async (
       changeReason: 'profile-password-updated',
     },
   );
+};
+
+export const revokeUserSession = async (
+  userRandId: string,
+  sessionRandId: string,
+): Promise<boolean> => {
+  const result = await AuthDataSource.getRepository(AuthSessionEntity).update(
+    {
+      randId: sessionRandId,
+      userRandId,
+      revokedAt: IsNull(),
+    },
+    { revokedAt: new Date() },
+  );
+  return Boolean(result.affected && result.affected > 0);
 };

@@ -1,7 +1,6 @@
 import { ComponentType } from 'react';
 import {
   FiCalendar,
-  FiDatabase,
   FiHome,
   FiKey,
   FiPhone,
@@ -13,6 +12,13 @@ import {
 export interface SessionPayload {
   authenticated: boolean;
   csrfToken?: string;
+  sessionRandId?: string;
+  currentSession?: {
+    randId: string;
+    ipAddress: string | null;
+    userAgent: string | null;
+    lastSeenAt: string | null;
+  };
   user?: {
     randId: string;
     email: string;
@@ -71,6 +77,14 @@ export interface ProfilePayload {
       lastLoginUserAgent: string | null;
       lastSeenAt: string | null;
     };
+    sessions: Array<{
+      randId: string;
+      ipAddress: string | null;
+      userAgent: string | null;
+      lastSeenAt: string | null;
+      createdAt: string | null;
+      expiresAt: string | null;
+    }>;
   };
 }
 
@@ -99,7 +113,6 @@ export type RailKey =
   | 'home'
   | 'personal-info'
   | 'contact-info'
-  | 'data-privacy'
   | 'security'
   | 'two-factor';
 
@@ -111,7 +124,6 @@ export const railItems: Array<{
   { key: 'home', icon: FiHome, sectionId: 'section-hero' },
   { key: 'personal-info', icon: FiUser, sectionId: 'section-personal-info-form' },
   { key: 'contact-info', icon: FiPhone, sectionId: 'section-contact-info' },
-  { key: 'data-privacy', icon: FiDatabase, sectionId: 'section-privacy' },
   { key: 'security', icon: FiShield, sectionId: 'section-security' },
   { key: 'two-factor', icon: FiKey, sectionId: 'section-two-factor' },
 ];
@@ -195,7 +207,8 @@ export const initialsFrom = (firstName: string, lastName: string): string => {
   return `${first}${last || fallback}`.toUpperCase() || 'U';
 };
 
-export const cardClass = 'rounded-[24px] p-6';
+export const cardClass =
+  'rounded-[28px] border border-white/60 bg-white/70 p-5 shadow-[0_12px_32px_rgba(60,64,67,.10)] ring-1 ring-white/35 backdrop-blur-xl';
 
 export const inputClass =
   'w-full rounded-xl border border-[#DADCE0] bg-white px-3 py-2.5 text-sm text-[#202124] outline-none transition-all duration-200 focus:border-[#1A73E8] focus:ring-2 focus:ring-[#1A73E8]/20';
@@ -206,7 +219,7 @@ export const primaryBtnClass =
 export const secondaryBtnClass =
   'inline-flex items-center justify-center gap-2 rounded-full border border-[#DADCE0] bg-white px-5 py-2.5 text-sm font-medium text-[#1A73E8] transition-all duration-200 hover:bg-[#F6F9FE] active:brightness-95 disabled:cursor-not-allowed disabled:opacity-60';
 
-export const desktopRailLeft = 'max(0.75rem, calc((100vw - 1400px) / 2 + 0.75rem))';
+export const desktopRailLeft = '0.75rem';
 
 export const AVATAR_MAX_BYTES = 2 * 1024 * 1024;
 export const AVATAR_ALLOWED_TYPES = new Set(['image/png', 'image/jpeg', 'image/jpg', 'image/webp']);

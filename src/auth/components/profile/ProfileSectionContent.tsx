@@ -1,6 +1,5 @@
 import { Dispatch, FormEvent, RefObject, SetStateAction } from 'react';
 import { ContactInfoSection } from './sections/ContactInfoSection';
-import { DataPrivacySection } from './sections/DataPrivacySection';
 import { HomeSection } from './sections/HomeSection';
 import { PersonalInfoSection } from './sections/PersonalInfoSection';
 import { SecuritySection } from './sections/SecuritySection';
@@ -30,8 +29,11 @@ interface ProfileSectionContentProps {
   secondaryBtnClass: string;
   isRtl: boolean;
   detailsSaving: boolean;
+  contactSaving: boolean;
   passwordSaving: boolean;
   twoFaSaving: boolean;
+  contactEmail: string;
+  setContactEmail: React.Dispatch<React.SetStateAction<string>>;
   detailsForm: ProfileDetailsFormState;
   setDetailsForm: Dispatch<SetStateAction<ProfileDetailsFormState>>;
   passwordForm: ProfilePasswordFormState;
@@ -55,7 +57,9 @@ interface ProfileSectionContentProps {
   today: Date;
   onAvatarClick: () => void;
   onSaveDetails: (event: FormEvent) => Promise<void>;
+  onSaveContactEmail: (emailValue: string) => Promise<boolean>;
   onChangePassword: (event: FormEvent) => Promise<void>;
+  onRevokeSession: (sessionRandId: string) => Promise<boolean>;
   onGenerateTwoFactorSetup: () => Promise<void>;
   onEnableTwoFactor: (event: FormEvent) => Promise<void>;
   onDisableTwoFactor: () => Promise<void>;
@@ -81,8 +85,11 @@ export const ProfileSectionContent = ({
   secondaryBtnClass,
   isRtl,
   detailsSaving,
+  contactSaving,
   passwordSaving,
   twoFaSaving,
+  contactEmail,
+  setContactEmail,
   detailsForm,
   setDetailsForm,
   passwordForm,
@@ -106,7 +113,9 @@ export const ProfileSectionContent = ({
   today,
   onAvatarClick,
   onSaveDetails,
+  onSaveContactEmail,
   onChangePassword,
+  onRevokeSession,
   onGenerateTwoFactorSetup,
   onEnableTwoFactor,
   onDisableTwoFactor,
@@ -141,10 +150,17 @@ export const ProfileSectionContent = ({
       ) : null}
 
       {activeRail === 'contact-info' ? (
-        <ContactInfoSection copy={copy} profile={profile} cardClass={cardClass} isRtl={isRtl} />
+        <ContactInfoSection
+          copy={copy}
+          profile={profile}
+          cardClass={cardClass}
+          isRtl={isRtl}
+          contactEmail={contactEmail}
+          setContactEmail={setContactEmail}
+          contactSaving={contactSaving}
+          onSaveContactEmail={onSaveContactEmail}
+        />
       ) : null}
-
-      {activeRail === 'data-privacy' ? <DataPrivacySection copy={copy} cardClass={cardClass} /> : null}
 
       {activeRail === 'security' ? (
         <SecuritySection
@@ -157,6 +173,9 @@ export const ProfileSectionContent = ({
           setPasswordForm={setPasswordForm}
           passwordSaving={passwordSaving}
           onChangePassword={onChangePassword}
+          currentSessionRandId={session?.sessionRandId || null}
+          currentSession={session?.currentSession || null}
+          onRevokeSession={onRevokeSession}
         />
       ) : null}
 

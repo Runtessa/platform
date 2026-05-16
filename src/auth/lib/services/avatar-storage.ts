@@ -11,7 +11,9 @@ const AVATAR_MIME_TO_EXT: Record<string, string> = {
   'image/webp': 'webp',
 };
 
-const publicRootDir = path.resolve(__dirname, '..', '..', 'public');
+// Store avatar files under the app public directory that Next serves.
+// `process.cwd()` is stable in both dev and built runtime, unlike `__dirname`.
+const publicRootDir = path.resolve(process.cwd(), 'public');
 const avatarRootDir = path.resolve(publicRootDir, ...AVATAR_ROOT_SEGMENTS);
 
 const badRequest = (message: string): Error & { statusCode: number } => {

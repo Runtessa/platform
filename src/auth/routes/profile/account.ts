@@ -4,6 +4,7 @@ import { requireTrustedOrigin } from '../../lib/security';
 import { requestIp, requestUserAgent } from '../../lib/http';
 import {
   getUserProfileSnapshot,
+  revokeUserSession,
   updateProfileDetails,
   updateProfilePassword,
 } from '../../lib/services/profile';
@@ -42,12 +43,13 @@ export const registerProfileAccountRoutes = (app: express.Express): void => {
   app.get('/api/profile', requireSession, async (req, res, next) => {
     try {
       const userRandId = req.sessionContext?.user.randId;
+      const currentSessionRandId = req.sessionContext?.session.randId;
       if (!userRandId) {
         res.status(401).json({ error: 'Authentication required' });
         return;
       }
 
-      const profile = await getUserProfileSnapshot(userRandId);
+      const profile = await getUserProfileSnapshot(userRandId, currentSessionRandId);
       res.status(200).json({ profile });
     } catch (error) {
       next(error);
@@ -76,9 +78,47 @@ export const registerProfileAccountRoutes = (app: express.Express): void => {
     }
   });
 
+  app.post('/api/profile/avatar', requireTrustedOrigin, requireSession, requireCsrf, async (req, res, next) => {
+    try {
+      const userRandId = req.sessionContext?.user.randId;
+      const currentSessionRandId = req.sessionContext?.session.randId;
+      if (!userRandId) {
+        res.status(401).json({ error: 'Authentication required' });
+        return;
+      }
+
+      const avatarRaw = req.body.avatarUrl ?? req.body.avatar_url ?? '';
+      const avatarUrl = typeof avatarRaw === 'string' ? avatarRaw : String(avatarRaw || '');
+
+      const previousAvatar = (await getUserProfileSnapshot(userRandId)).user.avatarUrl;
+
+      await updateProfileDetails(
+        userRandId,
+        {
+          avatarUrl,
+        },
+        userRandId,
+      );
+
+      const profile = await getUserProfileSnapshot(userRandId, currentSessionRandId);
+      if (previousAvatar && previousAvatar !== profile.user.avatarUrl) {
+        try {
+          await removeManagedAvatarFromDisk(previousAvatar);
+        } catch (avatarError) {
+          console.warn('[auth] failed to remove old avatar file', avatarError);
+        }
+      }
+
+      res.status(200).json({ ok: true, profile });
+    } catch (error) {
+      next(error);
+    }
+  });
+
   app.post('/api/profile/details', requireTrustedOrigin, requireSession, requireCsrf, async (req, res, next) => {
     try {
       const userRandId = req.sessionContext?.user.randId;
+      const currentSessionRandId = req.sessionContext?.session.randId;
       if (!userRandId) {
         res.status(401).json({ error: 'Authentication required' });
         return;
@@ -88,6 +128,7 @@ export const registerProfileAccountRoutes = (app: express.Express): void => {
       const lastName = optionalString(req.body.lastName ?? req.body.last_name, 120);
       const nationalId = optionalString(req.body.nationalId ?? req.body.national_id, 96);
       const phoneNumber = optionalString(req.body.phoneNumber ?? req.body.phone_number, 32);
+      const email = optionalString(req.body.email, 320);
 
       if (!firstName || !lastName || !nationalId) {
         res.status(400).json({ error: 'firstName, lastName, and nationalId are required' });
@@ -108,6 +149,7 @@ export const registerProfileAccountRoutes = (app: express.Express): void => {
       await updateProfileDetails(
         userRandId,
         {
+          email: email || undefined,
           firstName,
           lastName,
           nationalId,
@@ -128,7 +170,7 @@ export const registerProfileAccountRoutes = (app: express.Express): void => {
         userAgent: requestUserAgent(req),
       });
 
-      const profile = await getUserProfileSnapshot(userRandId);
+      const profile = await getUserProfileSnapshot(userRandId, currentSessionRandId);
       if (previousAvatar && previousAvatar !== profile.user.avatarUrl) {
         try {
           await removeManagedAvatarFromDisk(previousAvatar);
@@ -136,6 +178,45 @@ export const registerProfileAccountRoutes = (app: express.Express): void => {
           console.warn('[auth] failed to remove old avatar file', avatarError);
         }
       }
+      res.status(200).json({ ok: true, profile });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.post('/api/profile/contact', requireTrustedOrigin, requireSession, requireCsrf, async (req, res, next) => {
+    try {
+      const userRandId = req.sessionContext?.user.randId;
+      const currentSessionRandId = req.sessionContext?.session.randId;
+      if (!userRandId) {
+        res.status(401).json({ error: 'Authentication required' });
+        return;
+      }
+
+      const email = optionalString(req.body.email, 320);
+      if (!email) {
+        res.status(400).json({ error: 'email is required' });
+        return;
+      }
+
+      await updateProfileDetails(
+        userRandId,
+        {
+          email,
+        },
+        userRandId,
+      );
+
+      await logActivity({
+        eventType: 'auth.profile.contact.updated',
+        actorUserRandId: userRandId,
+        targetType: 'user',
+        targetRandId: userRandId,
+        ipAddress: requestIp(req),
+        userAgent: requestUserAgent(req),
+      });
+
+      const profile = await getUserProfileSnapshot(userRandId, currentSessionRandId);
       res.status(200).json({ ok: true, profile });
     } catch (error) {
       next(error);
@@ -175,6 +256,47 @@ export const registerProfileAccountRoutes = (app: express.Express): void => {
       });
 
       res.status(200).json({ ok: true });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.post('/api/profile/sessions/:sessionRandId/revoke', requireTrustedOrigin, requireSession, requireCsrf, async (req, res, next) => {
+    try {
+      const userRandId = req.sessionContext?.user.randId;
+      const currentSessionRandId = req.sessionContext?.session.randId;
+      if (!userRandId || !currentSessionRandId) {
+        res.status(401).json({ error: 'Authentication required' });
+        return;
+      }
+
+      const targetSessionRandId = optionalString(req.params.sessionRandId, 64);
+      if (!targetSessionRandId) {
+        res.status(400).json({ error: 'sessionRandId is required' });
+        return;
+      }
+      if (targetSessionRandId === currentSessionRandId) {
+        res.status(400).json({ error: 'Current session cannot be revoked' });
+        return;
+      }
+
+      const revoked = await revokeUserSession(userRandId, targetSessionRandId);
+      if (!revoked) {
+        res.status(404).json({ error: 'Session not found' });
+        return;
+      }
+
+      await logActivity({
+        eventType: 'auth.profile.session.revoked',
+        actorUserRandId: userRandId,
+        targetType: 'auth_session',
+        targetRandId: targetSessionRandId,
+        ipAddress: requestIp(req),
+        userAgent: requestUserAgent(req),
+      });
+
+      const profile = await getUserProfileSnapshot(userRandId, currentSessionRandId);
+      res.status(200).json({ ok: true, profile });
     } catch (error) {
       next(error);
     }

@@ -13,6 +13,13 @@ export const registerSessionRoutes = (
     res.status(200).json({
       authenticated: true,
       csrfToken: req.sessionContext.session.csrfToken,
+      sessionRandId: req.sessionContext.session.randId,
+      currentSession: {
+        randId: req.sessionContext.session.randId,
+        ipAddress: req.sessionContext.session.ipAddress,
+        userAgent: req.sessionContext.session.userAgent,
+        lastSeenAt: req.sessionContext.session.lastSeenAt?.toISOString?.() || null,
+      },
       user: {
         randId: req.sessionContext.user.randId,
         email: req.sessionContext.user.email,
