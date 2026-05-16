@@ -142,10 +142,10 @@ export const OrganizationsSection = ({
 
       <article className={cardClass}>
         <h2 className="text-xl font-normal text-[#202124]">{copy.organizationTreeTitle}</h2>
-        <div className="mt-4 max-h-[540px] overflow-auto rounded-2xl border border-[#E8EAED] bg-white p-3">
+        <div className="mt-4 max-h-[540px] overflow-auto rounded-[24px] border border-white/70 bg-white/50 p-3 shadow-sm backdrop-blur-md">
           <ul className="space-y-2 text-sm text-[#202124]">
             {orgTree.map((node) => (
-              <li key={node.org.randId} className="flex items-center justify-between rounded-xl border border-[#EEF1F6] px-3 py-2">
+              <li key={node.org.randId} className="flex items-center justify-between rounded-xl border border-white/70 bg-white/35 px-3 py-2">
                 <div style={{ marginInlineStart: `${node.depth * 16}px` }}>
                   <p className="font-medium">{node.org.name}</p>
                   <p className="text-xs text-[#5F6368]">{node.org.code}</p>

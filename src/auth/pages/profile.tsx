@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { useMemo, useRef, useState } from 'react';
 import {
   FiBell,
@@ -12,6 +13,7 @@ import {
   FiLogOut,
   FiMoreHorizontal,
   FiSearch,
+  FiSettings,
   FiShield,
 } from 'react-icons/fi';
 import { ProfileSectionContent } from '../components/profile/ProfileSectionContent';
@@ -55,6 +57,7 @@ const profileBackgroundOverlayStyle = {
 };
 
 export default function ProfilePage() {
+  const router = useRouter();
   const { locale, isRtl, setLocale } = useUiLocale();
   const copy = getAuthMessages(locale).profile;
   const { toasts, pushToast } = useProfileToasts();
@@ -155,6 +158,12 @@ export default function ProfilePage() {
   const activeRailItem = railItems.find((item) => item.key === activeRail) || railItems[0];
   const activeTitle = railLabels[activeRailItem.key];
   const selectedLocale = UI_LOCALE_OPTIONS.find((item) => item.value === locale) || UI_LOCALE_OPTIONS[0];
+  const hasAdminPrivilege = Boolean(session?.authenticated && session.user?.isAuthAdmin);
+  const openAdminPanel = () => {
+    setMobileMenuOpen(false);
+    setOpenPanel(null);
+    void router.push('/admin');
+  };
 
   const searchItems = useMemo(
     () =>
@@ -462,6 +471,25 @@ export default function ProfilePage() {
                       </li>
                     );
                   })}
+                  {hasAdminPrivilege ? (
+                    <li>
+                      <button
+                        type="button"
+                        onClick={openAdminPanel}
+                        className={`group relative flex w-full items-center justify-between overflow-hidden rounded-2xl px-3 py-2.5 text-sm text-[#5F6368] transition-all duration-300 ease-out hover:bg-[#F8F9FA] hover:text-[#202124] ${isRtl ? 'text-right' : 'text-left'}`}
+                      >
+                        <span className={`absolute ${isRtl ? 'right-0 rounded-l-full' : 'left-0 rounded-r-full'} top-1/2 h-7 w-1 -translate-y-1/2 bg-[#1A73E8] opacity-0 transition-all duration-300 ease-out group-hover:opacity-30`} />
+                        <span className="flex min-w-0 items-center gap-3">
+                          <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-transparent text-[#5F6368] transition-all duration-300 ease-out group-hover:bg-white group-hover:text-[#202124]">
+                            <FiSettings className="h-5 w-5 transition-transform duration-300 ease-out group-hover:scale-105" />
+                          </span>
+                          <span className="truncate font-medium transition-all duration-300 ease-out group-hover:translate-x-0.5">
+                            {copy.openAuthAdmin}
+                          </span>
+                        </span>
+                      </button>
+                    </li>
+                  ) : null}
                 </ul>
               </nav>
 
@@ -553,6 +581,16 @@ export default function ProfilePage() {
             className="fixed bottom-[76px] left-3 right-3 z-50 rounded-[24px] border border-white/60 bg-white/80 p-2 shadow-[0_18px_44px_rgba(60,64,67,.22)] ring-1 ring-white/35 backdrop-blur-xl md:hidden"
             ref={mobileMenuRef}
           >
+            {hasAdminPrivilege ? (
+              <button
+                type="button"
+                onClick={openAdminPanel}
+                className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm text-[#5F6368] hover:bg-[#F1F3F4] ${isRtl ? 'text-right' : 'text-left'}`}
+              >
+                <FiSettings className="h-5 w-5" />
+                {copy.openAuthAdmin}
+              </button>
+            ) : null}
             <button
               type="button"
               onClick={() => {

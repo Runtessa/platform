@@ -90,15 +90,16 @@ export interface OrgTreeNode {
   depth: number;
 }
 
-export const cardClass = 'rounded-[24px] p-6';
-export const labelClass = 'mb-1.5 block text-xs font-semibold uppercase tracking-[0.12em] text-[#5F6368]';
+export const cardClass =
+  'rounded-[28px] border border-white/60 bg-white/70 p-6 shadow-[0_12px_32px_rgba(60,64,67,.10)] ring-1 ring-white/35 backdrop-blur-xl';
+export const labelClass = 'mb-2 block text-xs font-medium uppercase tracking-[0.12em] text-[#9AA0A6]';
 export const inputClass =
-  'w-full rounded-xl border border-[#DADCE0] bg-white px-3 py-2.5 text-sm text-[#202124] outline-none transition focus:border-[#1A73E8] focus:ring-2 focus:ring-[#D2E3FC]';
-export const checkboxClass = 'h-4 w-4 rounded border-[#C7C9CC] text-[#1A73E8] focus:ring-[#D2E3FC]';
+  'h-12 w-full rounded-2xl border border-white/70 bg-white/75 px-4 text-sm font-medium text-[#202124] outline-none shadow-sm backdrop-blur-md transition placeholder:text-[#9AA0A6] focus:border-[#1A73E8] focus:bg-white focus:ring-4 focus:ring-[#D2E3FC]/70';
+export const checkboxClass = 'h-4 w-4 rounded border-[#C7C9CC] accent-[#1A73E8] focus:ring-[#D2E3FC]';
 export const primaryBtnClass =
-  'inline-flex items-center justify-center gap-2 rounded-full bg-[#1A73E8] px-5 py-2.5 text-sm font-medium text-white transition-all duration-200 hover:bg-[#1765cc] active:brightness-95 disabled:cursor-not-allowed disabled:opacity-60';
+  'inline-flex items-center justify-center gap-2 rounded-full bg-[#1A73E8] px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-all duration-200 hover:bg-[#1765cc] active:brightness-95 disabled:cursor-not-allowed disabled:opacity-60';
 export const secondaryBtnClass =
-  'inline-flex items-center justify-center gap-2 rounded-full border border-[#DADCE0] bg-white px-5 py-2.5 text-sm font-medium text-[#1A73E8] transition-all duration-200 hover:bg-[#F6F9FE] active:brightness-95 disabled:cursor-not-allowed disabled:opacity-60';
+  'inline-flex items-center justify-center gap-2 rounded-full border border-white/70 bg-white/70 px-5 py-2.5 text-sm font-medium text-[#1A73E8] shadow-sm transition-all duration-200 hover:bg-white active:brightness-95 disabled:cursor-not-allowed disabled:opacity-60';
 
 export const asErrorMessage = (error: unknown, fallback: string): string => {
   if (error instanceof Error) return error.message;

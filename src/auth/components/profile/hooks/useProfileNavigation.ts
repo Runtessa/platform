@@ -1,4 +1,5 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   RailKey,
   mobileAfterHomeKeys,
@@ -26,6 +27,7 @@ export const useProfileNavigation = ({
   isRtl,
   logout,
 }: UseProfileNavigationParams) => {
+  const router = useRouter();
   const [activeRail, setActiveRail] = useState<RailKey>('home');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement | null>(null);
@@ -63,10 +65,56 @@ export const useProfileNavigation = ({
     [copy],
   );
 
-  const handleSectionNav = useCallback((key: RailKey, _sectionId: string) => {
-    setActiveRail(key);
-    setMobileMenuOpen(false);
+  const normalizeRailKey = useCallback((value: string | string[] | undefined): RailKey => {
+    const raw = Array.isArray(value) ? value[0] : value;
+    if (!raw) return 'home';
+    return railItems.some((item) => item.key === raw) ? (raw as RailKey) : 'home';
   }, []);
+
+  useEffect(() => {
+    if (!router.isReady) return;
+    const rawTab = Array.isArray(router.query.tab) ? router.query.tab[0] : router.query.tab;
+    const queryRail = normalizeRailKey(router.query.tab);
+    setActiveRail((previous) => (previous === queryRail ? previous : queryRail));
+
+    if (!rawTab || queryRail !== rawTab) {
+      void router.replace(
+        {
+          pathname: router.pathname,
+          query: {
+            ...router.query,
+            tab: queryRail,
+          },
+        },
+        undefined,
+        { shallow: true, scroll: false },
+      );
+    }
+  }, [normalizeRailKey, router]);
+
+  const handleSectionNav = useCallback(
+    (key: RailKey, _sectionId: string) => {
+      setActiveRail(key);
+      setMobileMenuOpen(false);
+
+      if (!router.isReady) return;
+      const currentRail = normalizeRailKey(router.query.tab);
+      if (currentRail === key) return;
+
+      void router.push(
+        {
+          pathname: router.pathname,
+          query: {
+            ...router.query,
+            tab: key,
+          },
+        },
+        undefined,
+        { shallow: true, scroll: false },
+      );
+    },
+    [normalizeRailKey, router],
+  );
 
   const closeMobileMenu = useCallback(() => {
     setMobileMenuOpen(false);

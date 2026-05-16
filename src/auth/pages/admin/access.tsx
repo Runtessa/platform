@@ -1,7 +1,7 @@
 import Head from 'next/head';
+import { FiChevronRight } from 'react-icons/fi';
 import { AdminAccessDenied } from '../../components/admin/access/AdminAccessDenied';
 import { AdminAccessHeaderActions } from '../../components/admin/access/AdminAccessHeaderActions';
-import { PageHeader } from '../../components/layout/PageHeader';
 import { OrganizationsSection } from '../../components/admin/access/OrganizationsSection';
 import { RolesSection } from '../../components/admin/access/RolesSection';
 import { StatusBanners } from '../../components/admin/access/StatusBanners';
@@ -72,7 +72,6 @@ export default function AdminAccessPage() {
           <title>{copy.headTitle}</title>
         </Head>
         <div className="space-y-6" dir={localeDir(locale)}>
-          <PageHeader title={copy.title} subtitle={copy.subtitle} align={isRtl ? 'right' : 'left'} />
           <AdminAccessDenied copy={copy} />
         </div>
       </>
@@ -86,15 +85,9 @@ export default function AdminAccessPage() {
       </Head>
 
       <div className="space-y-6" dir={localeDir(locale)}>
-        <PageHeader
-          title={copy.title}
-          subtitle={copy.subtitle}
-          align={isRtl ? 'right' : 'left'}
-          actions={<AdminAccessHeaderActions copy={copy} secondaryBtnClass={secondaryBtnClass} />}
-        />
+        <AdminAccessHeaderActions copy={copy} secondaryBtnClass={secondaryBtnClass} />
 
         <StatusBanners error={error} success={success} />
-        <div className="section-separator" />
 
         <SummaryCards
           copy={copy}
@@ -107,99 +100,128 @@ export default function AdminAccessPage() {
           usersTotal={usersTotal}
         />
 
-        <div className="section-separator" />
+        <article className={cardClass}>
+          <div className="mb-5 flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <h2 className="text-xl font-normal text-[#202124]">{copy.title}</h2>
+              <p className="mt-1 text-sm leading-6 text-[#5F6368]">
+                Manage organizations, roles, tenant mappings, and user assignments from one workflow.
+              </p>
+            </div>
+          </div>
+          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+            <a href="#access-orgs" className="flex items-center justify-between rounded-2xl border border-white/60 bg-white/55 px-4 py-3 text-sm font-medium text-[#202124] shadow-sm backdrop-blur-md hover:bg-white/75">
+              {copy.organizationsSectionTitle}
+              <FiChevronRight className={`h-4 w-4 text-[#9AA0A6] ${isRtl ? 'rotate-180' : ''}`} />
+            </a>
+            <a href="#access-roles" className="flex items-center justify-between rounded-2xl border border-white/60 bg-white/55 px-4 py-3 text-sm font-medium text-[#202124] shadow-sm backdrop-blur-md hover:bg-white/75">
+              {copy.rolesSectionTitle}
+              <FiChevronRight className={`h-4 w-4 text-[#9AA0A6] ${isRtl ? 'rotate-180' : ''}`} />
+            </a>
+            <a href="#access-tenants" className="flex items-center justify-between rounded-2xl border border-white/60 bg-white/55 px-4 py-3 text-sm font-medium text-[#202124] shadow-sm backdrop-blur-md hover:bg-white/75">
+              {copy.tenantsSectionTitle}
+              <FiChevronRight className={`h-4 w-4 text-[#9AA0A6] ${isRtl ? 'rotate-180' : ''}`} />
+            </a>
+            <a href="#access-users" className="flex items-center justify-between rounded-2xl border border-white/60 bg-white/55 px-4 py-3 text-sm font-medium text-[#202124] shadow-sm backdrop-blur-md hover:bg-white/75">
+              {copy.usersSectionTitle}
+              <FiChevronRight className={`h-4 w-4 text-[#9AA0A6] ${isRtl ? 'rotate-180' : ''}`} />
+            </a>
+          </div>
+        </article>
 
-        <OrganizationsSection
-          copy={copy}
-          cardClass={cardClass}
-          labelClass={labelClass}
-          inputClass={inputClass}
-          checkboxClass={checkboxClass}
-          primaryBtnClass={primaryBtnClass}
-          orgForm={orgForm}
-          setOrgForm={setOrgForm}
-          organizations={organizations}
-          orgTree={orgTree}
-          onSubmitOrganization={onSubmitOrganization}
-          csrfToken={csrfToken}
-          canManage={canManage}
-        />
+        <div id="access-orgs">
+          <OrganizationsSection
+            copy={copy}
+            cardClass={cardClass}
+            labelClass={labelClass}
+            inputClass={inputClass}
+            checkboxClass={checkboxClass}
+            primaryBtnClass={primaryBtnClass}
+            orgForm={orgForm}
+            setOrgForm={setOrgForm}
+            organizations={organizations}
+            orgTree={orgTree}
+            onSubmitOrganization={onSubmitOrganization}
+            csrfToken={csrfToken}
+            canManage={canManage}
+          />
+        </div>
 
-        <div className="section-separator" />
+        <div id="access-roles">
+          <RolesSection
+            copy={copy}
+            cardClass={cardClass}
+            labelClass={labelClass}
+            inputClass={inputClass}
+            checkboxClass={checkboxClass}
+            primaryBtnClass={primaryBtnClass}
+            organizationsFirstRandId={organizations[0]?.randId || ''}
+            roleForm={roleForm}
+            setRoleForm={setRoleForm}
+            roles={roles}
+            orgTree={orgTree}
+            onSubmitRole={onSubmitRole}
+            csrfToken={csrfToken}
+            canManage={canManage}
+          />
+        </div>
 
-        <RolesSection
-          copy={copy}
-          cardClass={cardClass}
-          labelClass={labelClass}
-          inputClass={inputClass}
-          checkboxClass={checkboxClass}
-          primaryBtnClass={primaryBtnClass}
-          organizationsFirstRandId={organizations[0]?.randId || ''}
-          roleForm={roleForm}
-          setRoleForm={setRoleForm}
-          roles={roles}
-          orgTree={orgTree}
-          onSubmitRole={onSubmitRole}
-          csrfToken={csrfToken}
-          canManage={canManage}
-        />
+        <div id="access-tenants">
+          <TenantsSection
+            copy={copy}
+            cardClass={cardClass}
+            inputClass={inputClass}
+            secondaryBtnClass={secondaryBtnClass}
+            isRtl={isRtl}
+            tenantMappings={tenantMappings}
+            orgTree={orgTree}
+            tenantOrgDraft={tenantOrgDraft}
+            setTenantOrgDraft={setTenantOrgDraft}
+            saveTenantMapping={(tenantName) => {
+              void saveTenantMapping(tenantName);
+            }}
+            savingTenantName={savingTenantName}
+            csrfToken={csrfToken}
+            canManage={canManage}
+          />
+        </div>
 
-        <div className="section-separator" />
-
-        <TenantsSection
-          copy={copy}
-          cardClass={cardClass}
-          inputClass={inputClass}
-          secondaryBtnClass={secondaryBtnClass}
-          isRtl={isRtl}
-          tenantMappings={tenantMappings}
-          orgTree={orgTree}
-          tenantOrgDraft={tenantOrgDraft}
-          setTenantOrgDraft={setTenantOrgDraft}
-          saveTenantMapping={(tenantName) => {
-            void saveTenantMapping(tenantName);
-          }}
-          savingTenantName={savingTenantName}
-          csrfToken={csrfToken}
-          canManage={canManage}
-        />
-
-        <div className="section-separator" />
-
-        <UsersSection
-          copy={copy}
-          cardClass={cardClass}
-          inputClass={inputClass}
-          secondaryBtnClass={secondaryBtnClass}
-          primaryBtnClass={primaryBtnClass}
-          isRtl={isRtl}
-          search={search}
-          setSearch={setSearch}
-          usersTenantFilter={usersTenantFilter}
-          setUsersTenantFilter={setUsersTenantFilter}
-          usersTenantOrgFilter={usersTenantOrgFilter}
-          setUsersTenantOrgFilter={setUsersTenantOrgFilter}
-          userFilterTenantOptions={userFilterTenantOptions}
-          tenantMappings={tenantMappings}
-          orgTree={orgTree}
-          usersPage={usersPage}
-          pageCount={pageCount}
-          setUsersPage={setUsersPage}
-          loadingUsers={loadingUsers}
-          users={users}
-          userDraft={userDraft}
-          setUserDraft={setUserDraft}
-          roles={roles}
-          csrfToken={csrfToken}
-          canManage={canManage}
-          savingUserKey={savingUserKey}
-          assignOrganization={(userRandId) => {
-            void assignOrganization(userRandId);
-          }}
-          assignRole={(userRandId) => {
-            void assignRole(userRandId);
-          }}
-        />
+        <div id="access-users">
+          <UsersSection
+            copy={copy}
+            cardClass={cardClass}
+            inputClass={inputClass}
+            secondaryBtnClass={secondaryBtnClass}
+            primaryBtnClass={primaryBtnClass}
+            isRtl={isRtl}
+            search={search}
+            setSearch={setSearch}
+            usersTenantFilter={usersTenantFilter}
+            setUsersTenantFilter={setUsersTenantFilter}
+            usersTenantOrgFilter={usersTenantOrgFilter}
+            setUsersTenantOrgFilter={setUsersTenantOrgFilter}
+            userFilterTenantOptions={userFilterTenantOptions}
+            tenantMappings={tenantMappings}
+            orgTree={orgTree}
+            usersPage={usersPage}
+            pageCount={pageCount}
+            setUsersPage={setUsersPage}
+            loadingUsers={loadingUsers}
+            users={users}
+            userDraft={userDraft}
+            setUserDraft={setUserDraft}
+            roles={roles}
+            csrfToken={csrfToken}
+            canManage={canManage}
+            savingUserKey={savingUserKey}
+            assignOrganization={(userRandId) => {
+              void assignOrganization(userRandId);
+            }}
+            assignRole={(userRandId) => {
+              void assignRole(userRandId);
+            }}
+          />
+        </div>
       </div>
     </>
   );

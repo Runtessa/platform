@@ -150,10 +150,10 @@ export const RolesSection = ({
 
       <article className={cardClass}>
         <h2 className="text-xl font-normal text-[#202124]">{copy.rolesSectionTitle}</h2>
-        <div className="mt-4 max-h-[540px] overflow-auto rounded-2xl border border-[#E8EAED] bg-white p-3">
+        <div className="mt-4 max-h-[540px] overflow-auto rounded-[24px] border border-white/70 bg-white/50 p-3 shadow-sm backdrop-blur-md">
           <ul className="space-y-2 text-sm text-[#202124]">
             {roles.map((item) => (
-              <li key={item.randId} className="rounded-xl border border-[#EEF1F6] px-3 py-2">
+              <li key={item.randId} className="rounded-xl border border-white/70 bg-white/35 px-3 py-2">
                 <p className="font-medium">{item.roleCode}</p>
                 <p className="text-xs text-[#5F6368]">{item.roleName}</p>
                 <p className="text-xs text-[#5F6368]">

@@ -123,9 +123,9 @@ export const UsersSection = ({
         </div>
       </div>
 
-      <div className="mt-4 overflow-x-auto rounded-2xl border border-[#E8EAED] bg-white">
+      <div className="mt-4 overflow-x-auto rounded-[24px] border border-white/70 bg-white/50 shadow-sm backdrop-blur-md">
         <table className={`w-full border-collapse text-sm text-[#202124] ${isRtl ? 'text-right' : 'text-left'}`}>
-          <thead className="bg-[#F8F9FA] text-[#5F6368]">
+          <thead className="bg-white/55 text-[#5F6368]">
             <tr>
               <th className="px-4 py-3 font-semibold">{copy.usersTable.user}</th>
               <th className="px-4 py-3 font-semibold">{copy.usersTable.phone}</th>
@@ -134,7 +134,7 @@ export const UsersSection = ({
               <th className="px-4 py-3 font-semibold">{copy.usersTable.actions}</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-[#E8EAED]">
+          <tbody className="divide-y divide-white/70">
             {loadingUsers ? (
               <tr>
                 <td className="px-4 py-3 text-[#5F6368]" colSpan={5}>
@@ -145,7 +145,7 @@ export const UsersSection = ({
               users.map((user) => {
                 const draft = userDraft[user.randId] || { orgRandId: '', roleRandId: '' };
                 return (
-                  <tr key={user.randId}>
+                  <tr key={user.randId} className="bg-white/30 hover:bg-white/50">
                     <td className="px-4 py-3">
                       <p className="font-medium text-[#202124]">{[user.firstName, user.lastName].filter(Boolean).join(' ') || user.email}</p>
                       <p className="text-xs text-[#5F6368]">{user.email}</p>
