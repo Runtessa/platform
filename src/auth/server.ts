@@ -6,6 +6,7 @@ import express, { Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
 import { config } from './lib/config';
 import { ensureDatabaseReady, closeDatabase } from './lib/db';
+import { closeSessionCache } from './lib/session-cache';
 import { applyCorsForApi, defaultHelmet, parseBearer } from './lib/security';
 import { attachSessionContext } from './lib/middleware/session';
 import { bootstrapAuthDefaults } from './lib/services/bootstrap';
@@ -118,6 +119,7 @@ const boot = async (): Promise<void> => {
 
   const shutdown = async (): Promise<void> => {
     server.close(async () => {
+      await closeSessionCache();
       await closeDatabase();
       process.exit(0);
     });

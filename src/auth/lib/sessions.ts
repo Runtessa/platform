@@ -4,6 +4,12 @@ import { config } from './config';
 import { AuthDataSource } from './db';
 import { hashValue, randomId } from './crypto';
 import { AuthSessionEntity, UserEntity } from './typeorm/entities';
+import {
+  cacheSession,
+  evictSessionByRandId,
+  evictSessionByTokenHash,
+  getCachedSessionByTokenHash,
+} from './session-cache';
 
 export interface SessionContext {
   session: AuthSessionEntity;
@@ -41,6 +47,7 @@ export const createSession = async ({
   });
 
   const saved = await sessionRepo.save(entity);
+  await cacheSession(saved);
   return { sessionToken, sessionEntity: saved };
 };
 
@@ -50,15 +57,31 @@ export const readSessionFromToken = async (sessionToken: string): Promise<Sessio
   const tokenHash = hashValue(sessionToken);
   const sessionRepo = AuthDataSource.getRepository(AuthSessionEntity);
   const userRepo = AuthDataSource.getRepository(UserEntity);
+  const now = new Date();
 
-  const session = await sessionRepo.findOne({
-    where: {
-      sessionTokenHash: tokenHash,
-      revokedAt: IsNull(),
-      expiresAt: MoreThan(new Date()),
-      idleExpiresAt: MoreThan(new Date()),
-    },
-  });
+  let session = await getCachedSessionByTokenHash(tokenHash);
+  if (session) {
+    const expired =
+      session.revokedAt !== null || session.expiresAt <= now || session.idleExpiresAt <= now;
+    if (expired) {
+      await evictSessionByTokenHash(tokenHash);
+      session = null;
+    }
+  }
+
+  if (!session) {
+    session = await sessionRepo.findOne({
+      where: {
+        sessionTokenHash: tokenHash,
+        revokedAt: IsNull(),
+        expiresAt: MoreThan(now),
+        idleExpiresAt: MoreThan(now),
+      },
+    });
+    if (session) {
+      await cacheSession(session);
+    }
+  }
 
   if (!session) return null;
 
@@ -97,6 +120,7 @@ export const revokeSession = async (sessionRandId: string): Promise<void> => {
     { randId: sessionRandId, revokedAt: IsNull() },
     { revokedAt: new Date() },
   );
+  await evictSessionByRandId(sessionRandId);
 };
 
 const shouldUseSecureCookie = (): boolean => {

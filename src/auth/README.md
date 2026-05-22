@@ -9,6 +9,7 @@ Standalone authentication + SSO service built with:
 
 ## Features
 - Cookie session auth (no JWT in browser storage)
+- Redis-backed session cache (`REDIS_URL`) with DB fallback
 - Shared cookie domain support across auth host + tenant host (computed parent domain or `AUTH_COOKIE_DOMAIN`)
 - OAuth endpoints: `/oauth/authorize`, `/oauth/token`, `/oauth/userinfo`
 - Standard tenant callback pattern: `https://<tenant-host>/auth`
