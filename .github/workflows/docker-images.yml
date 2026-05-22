@@ -9,9 +9,52 @@ permissions:
   packages: write
 
 jobs:
+  podman-local-flow:
+    name: Podman Local Flow
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            src/auth/package-lock.json
+            src/container-agent/package-lock.json
+            src/core/package-lock.json
+            src/ideNew/package-lock.json
+            src/kernel/package-lock.json
+            src/monitoring/package-lock.json
+
+      - name: Install Podman + compose provider
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y podman podman-compose
+          podman --version
+          podman compose version
+
+      - name: Install dependencies required by docker:prepare
+        run: |
+          npm ci
+          npm --prefix src/auth ci
+          npm --prefix src/core ci
+          npm --prefix src/ideNew ci
+          npm --prefix src/kernel ci
+          npm --prefix src/monitoring ci
+          npm --prefix src/container-agent ci
+
+      - name: Run exact local Podman flow
+        run: npm run podman:build:local
+
   build-images:
     name: Build ${{ matrix.service.image_name }}
     runs-on: ubuntu-latest
+    needs: podman-local-flow
     strategy:
       fail-fast: false
       matrix:
