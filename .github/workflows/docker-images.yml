@@ -9,8 +9,8 @@ permissions:
   packages: write
 
 jobs:
-  podman-local-flow:
-    name: Podman Local Flow
+  docker-local-flow:
+    name: Docker Local Flow
     runs-on: ubuntu-latest
 
     steps:
@@ -31,12 +31,13 @@ jobs:
             src/kernel/package-lock.json
             src/monitoring/package-lock.json
 
-      - name: Install Podman + compose provider
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Verify Docker compose
         run: |
-          sudo apt-get update
-          sudo apt-get install -y podman podman-compose
-          podman --version
-          podman compose version
+          docker --version
+          docker compose version
 
       - name: Install dependencies required by docker:prepare
         run: |
@@ -48,13 +49,13 @@ jobs:
           npm --prefix src/monitoring ci
           npm --prefix src/container-agent ci
 
-      - name: Run exact local Podman flow
-        run: npm run podman:build:local
+      - name: Run exact local Docker flow
+        run: npm run docker:build:local
 
   build-images:
     name: Build ${{ matrix.service.image_name }}
     runs-on: ubuntu-latest
-    needs: podman-local-flow
+    needs: docker-local-flow
     strategy:
       fail-fast: false
       matrix:
