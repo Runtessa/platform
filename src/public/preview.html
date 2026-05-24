@@ -31,7 +31,6 @@
   <body>
     <div id="root"></div>
     <div id="status">Preparing preview...</div>
-    <script src="/bundle.js"></script>
     <script>
       (function () {
         var statusEl = document.getElementById("status");
@@ -44,9 +43,45 @@
         var previewStage =
           params.get("stage") === "published" ? "published" : "draft";
         var registryUrl = params.get("registryUrl") || "/api/registry";
+        var kernelNonce =
+          params.get("kernelNonce") || params.get("t") || String(Date.now());
+        var kernelScriptSrc = "/bundle.js?v=" + encodeURIComponent(kernelNonce);
         window.__IDP_TENANT_HOST__ = tenantHost;
         window.__IDP_PREVIEW__ = true;
         window.__IDP_PREVIEW_STAGE__ = previewStage;
+        window.__IDP_PREVIEW_SESSION__ = previewSession;
+
+        var loadKernelBundle = function () {
+          return new Promise(function (resolve, reject) {
+            if (window.Kernel) {
+              resolve();
+              return;
+            }
+            var existing = document.querySelector(
+              "script[data-idp-kernel-bundle='1']"
+            );
+            if (existing) {
+              existing.addEventListener("load", function () {
+                resolve();
+              });
+              existing.addEventListener("error", function () {
+                reject(new Error("Kernel bundle failed to load."));
+              });
+              return;
+            }
+            var script = document.createElement("script");
+            script.src = kernelScriptSrc;
+            script.async = false;
+            script.setAttribute("data-idp-kernel-bundle", "1");
+            script.onload = function () {
+              resolve();
+            };
+            script.onerror = function () {
+              reject(new Error("Kernel bundle failed to load."));
+            };
+            document.head.appendChild(script);
+          });
+        };
 
         var normalizePreviewRoute = function (value) {
           var raw = String(value || "").trim();
@@ -70,16 +105,35 @@
         };
 
         var previewRoutePath = normalizePreviewRoute(previewRoute);
-        try {
-          var nextUrl = new URL(previewRoutePath, window.location.origin);
-          window.history.replaceState(
-            { __idpPreview: true },
-            "",
-            nextUrl.pathname + nextUrl.search + nextUrl.hash
-          );
-        } catch (error) {
-          // ignore invalid route rewrite; fallback to preview.html pathname
-        }
+        var applyPreviewRoute = function (routeValue) {
+          var normalized = normalizePreviewRoute(routeValue);
+          try {
+            var nextUrl = new URL(normalized, window.location.origin);
+            window.history.replaceState(
+              { __idpPreview: true, route: normalized },
+              "",
+              nextUrl.pathname + nextUrl.search + nextUrl.hash
+            );
+            try {
+              window.dispatchEvent(
+                new PopStateEvent("popstate", { state: window.history.state })
+              );
+            } catch (eventError) {
+              // no-op
+            }
+          } catch (error) {
+            // ignore invalid route rewrite
+          }
+        };
+
+        window.addEventListener("message", function (event) {
+          var payload = event && event.data ? event.data : null;
+          if (!payload || typeof payload !== "object") return;
+          if (String(payload.source || "") !== "idp-preview-control") return;
+          if (String(payload.action || "") !== "navigate") return;
+          applyPreviewRoute(payload.route || "/");
+        });
+        applyPreviewRoute("/");
 
         var toText = function (value) {
           if (value == null) return "";
@@ -111,6 +165,10 @@
                     previewSession: previewSession || "",
                     tenantHost: tenantHost || "",
                     href: window.location.href,
+                    kernelBuild:
+                      typeof window.__IDP_KERNEL_BUILD__ === "string"
+                        ? String(window.__IDP_KERNEL_BUILD__)
+                        : "",
                   },
                   payload || {}
                 ),
@@ -252,32 +310,32 @@
           };
         }
 
-        if (!window.Kernel) {
-          statusEl.textContent = "Kernel bundle failed to load.";
-          sendPreviewException({
-            kind: "kernel-load-error",
-            level: "error",
-            message: "Kernel bundle failed to load.",
-          });
-          return;
-        }
-
         statusEl.textContent = "Loading preview...";
-        var kernel = new window.Kernel({ registryUrl: registryUrl });
-        kernel
-          .boot(name, "root", version)
+        loadKernelBundle()
           .then(function () {
+            if (!window.Kernel) {
+              throw new Error("Kernel bundle failed to load.");
+            }
+            var kernel = new window.Kernel({ registryUrl: registryUrl });
+            return kernel.boot(name, "root", version);
+          })
+          .then(function () {
+            applyPreviewRoute(previewRoutePath);
             if (statusEl) {
               statusEl.remove();
             }
           })
           .catch(function (error) {
-            statusEl.textContent =
+            var message =
               (error && error.message) || "Failed to load preview.";
+            statusEl.textContent = message;
             sendPreviewException({
-              kind: "preview-boot-error",
+              kind:
+                message === "Kernel bundle failed to load."
+                  ? "kernel-load-error"
+                  : "preview-boot-error",
               level: "error",
-              message: (error && error.message) || "Failed to load preview.",
+              message: message,
               stack: error && error.stack ? String(error.stack) : "",
             });
           });

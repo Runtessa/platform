@@ -59,6 +59,8 @@ export class Kernel {
   private renewIntervalId: number | null;
   private renewPending: boolean;
   private lastRenewAtMs: number;
+  private previewErrorBoundaryType: React.ComponentType<{ children?: React.ReactNode }> | null;
+  private static previewReactGuardInstalled = false;
 
   constructor(options: Options = {}) {
     this.registryUrl = (options && options.registryUrl) || "/api/registry";
@@ -72,8 +74,10 @@ export class Kernel {
     this.renewIntervalId = null;
     this.renewPending = false;
     this.lastRenewAtMs = 0;
+    this.previewErrorBoundaryType = null;
     this.api = this.createApiClient();
     this.initGlobalContext();
+    this.installPreviewReactGuard();
     this.initSessionRenewal();
   }
 
@@ -145,7 +149,12 @@ export class Kernel {
 
     const module = { exports: {} as any };
     const require = (pkgName: string) => this.requireLocal(pkgName);
-    const source = this.decorateBundleSource(payload.source || "");
+    const repairedSource = this.repairBrokenCommonJsExports(
+      name,
+      payload.source || "",
+      fileExtension
+    );
+    const source = this.decorateBundleSource(repairedSource);
     const factory = new Function(
       "module",
       "exports",
@@ -157,8 +166,70 @@ export class Kernel {
     if (result !== undefined) {
       module.exports = result;
     }
+    if (
+      module.exports &&
+      (typeof module.exports === "object" || typeof module.exports === "function")
+    ) {
+      (module.exports as any).__kernelPackageName = `${name}@${version || "latest"}`;
+    }
     module.exports = this.wrapExports(module.exports);
+    module.exports = this.normalizeDefaultExportInterop(module.exports);
     return module.exports;
+  }
+
+  private repairBrokenCommonJsExports(
+    packageName: string,
+    source: string,
+    fileExtension?: string
+  ) {
+    const ext = String(fileExtension || "")
+      .trim()
+      .toLowerCase();
+    if (!source || typeof source !== "string") return source;
+    if (ext !== "js" && ext !== "jsx") return source;
+
+    const hasExportsSyntax =
+      source.includes("exports.") ||
+      source.includes("module.exports") ||
+      source.includes("Object.defineProperty(exports");
+    if (hasExportsSyntax) return source;
+
+    const packageTail = String(packageName || "")
+      .trim()
+      .split("/")
+      .pop();
+    if (!packageTail) return source;
+    const inferred = packageTail
+      .split(/[^a-zA-Z0-9]+/g)
+      .filter(Boolean)
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+      .join("");
+    if (!inferred) return source;
+
+    const declarationRegex = new RegExp(
+      `\\b(?:function|var|let|const|class)\\s+${inferred}\\b`
+    );
+    if (!declarationRegex.test(source)) return source;
+
+    const patch = `
+;try {
+  if (typeof ${inferred} !== 'undefined') {
+    if (typeof module === 'object' && module) {
+      if (!module.exports || (typeof module.exports !== 'object' && typeof module.exports !== 'function')) {
+        module.exports = {};
+      }
+      if (typeof module.exports.default === 'undefined') module.exports.default = ${inferred};
+      if (typeof module.exports.${inferred} === 'undefined') module.exports.${inferred} = ${inferred};
+    }
+    if (typeof exports === 'object' && exports) {
+      if (typeof exports.default === 'undefined') exports.default = ${inferred};
+      if (typeof exports.${inferred} === 'undefined') exports.${inferred} = ${inferred};
+    }
+  }
+} catch (e) {}
+`;
+
+    return `${source}\n${patch}`;
   }
 
   private initGlobalContext() {
@@ -291,9 +362,142 @@ export class Kernel {
       headers.set("X-Tenant-Host", tenantHost);
     }
     if (this.previewMode && !headers.has("X-Dev-Preview")) {
-      headers.set("X-Dev-Preview", "true");
+      const stage =
+        typeof window !== "undefined"
+          ? String((window as any).__IDP_PREVIEW_STAGE__ || "").trim().toLowerCase()
+          : "";
+      headers.set("X-Dev-Preview", stage === "published" ? "0" : "1");
     }
     return headers;
+  }
+
+  private installPreviewReactGuard() {
+    if (!this.previewMode) return;
+    if (Kernel.previewReactGuardInstalled) return;
+
+    const reactAny = React as any;
+    const originalCreateElement =
+      reactAny && typeof reactAny.createElement === "function"
+        ? reactAny.createElement.bind(reactAny)
+        : null;
+    if (!originalCreateElement) return;
+
+    const isLikelyValidType = (type: any) => {
+      if (typeof type === "string" || typeof type === "function") return true;
+      if (!type || typeof type !== "object") return false;
+      return Boolean((type as any).$$typeof);
+    };
+
+    reactAny.createElement = function patchedCreateElement(type: any, ...args: any[]) {
+      if (!isLikelyValidType(type)) {
+        const typeDescription =
+          type === undefined
+            ? "undefined"
+            : type === null
+              ? "null"
+              : Array.isArray(type)
+                ? "array"
+                : typeof type;
+        const hint =
+          "Preview render error: invalid React element type (" +
+          typeDescription +
+          "). This usually means an import/export mismatch (default vs named), wrong package path, or missing route component export.";
+        throw new Error(hint);
+      }
+      return originalCreateElement(type, ...args);
+    };
+
+    Kernel.previewReactGuardInstalled = true;
+  }
+
+  private getPreviewErrorBoundaryType() {
+    if (this.previewErrorBoundaryType) {
+      return this.previewErrorBoundaryType;
+    }
+    const kernel = this;
+
+    class PreviewErrorBoundary extends React.Component<
+      { children?: React.ReactNode },
+      { errorMessage: string | null }
+    > {
+      constructor(props: { children?: React.ReactNode }) {
+        super(props);
+        this.state = { errorMessage: null };
+      }
+
+      static getDerivedStateFromError(error: unknown) {
+        const fallback = "Unknown preview render error";
+        if (error instanceof Error && error.message) {
+          return { errorMessage: error.message };
+        }
+        return { errorMessage: String(error || fallback) };
+      }
+
+      componentDidCatch(error: unknown, info: React.ErrorInfo) {
+        if (typeof window === "undefined") return;
+        if (!window.parent || window.parent === window) return;
+        const errorMessage =
+          error instanceof Error
+            ? error.message || "Unknown preview render error"
+            : String(error || "Unknown preview render error");
+        const stack = error instanceof Error && error.stack ? String(error.stack) : "";
+        try {
+          window.parent.postMessage(
+            {
+              source: "idp-preview-exception",
+              payload: {
+                id: `react-boundary-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+                kind: "react-render-error",
+                level: "error",
+                message: errorMessage,
+                stack,
+                componentStack: info?.componentStack || "",
+                createdAt: new Date().toISOString(),
+                previewSession:
+                  typeof (window as any).__IDP_PREVIEW_SESSION__ === "string"
+                    ? String((window as any).__IDP_PREVIEW_SESSION__)
+                    : "",
+                previewStage:
+                  typeof (window as any).__IDP_PREVIEW_STAGE__ === "string"
+                    ? String((window as any).__IDP_PREVIEW_STAGE__)
+                    : "",
+                tenantHost: kernel.getTenantHost() || "",
+                href: window.location.href,
+              },
+            },
+            "*"
+          );
+        } catch {
+          // ignore parent channel errors
+        }
+      }
+
+      render() {
+        if (this.state.errorMessage) {
+          return React.createElement(
+            "pre",
+            {
+              style: {
+                margin: "16px",
+                padding: "12px",
+                border: "1px solid #ef4444",
+                borderRadius: "8px",
+                background: "#111827",
+                color: "#f9fafb",
+                whiteSpace: "pre-wrap",
+                fontSize: "12px",
+                lineHeight: "1.4",
+              },
+            },
+            `Preview render error\n${this.state.errorMessage}`
+          );
+        }
+        return this.props.children as any;
+      }
+    }
+
+    this.previewErrorBoundaryType = PreviewErrorBoundary;
+    return this.previewErrorBoundaryType;
   }
 
   private resolveApiUrl(path: string, baseUrl?: string) {
@@ -461,12 +665,30 @@ export class Kernel {
     if ((value as any).__kernelWrapped) return value;
     const kernelRequire = (value as any).__kernelRequire;
     const moduleKeys = (value as any).__kernelModules;
+    const packageName = String((value as any).__kernelPackageName || "").trim();
     if (typeof kernelRequire !== "function" || !Array.isArray(moduleKeys)) {
       return value;
     }
 
     const resolved = new Map<string, any>();
     const moduleKeySet = new Set<string>(moduleKeys);
+    const shouldReportMissingExport = (prop: string) => {
+      if (!prop) return false;
+      if (prop === "default") return false;
+      if (prop.startsWith("__")) return false;
+      if (
+        prop === "then" ||
+        prop === "catch" ||
+        prop === "finally" ||
+        prop === "constructor" ||
+        prop === "prototype" ||
+        prop === "toString" ||
+        prop === "valueOf"
+      ) {
+        return false;
+      }
+      return /^[A-Za-z$_][A-Za-z0-9$_]*$/.test(prop);
+    };
     const getBasename = (key: string) => {
       const normalized = key.replace(/\\/g, "/");
       const last = normalized.split("/").pop() || normalized;
@@ -506,10 +728,38 @@ export class Kernel {
           resolved.set(prop, mod.default);
           return mod.default;
         }
+        if (
+          mod.default &&
+          (typeof mod.default === "object" || typeof mod.default === "function") &&
+          Object.prototype.hasOwnProperty.call(mod.default, prop)
+        ) {
+          resolved.set(prop, (mod.default as any)[prop]);
+          return (mod.default as any)[prop];
+        }
         if (Object.prototype.hasOwnProperty.call(mod, prop)) {
           resolved.set(prop, mod[prop]);
           return mod[prop];
         }
+      }
+      const rootKeys = Object.keys(value || {}).filter(
+        (key) =>
+          key !== "__kernelRequire" &&
+          key !== "__kernelModules" &&
+          key !== "__kernelWrapped" &&
+          key !== "__kernelPackageName"
+      );
+      const defaultValue = (value as any)?.default;
+      const defaultKeys =
+        defaultValue && (typeof defaultValue === "object" || typeof defaultValue === "function")
+          ? Object.keys(defaultValue)
+          : [];
+      const availableKeys = Array.from(new Set([...rootKeys, ...defaultKeys])).slice(0, 40);
+      if (this.previewMode && shouldReportMissingExport(prop)) {
+        const label = packageName || "unknown-package";
+        const keysText = availableKeys.length ? availableKeys.join(", ") : "(none)";
+        throw new Error(
+          `Missing export "${prop}" from ${label}. Available exports: ${keysText}`
+        );
       }
       resolved.set(prop, undefined);
       return undefined;
@@ -537,6 +787,65 @@ export class Kernel {
     return proxy;
   }
 
+  private normalizeDefaultExportInterop(value: any) {
+    if (!value || (typeof value !== "object" && typeof value !== "function")) {
+      return value;
+    }
+    if ((value as any).__kernelDefaultInteropApplied) {
+      return value;
+    }
+    const hasDefault =
+      Object.prototype.hasOwnProperty.call(value, "default") &&
+      (value as any).default !== undefined;
+    if (!hasDefault) {
+      return value;
+    }
+
+    const handler: ProxyHandler<any> = {
+      get(target, prop, receiver) {
+        if (typeof prop !== "string") {
+          return Reflect.get(target, prop, receiver);
+        }
+        if (Reflect.has(target, prop)) {
+          return Reflect.get(target, prop, receiver);
+        }
+        const defaultValue = Reflect.get(target, "default", receiver);
+        if (!defaultValue) return undefined;
+
+        if (
+          (typeof defaultValue === "object" || typeof defaultValue === "function") &&
+          Reflect.has(defaultValue, prop)
+        ) {
+          return Reflect.get(defaultValue, prop);
+        }
+
+        if (typeof defaultValue === "function") {
+          if (defaultValue.name && prop === defaultValue.name) {
+            return defaultValue;
+          }
+          const ownKeys = Object.keys(target).filter(
+            (key) =>
+              key !== "default" &&
+              key !== "__esModule" &&
+              key !== "__kernelRequire" &&
+              key !== "__kernelModules" &&
+              key !== "__kernelWrapped" &&
+              key !== "__kernelPackageName" &&
+              key !== "__kernelDefaultInteropApplied"
+          );
+          if (!ownKeys.length && /^[A-Z]/.test(prop)) {
+            return defaultValue;
+          }
+        }
+        return undefined;
+      },
+    };
+
+    const proxy = new Proxy(value, handler);
+    (proxy as any).__kernelDefaultInteropApplied = true;
+    return proxy;
+  }
+
   async mount(name: string, containerId = "root", version = "latest") {
     const pkg = await this.load(name, version);
     if (!pkg) {
@@ -548,9 +857,12 @@ export class Kernel {
     if (!Component) {
       throw new Error(`Package ${name} has no App export`);
     }
-    const element = React.isValidElement(Component)
+    const baseElement = React.isValidElement(Component)
       ? Component
       : React.createElement(Component);
+    const element = this.previewMode
+      ? React.createElement(this.getPreviewErrorBoundaryType(), null, baseElement)
+      : baseElement;
     root.render(element);
   }
 
@@ -560,3 +872,4 @@ export class Kernel {
 }
 
 (window as any).Kernel = Kernel;
+(window as any).__IDP_KERNEL_BUILD__ = "2026-05-24-kernel-interop-2";
