@@ -112,32 +112,26 @@ export class Kernel {
     };
     const dependencies = [...(payload.dependencies || [])];
     const fileExtension = (payload.fileExtension || "js").toLowerCase();
-    const tailwindName = `${name}__tw`;
-    const shouldAttachTailwind =
-      fileExtension !== "css" &&
-      !name.endsWith("__tw") &&
-      !/tailwind\.config/i.test(name) &&
-      !dependencies.includes(tailwindName);
-    if (shouldAttachTailwind) {
-      dependencies.push(tailwindName);
-    }
     const cacheKey = `${name}@${version || "latest"}`;
 
-    // Pre-load dependencies
-    for (const dep of dependencies) {
+    // Pre-load dependencies in parallel to reduce boot latency.
+    const preloadTasks = dependencies.map(async (dep) => {
       if (KERNEL_BUILTIN_MODULES.has(dep)) {
-        continue;
+        return;
       }
-      if (shouldAttachTailwind && dep === tailwindName) {
+      const isTailwindDependency = dep.endsWith("__tw");
+      if (isTailwindDependency) {
         try {
           await this.load(dep);
         } catch {
-          // tailwind package is optional; ignore if not found
+          // Tailwind companion packages are optional.
+          // We tolerate missing "*__tw" for both explicit and auto-attached dependencies.
         }
-        continue;
+        return;
       }
       await this.load(dep);
-    }
+    });
+    await Promise.all(preloadTasks);
 
     if (fileExtension === "css") {
       const cssText = payload.source || "";
@@ -545,7 +539,6 @@ export class Kernel {
 
   async mount(name: string, containerId = "root", version = "latest") {
     const pkg = await this.load(name, version);
-    console.log(pkg);
     if (!pkg) {
       throw new Error(`Package ${name} does not found`);
     }
