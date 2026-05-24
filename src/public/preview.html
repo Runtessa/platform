@@ -40,9 +40,46 @@
         var version = params.get("version") || "latest";
         var tenantHost = params.get("tenantHost") || "";
         var previewSession = params.get("previewSession") || "";
+        var previewRoute = params.get("route") || "/";
+        var previewStage =
+          params.get("stage") === "published" ? "published" : "draft";
         var registryUrl = params.get("registryUrl") || "/api/registry";
         window.__IDP_TENANT_HOST__ = tenantHost;
         window.__IDP_PREVIEW__ = true;
+        window.__IDP_PREVIEW_STAGE__ = previewStage;
+
+        var normalizePreviewRoute = function (value) {
+          var raw = String(value || "").trim();
+          if (!raw) return "/";
+          if (/^https?:\/\//i.test(raw)) {
+            try {
+              var parsed = new URL(raw);
+              return (
+                (parsed.pathname || "/") +
+                (parsed.search || "") +
+                (parsed.hash || "")
+              );
+            } catch (error) {
+              return "/";
+            }
+          }
+          if (raw.charAt(0) === "?" || raw.charAt(0) === "#") {
+            return "/" + raw;
+          }
+          return raw.charAt(0) === "/" ? raw : "/" + raw;
+        };
+
+        var previewRoutePath = normalizePreviewRoute(previewRoute);
+        try {
+          var nextUrl = new URL(previewRoutePath, window.location.origin);
+          window.history.replaceState(
+            { __idpPreview: true },
+            "",
+            nextUrl.pathname + nextUrl.search + nextUrl.hash
+          );
+        } catch (error) {
+          // ignore invalid route rewrite; fallback to preview.html pathname
+        }
 
         var toText = function (value) {
           if (value == null) return "";
@@ -149,7 +186,11 @@
             if (tenantHost) {
               headers.set("X-Tenant-Host", tenantHost);
             }
-            headers.set("X-Dev-Preview", "true");
+            if (previewStage === "draft") {
+              headers.set("X-Dev-Preview", "1");
+            } else {
+              headers.set("X-Dev-Preview", "0");
+            }
             nextInit.headers = headers;
             var requestUrl = "";
             try {
