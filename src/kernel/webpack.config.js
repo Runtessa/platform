@@ -13,6 +13,7 @@ module.exports = {
   output: {
     filename: "bundle.js", // The name of your final bundled JavaScript file.
     path: path.resolve(__dirname, "../public"), // The directory where the bundle will be saved.
+    publicPath: "/", // Always resolve runtime assets from host root, not current route path.
     clean: false, // Cleans the 'build' directory before each build.
   },
 
