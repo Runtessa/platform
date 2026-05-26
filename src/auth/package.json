@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "tsx watch server.ts",
-    "build:web": "next build",
+    "build:web": "next build --webpack",
     "build:server": "tsc -p tsconfig.server.json",
     "build": "npm run build:web && npm run build:server",
     "start": "NODE_ENV=production node dist/server.js",

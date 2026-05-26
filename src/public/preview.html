@@ -151,6 +151,29 @@
           }
         };
 
+        var nowMs = function () {
+          try {
+            if (
+              typeof window.performance !== "undefined" &&
+              window.performance &&
+              typeof window.performance.now === "function"
+            ) {
+              return window.performance.now();
+            }
+          } catch (error) {}
+          return Date.now();
+        };
+
+        var nextEventId = function (prefix) {
+          return (
+            String(prefix || "evt") +
+            "-" +
+            Date.now() +
+            "-" +
+            Math.random().toString(36).slice(2, 8)
+          );
+        };
+
         var sendPreviewException = function (payload) {
           try {
             if (!window.parent || window.parent === window) return;
@@ -182,6 +205,8 @@
 
         window.addEventListener("error", function (event) {
           sendPreviewException({
+            id: nextEventId("runtime"),
+            category: "runtime",
             kind: "runtime-error",
             level: "error",
             message: toText(event && event.message ? event.message : "Runtime error"),
@@ -202,6 +227,8 @@
               ? toText(reason.message)
               : toText(reason || "Unhandled promise rejection");
           sendPreviewException({
+            id: nextEventId("runtime"),
+            category: "runtime",
             kind: "unhandled-rejection",
             level: "error",
             message: message || "Unhandled promise rejection",
@@ -212,23 +239,28 @@
           });
         });
 
-        if (window.console && typeof window.console.error === "function") {
-          var originalConsoleError = window.console.error.bind(window.console);
-          window.console.error = function () {
-            var args = Array.prototype.slice.call(arguments || []);
-            sendPreviewException({
-              kind: "console-error",
-              level: "error",
-              message:
-                args
-                  .map(function (arg) {
-                    return toText(arg);
-                  })
-                  .join(" ")
-                  .trim() || "console.error",
-            });
-            return originalConsoleError.apply(window.console, args);
-          };
+        if (window.console && typeof window.console.log === "function") {
+          ["log", "info", "warn", "error", "debug"].forEach(function (level) {
+            if (typeof window.console[level] !== "function") return;
+            var originalConsoleMethod = window.console[level].bind(window.console);
+            window.console[level] = function () {
+              var args = Array.prototype.slice.call(arguments || []);
+              sendPreviewException({
+                id: nextEventId("console"),
+                category: "console",
+                kind: "console-" + level,
+                level: level === "warn" ? "warn" : level === "error" ? "error" : "info",
+                message:
+                  args
+                    .map(function (arg) {
+                      return toText(arg);
+                    })
+                    .join(" ")
+                    .trim() || "console." + level,
+              });
+              return originalConsoleMethod.apply(window.console, args);
+            };
+          });
         }
 
         if (!name) {
@@ -261,10 +293,56 @@
               requestUrl = "";
             }
             var requestMethod = String(nextInit.method || "GET").toUpperCase();
+            var requestId = nextEventId("network");
+            var startedAt = nowMs();
+            sendPreviewException({
+              id: requestId,
+              requestId: requestId,
+              category: "network",
+              kind: "network-request",
+              level: "info",
+              message: requestMethod + " " + (requestUrl || "(unknown url)"),
+              requestUrl: requestUrl,
+              method: requestMethod,
+            });
             return originalFetch(input, nextInit)
               .then(function (response) {
+                var durationMs = Math.max(0, Math.round(nowMs() - startedAt));
+                var responseBytes = null;
+                var contentLengthHeader =
+                  response && response.headers
+                    ? response.headers.get("content-length")
+                    : null;
+                if (
+                  contentLengthHeader &&
+                  !Number.isNaN(Number(contentLengthHeader))
+                ) {
+                  responseBytes = Number(contentLengthHeader);
+                }
+                sendPreviewException({
+                  id: nextEventId("network"),
+                  requestId: requestId,
+                  category: "network",
+                  kind: "network-response",
+                  level: response && response.ok ? "info" : "error",
+                  message:
+                    requestMethod +
+                    " " +
+                    (requestUrl || "(unknown url)") +
+                    " -> " +
+                    String(response ? response.status : 0),
+                  requestUrl: requestUrl,
+                  method: requestMethod,
+                  status: response ? response.status : null,
+                  statusText: response ? String(response.statusText || "") : "",
+                  durationMs: durationMs,
+                  responseBytes: responseBytes,
+                });
                 if (!response || response.ok) return response;
                 var report = {
+                  id: nextEventId("network"),
+                  requestId: requestId,
+                  category: "network",
                   kind: "http-error",
                   level: "error",
                   message:
@@ -275,6 +353,9 @@
                   requestUrl: requestUrl,
                   method: requestMethod,
                   status: response.status,
+                  statusText: String(response.statusText || ""),
+                  durationMs: durationMs,
+                  responseBytes: responseBytes,
                 };
                 try {
                   var clone = response.clone();
@@ -296,7 +377,11 @@
                 return response;
               })
               .catch(function (error) {
+                var durationMs = Math.max(0, Math.round(nowMs() - startedAt));
                 sendPreviewException({
+                  id: nextEventId("network"),
+                  requestId: requestId,
+                  category: "network",
                   kind: "network-error",
                   level: "error",
                   message:
@@ -304,6 +389,7 @@
                   stack: error && error.stack ? String(error.stack) : "",
                   requestUrl: requestUrl,
                   method: requestMethod,
+                  durationMs: durationMs,
                 });
                 throw error;
               });
@@ -330,6 +416,11 @@
               (error && error.message) || "Failed to load preview.";
             statusEl.textContent = message;
             sendPreviewException({
+              id: nextEventId("system"),
+              category:
+                message === "Kernel bundle failed to load."
+                  ? "system"
+                  : "runtime",
               kind:
                 message === "Kernel bundle failed to load."
                   ? "kernel-load-error"

@@ -7,6 +7,7 @@ interface Options {
   apiBaseUrl?: string;
   tenantHost?: string;
   preview?: boolean;
+  redirectOnUnauthorized?: boolean;
 }
 
 type ApiRequestOptions = {
@@ -60,6 +61,7 @@ export class Kernel {
   private renewPending: boolean;
   private lastRenewAtMs: number;
   private previewErrorBoundaryType: React.ComponentType<{ children?: React.ReactNode }> | null;
+  private redirectOnUnauthorized: boolean;
   private static previewReactGuardInstalled = false;
 
   constructor(options: Options = {}) {
@@ -67,6 +69,7 @@ export class Kernel {
     this.apiBaseUrl = (options && options.apiBaseUrl) || "";
     this.tenantHost = (options && options.tenantHost) || null;
     this.previewMode = Boolean(options && options.preview);
+    this.redirectOnUnauthorized = Boolean(options && options.redirectOnUnauthorized);
     this.cache = new Map(); // key: name@version -> exports or Promise<exports>
     this.appliedStyles = new Map();
     this.dataContextExports = null;
@@ -244,6 +247,9 @@ export class Kernel {
     if (win.__IDP_PREVIEW__) {
       this.previewMode = true;
     }
+    if (typeof win.__IDP_REDIRECT_ON_UNAUTHORIZED__ !== "undefined") {
+      this.redirectOnUnauthorized = Boolean(win.__IDP_REDIRECT_ON_UNAUTHORIZED__);
+    }
     win.IDP = win.IDP || {};
     win.IDP.kernel = this;
     win.IDP.api = this.api;
@@ -302,6 +308,7 @@ export class Kernel {
   ) {
     if (res.status !== 401) return;
     if (this.previewMode) return;
+    if (!this.redirectOnUnauthorized) return;
     if (options.redirectOnUnauthorized === false) return;
     if (this.shouldSkipUnauthorizedRedirect(options.requestUrl || res.url || "")) return;
     this.redirectToLogin();
@@ -872,4 +879,4 @@ export class Kernel {
 }
 
 (window as any).Kernel = Kernel;
-(window as any).__IDP_KERNEL_BUILD__ = "2026-05-24-kernel-interop-2";
+(window as any).__IDP_KERNEL_BUILD__ = "2026-05-25-kernel-auth-redirect-1";

@@ -9,7 +9,9 @@ export const defaultHelmet = helmet({
     useDefaults: false,
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrc: config.isDevelopment
+        ? ["'self'", "'unsafe-inline'", "'unsafe-eval'"]
+        : ["'self'", "'unsafe-inline'"],
       styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
       imgSrc: ["'self'", 'data:'],
       connectSrc: config.isDevelopment ? ["'self'", 'ws:', 'wss:'] : ["'self'"],

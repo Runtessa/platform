@@ -21,7 +21,7 @@ import { registerOAuthRoutes } from './routes/oauth';
 import { clearLoginUiState, LOGIN_UI_STATE_COOKIE, setLoginUiState } from './routes/login-ui-state';
 
 const dev = config.nodeEnv !== 'production';
-const nextApp = next({ dev, dir: path.resolve(process.cwd()) });
+const nextApp = next({ dev, dir: path.resolve(process.cwd()), webpack: true });
 const nextHandler = nextApp.getRequestHandler();
 
 const requireInternalApiToken = (
