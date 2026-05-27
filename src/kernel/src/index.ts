@@ -148,8 +148,28 @@ export class Kernel {
     const fileExtension = (payload.fileExtension || "js").toLowerCase();
     const cacheKey = `${name}@${requestVersion}`;
 
+    const resolveDependencySpecifier = (request: string) =>
+      this.resolveRuntimeRequestSpecifier(name, request);
+
     // Pre-load dependencies in parallel to reduce boot latency.
-    const preloadTasks = dependencies.map(async (dep) => {
+    const repairedSource = this.repairBrokenCommonJsExports(
+      name,
+      payload.source || "",
+      fileExtension
+    );
+    const discoveredDependencies = this.extractStaticRequireDependencies(
+      repairedSource,
+      resolveDependencySpecifier
+    );
+    const preloadList = Array.from(
+      new Set(
+        [...dependencies, ...discoveredDependencies]
+          .map((dep) => String(dep || "").trim())
+          .filter(Boolean)
+      )
+    );
+
+    const preloadTasks = preloadList.map(async (dep) => {
       if (KERNEL_BUILTIN_MODULES.has(dep)) {
         return;
       }
@@ -179,12 +199,12 @@ export class Kernel {
 
     const module = { exports: {} as any };
     const require = (pkgName: string) => this.requireLocal(pkgName);
-    const repairedSource = this.repairBrokenCommonJsExports(
+    const source = this.attachRuntimeSourceMetadata(
       name,
-      payload.source || "",
-      fileExtension
+      requestVersion,
+      fileExtension,
+      this.decorateBundleSource(repairedSource)
     );
-    const source = this.decorateBundleSource(repairedSource);
     const factory = new Function(
       "module",
       "exports",
@@ -644,6 +664,67 @@ export class Kernel {
     return this.dataContextExports;
   }
 
+  private resolveRuntimeRequestSpecifier(fromPackage: string, request: string) {
+    const raw = String(request || "").trim();
+    if (!raw) return raw;
+    if (!raw.startsWith(".") && !raw.startsWith("/")) {
+      return raw;
+    }
+
+    const from = String(fromPackage || "").trim().replace(/\\/g, "/");
+    if (!from) return raw;
+
+    const parts = from.split("/").filter(Boolean);
+    if (!parts.length) return raw;
+
+    let packageRoot = "";
+    let modulePathParts: string[] = [];
+    if (from.startsWith("@") && parts.length >= 2) {
+      packageRoot = `${parts[0]}/${parts[1]}`;
+      modulePathParts = parts.slice(2);
+    } else {
+      packageRoot = parts[0];
+      modulePathParts = parts.slice(1);
+    }
+
+    if (!packageRoot) return raw;
+
+    const baseDir = modulePathParts.slice(0, -1);
+    const requestParts = raw.startsWith("/")
+      ? raw.split("/").filter(Boolean)
+      : baseDir.concat(raw.split("/").filter(Boolean));
+    const normalized: string[] = [];
+    requestParts.forEach((part) => {
+      if (!part || part === ".") return;
+      if (part === "..") {
+        if (normalized.length > 0) normalized.pop();
+        return;
+      }
+      normalized.push(part);
+    });
+
+    if (!normalized.length) return packageRoot;
+    return `${packageRoot}/${normalized.join("/")}`;
+  }
+
+  private extractStaticRequireDependencies(
+    source: string,
+    resolver: (request: string) => string
+  ) {
+    if (!source || typeof source !== "string") return [] as string[];
+    const deps = new Set<string>();
+    const requireRegex = /(?:^|[^\w$])require\(\s*['\"]([^'\"]+)['\"]\s*\)/g;
+    let match: RegExpExecArray | null = null;
+    while ((match = requireRegex.exec(source)) !== null) {
+      const request = String(match[1] || "").trim();
+      if (!request) continue;
+      const resolved = resolver(request);
+      if (!resolved) continue;
+      deps.add(resolved);
+    }
+    return Array.from(deps);
+  }
+
   requireLocal(name: string) {
     if (name === "react" || name === "React") return React;
     if (name === "react-dom/client") return { createRoot };
@@ -651,9 +732,16 @@ export class Kernel {
     if (DATA_CONTEXT_PACKAGE_NAMES.has(name)) {
       return this.getDataContextModule();
     }
-    const entryKey = Array.from(this.cache.keys()).find((key) =>
-      key.startsWith(`${name}@`),
-    );
+    const candidates = [name];
+    if (/\.(css|js|jsx|ts|tsx|json)$/i.test(name)) {
+      candidates.push(name.replace(/\.(css|js|jsx|ts|tsx|json)$/i, ""));
+    }
+
+    const entryKey = candidates
+      .map((candidate) =>
+        Array.from(this.cache.keys()).find((key) => key.startsWith(`${candidate}@`))
+      )
+      .find(Boolean);
     if (!entryKey) {
       throw new Error(
         `Module not loaded: ${name}. Use Kernel.load('${name}') first.`,
@@ -690,6 +778,32 @@ export class Kernel {
 } catch (e) {}
 `;
     return `${source}\n${suffix}`;
+  }
+
+  private attachRuntimeSourceMetadata(
+    packageName: string,
+    version: string,
+    fileExtension: string,
+    source: string
+  ) {
+    if (!source || typeof source !== "string") return source;
+    if (/^\s*\/\/[#@]\s*sourceURL=/m.test(source)) {
+      return source;
+    }
+
+    const safePackage = String(packageName || "pkg")
+      .trim()
+      .replace(/^@/, "")
+      .replace(/[^a-zA-Z0-9._\/-]+/g, "_");
+    const safeVersion = String(version || "latest")
+      .trim()
+      .replace(/[^a-zA-Z0-9._-]+/g, "_");
+    const ext = String(fileExtension || "js")
+      .trim()
+      .replace(/[^a-zA-Z0-9]+/g, "") || "js";
+    const virtualPath = `/__idp_runtime__/${safePackage}@${safeVersion}.${ext}`;
+
+    return `${source}\n//# sourceURL=${virtualPath}`;
   }
 
   private wrapExports(value: any) {

@@ -43,13 +43,17 @@
         var previewStage =
           params.get("stage") === "published" ? "published" : "draft";
         var registryUrl = params.get("registryUrl") || "/api/registry";
+        var kernelMode = params.get("kernelMode") === "source" ? "source" : "bundle";
         var kernelNonce =
           params.get("kernelNonce") || params.get("t") || String(Date.now());
         var kernelScriptSrc = "/bundle.js?v=" + encodeURIComponent(kernelNonce);
+        var kernelSourceScriptSrc =
+          "/kernel-source.js?v=" + encodeURIComponent(kernelNonce);
         window.__IDP_TENANT_HOST__ = tenantHost;
         window.__IDP_PREVIEW__ = true;
         window.__IDP_PREVIEW_STAGE__ = previewStage;
         window.__IDP_PREVIEW_SESSION__ = previewSession;
+        window.__IDP_KERNEL_MODE__ = kernelMode;
 
         var loadKernelBundle = function () {
           return new Promise(function (resolve, reject) {
@@ -81,6 +85,52 @@
             };
             document.head.appendChild(script);
           });
+        };
+
+        var loadKernelSource = function () {
+          return new Promise(function (resolve, reject) {
+            if (window.Kernel) {
+              resolve();
+              return;
+            }
+            var existing = document.querySelector(
+              "script[data-idp-kernel-source='1']"
+            );
+            if (existing) {
+              existing.addEventListener("load", function () {
+                resolve();
+              });
+              existing.addEventListener("error", function () {
+                reject(new Error("Kernel source runtime failed to load."));
+              });
+              return;
+            }
+            var script = document.createElement("script");
+            script.type = "module";
+            script.src = kernelSourceScriptSrc;
+            script.async = false;
+            script.setAttribute("data-idp-kernel-source", "1");
+            script.onload = function () {
+              if (window.Kernel) {
+                resolve();
+                return;
+              }
+              reject(new Error("Kernel source runtime did not expose window.Kernel."));
+            };
+            script.onerror = function () {
+              reject(new Error("Kernel source runtime failed to load."));
+            };
+            document.head.appendChild(script);
+          });
+        };
+
+        var loadKernelRuntime = function () {
+          if (kernelMode === "source") {
+            return loadKernelSource().catch(function () {
+              return loadKernelBundle();
+            });
+          }
+          return loadKernelBundle();
         };
 
         var normalizePreviewRoute = function (value) {
@@ -278,8 +328,10 @@
             }
             if (previewStage === "draft") {
               headers.set("X-Dev-Preview", "1");
+              headers.set("X-Dev-Source", "1");
             } else {
               headers.set("X-Dev-Preview", "0");
+              headers.set("X-Dev-Source", "0");
             }
             nextInit.headers = headers;
             var requestUrl = "";
@@ -397,10 +449,10 @@
         }
 
         statusEl.textContent = "Loading preview...";
-        loadKernelBundle()
+        loadKernelRuntime()
           .then(function () {
             if (!window.Kernel) {
-              throw new Error("Kernel bundle failed to load.");
+              throw new Error("Kernel runtime failed to load.");
             }
             var kernel = new window.Kernel({ registryUrl: registryUrl });
             return kernel.boot(name, "root", version);
@@ -418,11 +470,11 @@
             sendPreviewException({
               id: nextEventId("system"),
               category:
-                message === "Kernel bundle failed to load."
+                message === "Kernel runtime failed to load."
                   ? "system"
                   : "runtime",
               kind:
-                message === "Kernel bundle failed to load."
+                message === "Kernel runtime failed to load."
                   ? "kernel-load-error"
                   : "preview-boot-error",
               level: "error",
