@@ -437,7 +437,9 @@ export class Kernel {
     if (!originalCreateElement) return;
 
     const isLikelyValidType = (type: any) => {
-      if (typeof type === "string" || typeof type === "function") return true;
+      if (typeof type === "string" || typeof type === "function" || typeof type === "symbol") {
+        return true;
+      }
       if (!type || typeof type !== "object") return false;
       return Boolean((type as any).$$typeof);
     };
