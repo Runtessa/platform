@@ -101,15 +101,42 @@ export class Kernel {
   }
 
   async fetchAndEval(name: string, version: string) {
+    const requestVersion = version || "latest";
     const url = `${this.registryUrl}/${encodeURIComponent(
       name,
-    )}/${encodeURIComponent(version || "latest")}`;
+    )}/${encodeURIComponent(requestVersion)}`;
     const headers = this.buildAuthHeaders();
-    const res = await fetch(url, { headers, credentials: "include" });
+    let res = await fetch(url, { headers, credentials: "include" });
     this.maybeHandleUnauthorized(res, { requestUrl: url });
+
+    // Backward-compatibility fallback:
+    // Some imported UI files are stored without extension in package name
+    // (e.g. "@app/foo/src/index"), while compiled imports may reference
+    // "@app/foo/src/index.css". Retry without extension when first fetch is 404.
+    if (!res.ok && res.status === 404) {
+      const fallbackName = String(name || "").replace(
+        /\.(css|js|jsx|ts|tsx|json)$/i,
+        "",
+      );
+      if (fallbackName && fallbackName !== name) {
+        const fallbackUrl = `${this.registryUrl}/${encodeURIComponent(
+          fallbackName,
+        )}/${encodeURIComponent(requestVersion)}`;
+        const fallbackRes = await fetch(fallbackUrl, {
+          headers,
+          credentials: "include",
+        });
+        this.maybeHandleUnauthorized(fallbackRes, { requestUrl: fallbackUrl });
+        if (fallbackRes.ok) {
+          res = fallbackRes;
+          name = fallbackName;
+        }
+      }
+    }
+
     if (!res.ok) {
       throw new Error(
-        `Failed to fetch package ${name}@${version || "latest"} (${res.status})`,
+        `Failed to fetch package ${name}@${requestVersion} (${res.status})`,
       );
     }
     const payload = (await res.json()) as {
@@ -119,7 +146,7 @@ export class Kernel {
     };
     const dependencies = [...(payload.dependencies || [])];
     const fileExtension = (payload.fileExtension || "js").toLowerCase();
-    const cacheKey = `${name}@${version || "latest"}`;
+    const cacheKey = `${name}@${requestVersion}`;
 
     // Pre-load dependencies in parallel to reduce boot latency.
     const preloadTasks = dependencies.map(async (dep) => {
