@@ -105,6 +105,20 @@ export function EditorAiPanel({
     };
   }, [activeFile, fileContents, savedContents]);
 
+  const editorSnapshot = useMemo(() => {
+    const merged = new Map<string, string>();
+    for (const [id, content] of Object.entries(savedContents || {})) {
+      merged.set(id, String(content ?? ""));
+    }
+    for (const [id, content] of Object.entries(fileContents || {})) {
+      merged.set(id, String(content ?? ""));
+    }
+    return {
+      activeFileId: activeFile?.id,
+      files: Array.from(merged.entries()).map(([id, content]) => ({ id, content })),
+    };
+  }, [activeFile?.id, fileContents, savedContents]);
+
   const {
     sending,
     pendingAssistantId,
@@ -121,6 +135,7 @@ export function EditorAiPanel({
     messages,
     setMessages,
     activeFileContext,
+    editorSnapshot,
     aclConfig,
     settings,
     systemPrompt,

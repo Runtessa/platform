@@ -23,6 +23,11 @@ export type ActiveFileContext = {
   content: string;
 } | null;
 
+export type EditorSnapshotContext = {
+  activeFileId?: string;
+  files: Array<{ id: string; content: string }>;
+};
+
 type Params = {
   apiStreamFetch: ApiStreamFetch;
   chatSessionId: string;
@@ -31,6 +36,7 @@ type Params = {
   messages: AiMessage[];
   setMessages: Dispatch<SetStateAction<AiMessage[]>>;
   activeFileContext: ActiveFileContext;
+  editorSnapshot: EditorSnapshotContext;
   aclConfig: unknown;
   settings: AiSettings;
   systemPrompt: string;
@@ -57,6 +63,7 @@ export const useAssistantChat = ({
   messages,
   setMessages,
   activeFileContext,
+  editorSnapshot,
   aclConfig,
   settings,
   systemPrompt,
@@ -109,6 +116,7 @@ export const useAssistantChat = ({
         chatId: chatSessionId,
         context: {
           activeFile: activeFileContext,
+          editorSnapshot,
           acl: aclConfig ?? undefined,
           watchPreviewExceptions: settings.watchPreviewExceptions,
           previewExceptionsLimit: 20,

@@ -55,15 +55,19 @@ export default withApiHandler(async (req: NextApiRequest, res: NextApiResponse) 
   }
 
   const allowClientConfig = process.env.AI_ALLOW_CLIENT_CONFIG === 'true';
+  const hermesMode = agentType === 'hermes';
+  const envBaseUrl = hermesMode
+    ? (process.env.HERMES_BASE_URL ?? process.env.AI_BASE_URL ?? '')
+    : (process.env.AI_BASE_URL ?? '');
+  const envApiKey = hermesMode
+    ? (process.env.HERMES_API_TOKEN ?? process.env.AI_API_KEY ?? '')
+    : (process.env.AI_API_KEY ?? '');
+
   const baseUrl = normalizeBaseUrl(
-    (allowClientConfig ? (req.query.baseUrl as string | undefined) : undefined) ??
-      process.env.AI_BASE_URL ??
-      ''
+    (allowClientConfig ? (req.query.baseUrl as string | undefined) : undefined) ?? envBaseUrl
   );
   const apiKey =
-    (allowClientConfig ? (req.query.apiKey as string | undefined) : undefined) ??
-    process.env.AI_API_KEY ??
-    '';
+    (allowClientConfig ? (req.query.apiKey as string | undefined) : undefined) ?? envApiKey;
 
   if (!baseUrl) {
     res.status(200).json({ models: [] });

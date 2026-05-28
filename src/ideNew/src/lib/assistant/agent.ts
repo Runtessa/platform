@@ -26,14 +26,23 @@ export const buildAssistantModelConfig = (
   config: AssistantClientConfig | undefined,
   allowClientConfig: boolean
 ): MastraModelConfig => {
+  const agentType = (process.env.AGENT_TYPE || '').trim().toLowerCase();
   const envBaseUrl = process.env.AI_BASE_URL?.trim();
   const envApiKey = process.env.AI_API_KEY?.trim();
   const envModel = process.env.AI_MODEL?.trim();
   const envProvider = process.env.AI_PROVIDER?.trim();
 
-  const baseUrl = (allowClientConfig ? config?.baseUrl : undefined) ?? envBaseUrl;
-  const apiKey = (allowClientConfig ? config?.apiKey : undefined) ?? envApiKey;
-  const modelRaw = normalizeModel((allowClientConfig ? config?.model : undefined) ?? envModel);
+  const hermesBaseUrl = process.env.HERMES_BASE_URL?.trim();
+  const hermesApiKey = process.env.HERMES_API_TOKEN?.trim();
+  const hermesModel = process.env.HERMES_MODEL?.trim();
+
+  const resolvedEnvBaseUrl = agentType === 'hermes' ? hermesBaseUrl || envBaseUrl : envBaseUrl;
+  const resolvedEnvApiKey = agentType === 'hermes' ? hermesApiKey || envApiKey : envApiKey;
+  const resolvedEnvModel = agentType === 'hermes' ? hermesModel || envModel : envModel;
+
+  const baseUrl = (allowClientConfig ? config?.baseUrl : undefined) ?? resolvedEnvBaseUrl;
+  const apiKey = (allowClientConfig ? config?.apiKey : undefined) ?? resolvedEnvApiKey;
+  const modelRaw = normalizeModel((allowClientConfig ? config?.model : undefined) ?? resolvedEnvModel);
 
   if (baseUrl) {
     const parsed = parseModelId(modelRaw);

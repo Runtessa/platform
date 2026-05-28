@@ -24,6 +24,12 @@ import {
   executeTool,
   type WorkspaceContext,
 } from '@/lib/assistant/respond-runtime';
+
+const truncate = (value: string, max = 60000) => {
+  if (!value) return '';
+  if (value.length <= max) return value;
+  return `${value.slice(0, max)}\n…(truncated)`;
+};
 import {
   handleAssistantRun,
   handleCodexRun,
@@ -83,6 +89,8 @@ export default withApiHandler(async (req: NextApiRequest, res: NextApiResponse) 
   const context =
     rawContext && typeof rawContext === 'object'
       ? (rawContext as {
+          activeFile?: unknown;
+          editorSnapshot?: unknown;
           watchPreviewExceptions?: unknown;
           previewExceptionsLimit?: unknown;
         })
@@ -95,7 +103,7 @@ export default withApiHandler(async (req: NextApiRequest, res: NextApiResponse) 
     ? await listPreviewExceptions(tenant.id, String(user.id), previewExceptionsLimit)
     : [];
 
-  const contextText = buildContextText(
+  const contextTextBase = buildContextText(
     {
       tenant: workspace.tenant ?? undefined,
       modules: workspace.modules ?? [],
@@ -120,6 +128,19 @@ export default withApiHandler(async (req: NextApiRequest, res: NextApiResponse) 
       permissions: user.permissions || [],
     },
   );
+
+  const editorSnapshot = context?.editorSnapshot;
+  const editorContextText = editorSnapshot
+    ? `\n\nEDITOR SNAPSHOT (client-side unsaved + open buffers):\n${truncate(
+        JSON.stringify(editorSnapshot, null, 2)
+      )}`
+    : '';
+
+  const activeFileText = context?.activeFile
+    ? `\n\nACTIVE FILE (client focus):\n${truncate(JSON.stringify(context.activeFile, null, 2), 12000)}`
+    : '';
+
+  const contextText = `${contextTextBase}${activeFileText}${editorContextText}`;
 
   const idempotency = buildAssistantIdempotencyKey(normalizedMessages, contextText);
   const runId = createRunId(chatId);

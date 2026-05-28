@@ -30,13 +30,14 @@ export default withApiHandler(async (req: NextApiRequest, res: NextApiResponse) 
     return;
   }
 
+  const hermesMode = agentType === 'hermes';
   res.status(200).json({
     agentType,
     allowClientConfig: process.env.AI_ALLOW_CLIENT_CONFIG === 'true',
-    baseUrl: process.env.AI_BASE_URL ?? '',
-    model: process.env.AI_MODEL ?? '',
-    provider: process.env.AI_PROVIDER ?? '',
-    hasApiKey: Boolean(process.env.AI_API_KEY),
+    baseUrl: hermesMode ? (process.env.HERMES_BASE_URL ?? process.env.AI_BASE_URL ?? '') : (process.env.AI_BASE_URL ?? ''),
+    model: hermesMode ? (process.env.HERMES_MODEL ?? process.env.AI_MODEL ?? '') : (process.env.AI_MODEL ?? ''),
+    provider: hermesMode ? 'hermes' : (process.env.AI_PROVIDER ?? ''),
+    hasApiKey: hermesMode ? Boolean(process.env.HERMES_API_TOKEN || process.env.AI_API_KEY) : Boolean(process.env.AI_API_KEY),
     systemPrompt: ASSISTANT_SYSTEM_INSTRUCTIONS,
     watchPreviewExceptions: false,
   });
