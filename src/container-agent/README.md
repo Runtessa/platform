@@ -9,7 +9,8 @@ It exposes a TLS-protected HTTP API and keeps Docker/Podman socket access isolat
 - `monitoring` container (shared)
 
 Both are built-in managed services. The manager handles create/start/stop/restart/remove directly.
-With compose, workspace mount is automatic (`../` -> `/srv/idp`), so no manual workspace-path env is required.
+Managed `codex-gateway` containers require the manager to know the real host workspace path.
+Set `CONTAINER_MANAGER_WORKSPACE_HOST_PATH` explicitly unless you are certain the manager can map its own mount back to the host path.
 Per-user `codex-gateway` containers are isolated by container name and dedicated named volumes.
 The manager runs as non-root user (`node`).
 
@@ -72,18 +73,21 @@ CONTAINER_MANAGER_SOCKET=/var/run/docker.sock
 CONTAINER_MANAGER_ENGINE_LABEL=podman
 ```
 
+`CONTAINER_MANAGER_ENGINE_LABEL` controls how the manager treats the runtime. It must match the socket you mount. If you select `podman` without setting `CONTAINER_MANAGER_SOCKET` (or `CONTAINER_AGENT_SOCKET`), the manager now fails fast at startup instead of silently defaulting to Docker's socket.
+
 Only a small set of env vars is required in practice:
 
 - `CONTAINER_MANAGER_TOKEN`
 - `CONTAINER_MANAGER_SOCKET` (inside container path)
+- `CONTAINER_MANAGER_WORKSPACE_HOST_PATH`
 - `CONTAINER_MANAGER_CODEX_IMAGE`
 - `CONTAINER_MANAGER_MONITORING_IMAGE`
 - `CONTAINER_MANAGER_CODEX_DATA_VOLUME_PREFIX` (optional)
 - `CONTAINER_MANAGER_MONITORING_DATA_VOLUME` (optional)
 
-Optional workspace overrides (usually not needed):
+Workspace-related env:
 
-- `CONTAINER_MANAGER_WORKSPACE_HOST_PATH` host path mounted to manager (compose sets this)
+- `CONTAINER_MANAGER_WORKSPACE_HOST_PATH` real host path mounted to manager and re-exported to child managed services
 - `CONTAINER_MANAGER_WORKSPACE_MOUNT_PATH` in-manager mount path (default `/srv/idp`)
 - `CONTAINER_MANAGER_CODEX_GATEWAY_INDEX_HOST_PATH` host path for a custom `codex-gateway/index.js`
 
@@ -93,8 +97,9 @@ Run with Docker socket:
 docker run -d --name idp-container-manager \
   -p 4070:4070 \
   -v /var/run/docker.sock:/var/run/docker.sock \
-  -v /srv/idp:/srv/idp \
+  -v /absolute/host/path/to/IdpCore:/srv/idp \
   -e CONTAINER_MANAGER_TOKEN=change-me \
+  -e CONTAINER_MANAGER_WORKSPACE_HOST_PATH=/absolute/host/path/to/IdpCore \
   idp/container-manager:latest
 ```
 
@@ -104,8 +109,9 @@ Run with Podman socket:
 podman run -d --name idp-container-manager \
   -p 4070:4070 \
   -v /run/user/1000/podman/podman.sock:/var/run/docker.sock:Z,U \
-  -v /srv/idp:/srv/idp:Z,U \
+  -v /absolute/host/path/to/IdpCore:/srv/idp:Z,U \
   -e CONTAINER_MANAGER_ENGINE_LABEL=podman \
   -e CONTAINER_MANAGER_TOKEN=change-me \
+  -e CONTAINER_MANAGER_WORKSPACE_HOST_PATH=/absolute/host/path/to/IdpCore \
   idp/container-manager:latest
 ```

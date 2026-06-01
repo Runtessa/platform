@@ -57,10 +57,6 @@ const createServer = createServerFactory({
   defaultTlsRequired: DEFAULT_TLS_REQUIRED,
 });
 
-const docker = new Docker({
-  socketPath: pickEnv('CONTAINER_MANAGER_SOCKET', 'CONTAINER_AGENT_SOCKET') || '/var/run/docker.sock',
-});
-
 const managerConfig = createManagerConfig({
   pickEnv,
   asBool,
@@ -69,6 +65,10 @@ const managerConfig = createManagerConfig({
   sanitizeSegment,
   hashText,
   parseExtraServices,
+});
+
+const docker = new Docker({
+  socketPath: managerConfig.resolveEngineSocketPath(),
 });
 
 const { resolveCodexWorkspaceHostPath, resolveCodexGatewayIndexHostPath } =

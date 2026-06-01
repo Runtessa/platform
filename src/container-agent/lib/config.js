@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const {
   DEFAULT_HEALTH_PORT,
   DEFAULT_CODEX_PORT_START,
@@ -24,6 +26,27 @@ const createManagerConfig = ({
       .trim()
       .toLowerCase();
     return raw === 'podman' ? 'podman' : 'docker';
+  };
+
+  const resolveEngineSocketPath = () => {
+    const explicit = String(
+      pickEnv('CONTAINER_MANAGER_SOCKET', 'CONTAINER_AGENT_SOCKET') || ''
+    ).trim();
+    const hostSocket = String(
+      pickEnv('CONTAINER_MANAGER_SOCKET_HOST_PATH', 'CONTAINER_AGENT_SOCKET_HOST_PATH') || ''
+    ).trim();
+    if (resolveEngineLabel() === 'podman' && hostSocket && fs.existsSync(hostSocket)) {
+      return hostSocket;
+    }
+    if (explicit && fs.existsSync(explicit)) return explicit;
+    if (hostSocket && fs.existsSync(hostSocket)) return hostSocket;
+    if (explicit) return explicit;
+    if (resolveEngineLabel() === 'podman') {
+      throw new Error(
+        'Podman engine is selected, but no container socket path is configured. Set CONTAINER_MANAGER_SOCKET or CONTAINER_AGENT_SOCKET.'
+      );
+    }
+    return '/var/run/docker.sock';
   };
 
   const resolveManagedSecurityOpts = () => {
@@ -187,6 +210,7 @@ const createManagerConfig = ({
     MANAGER_LABEL,
     MANAGED_LABEL_VALUES,
     resolveEngineLabel,
+    resolveEngineSocketPath,
     resolveManagedSecurityOpts,
     codeGatewayImage,
     monitoringImage,

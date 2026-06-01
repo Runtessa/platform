@@ -91,7 +91,13 @@ const createSelfMountResolver = ({
     if (explicit) return explicit;
     const mapped = await mapContainerPathToHostPath(codexWorkspaceRoot());
     if (mapped) return mapped;
-    return codexWorkspaceRoot();
+    throw new Error(
+      [
+        'Unable to resolve a real host workspace path for managed codex-gateway containers.',
+        `The manager only knows the in-container workspace path "${codexWorkspaceRoot()}".`,
+        'Set CONTAINER_MANAGER_WORKSPACE_HOST_PATH to the actual host path of the repo/workspace mounted into the container-manager.',
+      ].join(' ')
+    );
   };
 
   const resolveCodexGatewayIndexHostPath = async () => {

@@ -45,6 +45,15 @@ const createManagedServiceDefinitionResolver = ({
         binds.push(`${explicitGatewayIndexHostPath}:/app/index.js:ro`);
       }
     }
+    const workspaceAccessMode = String(
+      pickEnv(
+        'CONTAINER_MANAGER_CODEX_WORKSPACE_ACCESS_MODE',
+        'CONTAINER_AGENT_CODEX_WORKSPACE_ACCESS_MODE',
+        'CODEX_GATEWAY_WORKSPACE_ACCESS_MODE'
+      ) || 'tenant'
+    )
+      .trim()
+      .toLowerCase();
     return {
       name,
       image,
@@ -55,6 +64,7 @@ const createManagedServiceDefinitionResolver = ({
         'WORKSPACE_ROOT=/workspace',
         'CODEX_GATEWAY_HISTORY_FILE=/data/history.json',
         'CODEX_GATEWAY_PROFILES_DIR=/data/profiles',
+        `CODEX_GATEWAY_WORKSPACE_ACCESS_MODE=${workspaceAccessMode === 'repo' ? 'repo' : 'tenant'}`,
       ],
     };
   };

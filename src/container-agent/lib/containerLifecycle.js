@@ -1,6 +1,30 @@
 const createContainerLifecycle = ({ docker, resolveManagedSecurityOpts }) => {
   const containerFromName = (name) => docker.getContainer(name);
 
+  const listImageTags = async () => {
+    const images = await docker.listImages();
+    const tags = new Set();
+    for (const image of images) {
+      if (!Array.isArray(image?.RepoTags)) continue;
+      for (const tag of image.RepoTags) {
+        if (typeof tag === 'string' && tag.trim()) tags.add(tag.trim());
+      }
+    }
+    return tags;
+  };
+
+  const localImageCandidates = (image) => {
+    const raw = String(image || '').trim();
+    if (!raw) return [];
+    const candidates = new Set([raw]);
+    if (raw.startsWith('localhost/')) {
+      candidates.add(raw.slice('localhost/'.length));
+    } else {
+      candidates.add(`localhost/${raw}`);
+    }
+    return [...candidates];
+  };
+
   const inspectContainer = async (name) => {
     try {
       return await containerFromName(name).inspect();
@@ -16,6 +40,17 @@ const createContainerLifecycle = ({ docker, resolveManagedSecurityOpts }) => {
       return;
     } catch (error) {
       if (error?.statusCode !== 404) throw error;
+    }
+
+    const localTags = await listImageTags();
+    for (const candidate of localImageCandidates(image)) {
+      if (localTags.has(candidate)) return;
+    }
+
+    if (String(image || '').trim().startsWith('localhost/')) {
+      throw new Error(
+        `Local image "${image}" is not available to the container engine. Build or retag it before creating the managed service.`
+      );
     }
 
     await new Promise((resolve, reject) => {
