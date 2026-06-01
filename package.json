@@ -5,6 +5,7 @@
   "workspaces": [
     "src/core",
     "src/ideNew",
+    "src/ide-vscode",
     "src/packages/*"
   ],
   "scripts": {
@@ -17,6 +18,8 @@
     "core:start": "npm --prefix src/core run start",
     "ide:dev": "npm --prefix src/ideNew run dev",
     "ide:start": "npm --prefix src/ideNew run start",
+    "vscode:build": "npm --prefix src/ide-vscode run build",
+    "vscode:type-check": "npm --prefix src/ide-vscode run type-check",
     "auth:dev": "npm --prefix src/auth run dev",
     "auth:start": "npm --prefix src/auth run start",
     "apps:dev": "concurrently -k -n core,ide,auth -c blue,green,magenta \"npm run core:dev\" \"npm run ide:dev\" \"npm run auth:dev\"",
@@ -41,7 +44,9 @@
     "docker:logs": "docker compose -f docker/docker-compose.yml --env-file docker/.env logs -f --tail=200",
     "seed": "ts-node src/core/seed.ts",
     "seed-packages": "ts-node src/core/seed-packages.ts",
-    "dump": "node dump-project.js"
+    "dump": "node dump-project.js",
+    "vscode:test": "npm --prefix src/ide-vscode run test",
+    "vscode:host": "npm --prefix src/ide-vscode run dev:host"
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
