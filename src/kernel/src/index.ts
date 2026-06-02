@@ -1,5 +1,10 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
+import {
+  BrowserPackageCache,
+  RegistryPackageMetadata,
+  RegistryPackagePayload,
+} from "./packageCache";
 
 window.React = React;
 interface Options {
@@ -62,6 +67,7 @@ export class Kernel {
   private lastRenewAtMs: number;
   private previewErrorBoundaryType: React.ComponentType<{ children?: React.ReactNode }> | null;
   private redirectOnUnauthorized: boolean;
+  private packageCache: BrowserPackageCache | null;
   private static previewReactGuardInstalled = false;
 
   constructor(options: Options = {}) {
@@ -78,8 +84,12 @@ export class Kernel {
     this.renewPending = false;
     this.lastRenewAtMs = 0;
     this.previewErrorBoundaryType = null;
+    this.packageCache = null;
     this.api = this.createApiClient();
     this.initGlobalContext();
+    if (!this.previewMode) {
+      this.packageCache = new BrowserPackageCache();
+    }
     this.installPreviewReactGuard();
     this.initSessionRenewal();
   }
@@ -102,51 +112,11 @@ export class Kernel {
 
   async fetchAndEval(name: string, version: string) {
     const requestVersion = version || "latest";
-    const url = `${this.registryUrl}/${encodeURIComponent(
-      name,
-    )}/${encodeURIComponent(requestVersion)}`;
-    const headers = this.buildAuthHeaders();
-    let res = await fetch(url, { headers, credentials: "include" });
-    this.maybeHandleUnauthorized(res, { requestUrl: url });
-
-    // Backward-compatibility fallback:
-    // Some imported UI files are stored without extension in package name
-    // (e.g. "@app/foo/src/index"), while compiled imports may reference
-    // "@app/foo/src/index.css". Retry without extension when first fetch is 404.
-    if (!res.ok && res.status === 404) {
-      const fallbackName = String(name || "").replace(
-        /\.(css|js|jsx|ts|tsx|json)$/i,
-        "",
-      );
-      if (fallbackName && fallbackName !== name) {
-        const fallbackUrl = `${this.registryUrl}/${encodeURIComponent(
-          fallbackName,
-        )}/${encodeURIComponent(requestVersion)}`;
-        const fallbackRes = await fetch(fallbackUrl, {
-          headers,
-          credentials: "include",
-        });
-        this.maybeHandleUnauthorized(fallbackRes, { requestUrl: fallbackUrl });
-        if (fallbackRes.ok) {
-          res = fallbackRes;
-          name = fallbackName;
-        }
-      }
-    }
-
-    if (!res.ok) {
-      throw new Error(
-        `Failed to fetch package ${name}@${requestVersion} (${res.status})`,
-      );
-    }
-    const payload = (await res.json()) as {
-      source: string;
-      dependencies?: string[];
-      fileExtension?: string;
-    };
+    const payload = await this.resolveRegistryPayload(name, requestVersion);
     const dependencies = [...(payload.dependencies || [])];
     const fileExtension = (payload.fileExtension || "js").toLowerCase();
     const cacheKey = `${name}@${requestVersion}`;
+    const resolvedVersion = this.resolveRegistryVersion(payload, requestVersion);
 
     const resolveDependencySpecifier = (request: string) =>
       this.resolveRuntimeRequestSpecifier(name, request);
@@ -220,11 +190,143 @@ export class Kernel {
       module.exports &&
       (typeof module.exports === "object" || typeof module.exports === "function")
     ) {
-      (module.exports as any).__kernelPackageName = `${name}@${version || "latest"}`;
+      (module.exports as any).__kernelPackageName = `${name}@${resolvedVersion}`;
     }
     module.exports = this.wrapExports(module.exports);
     module.exports = this.normalizeDefaultExportInterop(module.exports);
     return module.exports;
+  }
+
+  private async resolveRegistryPayload(name: string, version: string) {
+    const requestVersion = version || "latest";
+    if (!this.packageCache || !this.packageCache.isAvailable()) {
+      const { payload } = await this.fetchRegistryPayload(name, requestVersion);
+      return payload;
+    }
+
+    if (requestVersion !== "latest") {
+      const cached = await this.packageCache.getPayload(name, requestVersion);
+      if (cached?.source) {
+        return cached;
+      }
+      const { payload } = await this.fetchRegistryPayload(name, requestVersion);
+      await this.persistRegistryPayload(name, requestVersion, payload);
+      return payload;
+    }
+
+    const latestAlias = await this.packageCache.getLatestAlias(name);
+    if (latestAlias?.resolvedVersion) {
+      const cached = await this.packageCache.getPayload(name, latestAlias.resolvedVersion);
+      if (cached?.source) {
+        try {
+          const { payload: metadata } = await this.fetchRegistryMetadata(
+            name,
+            requestVersion,
+          );
+          const resolvedVersion = this.resolveRegistryVersion(metadata, requestVersion);
+          if (resolvedVersion === latestAlias.resolvedVersion) {
+            return cached;
+          }
+          await this.packageCache.clearLatestAlias(name);
+          await this.packageCache.deletePayload(name, latestAlias.resolvedVersion);
+        } catch {
+          return cached;
+        }
+      } else {
+        await this.packageCache.clearLatestAlias(name);
+      }
+    }
+
+    const { payload } = await this.fetchRegistryPayload(name, requestVersion);
+    await this.persistRegistryPayload(name, requestVersion, payload);
+    return payload;
+  }
+
+  private async persistRegistryPayload(
+    name: string,
+    requestVersion: string,
+    payload: RegistryPackagePayload,
+  ) {
+    if (!this.packageCache || !this.packageCache.isAvailable()) return;
+    const resolvedVersion = this.resolveRegistryVersion(payload, requestVersion);
+    await this.packageCache.putPayload(name, resolvedVersion, resolvedVersion, payload);
+    if (requestVersion === "latest") {
+      await this.packageCache.putLatestAlias(name, resolvedVersion);
+    }
+  }
+
+  private async fetchRegistryPayload(name: string, version: string) {
+    return this.fetchRegistryJson<RegistryPackagePayload>(name, version, false);
+  }
+
+  private async fetchRegistryMetadata(name: string, version: string) {
+    return this.fetchRegistryJson<RegistryPackageMetadata>(name, version, true);
+  }
+
+  private async fetchRegistryJson<T>(
+    name: string,
+    version: string,
+    metadataOnly: boolean,
+  ) {
+    const requestVersion = version || "latest";
+    const headers = this.buildAuthHeaders();
+
+    const attemptFetch = async (requestedName: string) => {
+      const url = this.buildRegistryUrl(requestedName, requestVersion, metadataOnly);
+      const response = await fetch(url, {
+        headers,
+        credentials: "include",
+      });
+      this.maybeHandleUnauthorized(response, { requestUrl: url });
+      return { requestedName, url, response };
+    };
+
+    let attempt = await attemptFetch(name);
+
+    if (!attempt.response.ok && attempt.response.status === 404) {
+      const fallbackName = String(name || "").replace(
+        /\.(css|js|jsx|ts|tsx|json)$/i,
+        "",
+      );
+      if (fallbackName && fallbackName !== name) {
+        const fallbackAttempt = await attemptFetch(fallbackName);
+        if (fallbackAttempt.response.ok) {
+          attempt = fallbackAttempt;
+        }
+      }
+    }
+
+    if (!attempt.response.ok) {
+      throw new Error(
+        `Failed to fetch package ${attempt.requestedName}@${requestVersion} (${attempt.response.status})`,
+      );
+    }
+
+    return {
+      resolvedName: attempt.requestedName,
+      payload: (await attempt.response.json()) as T,
+    };
+  }
+
+  private buildRegistryUrl(
+    packageName: string,
+    version: string,
+    metadataOnly = false,
+  ) {
+    const base = `${this.registryUrl}/${encodeURIComponent(
+      packageName,
+    )}/${encodeURIComponent(version || "latest")}`;
+    if (!metadataOnly) return base;
+    return `${base}?meta=1`;
+  }
+
+  private resolveRegistryVersion(
+    payload: Pick<RegistryPackagePayload, "version" | "packageVersion">,
+    fallbackVersion: string,
+  ) {
+    const resolved = String(payload.version || payload.packageVersion || fallbackVersion || "latest")
+      .trim();
+    return resolved || fallbackVersion || "latest";
   }
 
   private repairBrokenCommonJsExports(
