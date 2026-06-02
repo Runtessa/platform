@@ -2,6 +2,10 @@ name: Docker Images
 
 on:
   push:
+    branches:
+      - '**'
+    tags:
+      - 'v*'
   workflow_dispatch:
 
 permissions:
@@ -126,9 +130,15 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ghcr.io/${{ github.repository_owner }}/idpcore-${{ matrix.service.image_name }}
+          flavor: |
+            latest=false
           tags: |
+            type=semver,pattern={{version}},enable=${{ startsWith(github.ref, 'refs/tags/v') }}
+            type=semver,pattern={{major}}.{{minor}},enable=${{ startsWith(github.ref, 'refs/tags/v') }}
+            type=semver,pattern={{major}},enable=${{ startsWith(github.ref, 'refs/tags/v') }}
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
             type=ref,event=branch
-            type=sha
+            type=sha,format=long,prefix=sha-
 
       - name: Build image
         uses: docker/build-push-action@v6
