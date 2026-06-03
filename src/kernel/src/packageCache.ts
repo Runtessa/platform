@@ -2,6 +2,7 @@ export type RegistryPackagePayload = {
   name: string;
   version: string;
   packageVersion?: string;
+  cacheKey?: string;
   source: string;
   dependencies?: string[];
   fileExtension?: string;
@@ -11,8 +12,20 @@ export type RegistryPackageMetadata = {
   name: string;
   version: string;
   packageVersion?: string;
+  cacheKey?: string;
   dependencies?: string[];
   fileExtension?: string;
+};
+
+export type RegistryPackageCatalogEntry = RegistryPackageMetadata & {
+  aliases?: string[];
+  scope?: "tenant" | "global" | "npm";
+};
+
+export type RegistryPackageCatalog = {
+  generatedAt: string;
+  tenantHost?: string | null;
+  packages: RegistryPackageCatalogEntry[];
 };
 
 type CachedPayloadRecord = {
@@ -21,6 +34,7 @@ type CachedPayloadRecord = {
   packageName: string;
   requestVersion: string;
   resolvedVersion: string;
+  cacheKey?: string;
   payload: RegistryPackagePayload;
   updatedAt: number;
 };
@@ -30,10 +44,18 @@ type CachedLatestAliasRecord = {
   key: string;
   packageName: string;
   resolvedVersion: string;
+  cacheKey?: string;
   updatedAt: number;
 };
 
-type CacheRecord = CachedPayloadRecord | CachedLatestAliasRecord;
+type CachedCatalogRecord = {
+  kind: "catalog";
+  key: string;
+  catalog: RegistryPackageCatalog;
+  updatedAt: number;
+};
+
+type CacheRecord = CachedPayloadRecord | CachedLatestAliasRecord | CachedCatalogRecord;
 
 const DB_NAME = "idp-kernel-package-cache";
 const DB_VERSION = 1;
@@ -42,6 +64,7 @@ const STORE_NAME = "packages";
 const exactPayloadKey = (packageName: string, version: string) =>
   `payload:${packageName}@${version}`;
 const latestAliasKey = (packageName: string) => `latest:${packageName}`;
+const catalogKey = () => "catalog:default";
 
 export class BrowserPackageCache {
   private dbPromise: Promise<IDBDatabase | null> | null = null;
@@ -69,6 +92,7 @@ export class BrowserPackageCache {
       packageName,
       requestVersion,
       resolvedVersion,
+      cacheKey: payload.cacheKey,
       payload,
       updatedAt: Date.now(),
     });
@@ -82,18 +106,33 @@ export class BrowserPackageCache {
     return this.getRecord<CachedLatestAliasRecord>(latestAliasKey(packageName));
   }
 
-  async putLatestAlias(packageName: string, resolvedVersion: string) {
+  async putLatestAlias(packageName: string, resolvedVersion: string, cacheKey?: string) {
     await this.putRecord({
       kind: "latest-alias",
       key: latestAliasKey(packageName),
       packageName,
       resolvedVersion,
+      cacheKey,
       updatedAt: Date.now(),
     });
   }
 
   async clearLatestAlias(packageName: string) {
     await this.deleteRecord(latestAliasKey(packageName));
+  }
+
+  async getCatalog() {
+    const record = await this.getRecord<CachedCatalogRecord>(catalogKey());
+    return record?.catalog ?? null;
+  }
+
+  async putCatalog(catalog: RegistryPackageCatalog) {
+    await this.putRecord({
+      kind: "catalog",
+      key: catalogKey(),
+      catalog,
+      updatedAt: Date.now(),
+    });
   }
 
   private async openDb(): Promise<IDBDatabase | null> {

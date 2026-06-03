@@ -2,6 +2,8 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import {
   BrowserPackageCache,
+  RegistryPackageCatalog,
+  RegistryPackageCatalogEntry,
   RegistryPackageMetadata,
   RegistryPackagePayload,
 } from "./packageCache";
@@ -68,6 +70,7 @@ export class Kernel {
   private previewErrorBoundaryType: React.ComponentType<{ children?: React.ReactNode }> | null;
   private redirectOnUnauthorized: boolean;
   private packageCache: BrowserPackageCache | null;
+  private packageCatalogPromise: Promise<RegistryPackageCatalog | null> | null;
   private static previewReactGuardInstalled = false;
 
   constructor(options: Options = {}) {
@@ -85,6 +88,7 @@ export class Kernel {
     this.lastRenewAtMs = 0;
     this.previewErrorBoundaryType = null;
     this.packageCache = null;
+    this.packageCatalogPromise = null;
     this.api = this.createApiClient();
     this.initGlobalContext();
     if (!this.previewMode) {
@@ -204,10 +208,16 @@ export class Kernel {
       return payload;
     }
 
+    const catalog = await this.loadPackageCatalog();
+    const catalogEntry = this.findCatalogEntry(catalog, name, requestVersion);
+
     if (requestVersion !== "latest") {
       const cached = await this.packageCache.getPayload(name, requestVersion);
-      if (cached?.source) {
+      if (cached?.source && this.isCachedPayloadFresh(cached, catalogEntry)) {
         return cached;
+      }
+      if (cached && catalogEntry) {
+        await this.packageCache.deletePayload(name, requestVersion);
       }
       const { payload } = await this.fetchRegistryPayload(name, requestVersion);
       await this.persistRegistryPayload(name, requestVersion, payload);
@@ -217,21 +227,31 @@ export class Kernel {
     const latestAlias = await this.packageCache.getLatestAlias(name);
     if (latestAlias?.resolvedVersion) {
       const cached = await this.packageCache.getPayload(name, latestAlias.resolvedVersion);
-      if (cached?.source) {
+      if (cached?.source && catalogEntry) {
+        const resolvedVersion = this.resolveRegistryVersion(catalogEntry, requestVersion);
+        if (
+          resolvedVersion === latestAlias.resolvedVersion &&
+          this.isCachedPayloadFresh(cached, catalogEntry)
+        ) {
+          return cached;
+        }
+        await this.packageCache.clearLatestAlias(name);
+        await this.packageCache.deletePayload(name, latestAlias.resolvedVersion);
+      } else if (cached?.source) {
         try {
-          const { payload: metadata } = await this.fetchRegistryMetadata(
-            name,
-            requestVersion,
-          );
+          const { payload: metadata } = await this.fetchRegistryMetadata(name, requestVersion);
           const resolvedVersion = this.resolveRegistryVersion(metadata, requestVersion);
-          if (resolvedVersion === latestAlias.resolvedVersion) {
+          if (
+            resolvedVersion === latestAlias.resolvedVersion &&
+            this.isCachedPayloadFresh(cached, metadata)
+          ) {
             return cached;
           }
-          await this.packageCache.clearLatestAlias(name);
-          await this.packageCache.deletePayload(name, latestAlias.resolvedVersion);
         } catch {
           return cached;
         }
+        await this.packageCache.clearLatestAlias(name);
+        await this.packageCache.deletePayload(name, latestAlias.resolvedVersion);
       } else {
         await this.packageCache.clearLatestAlias(name);
       }
@@ -251,7 +271,7 @@ export class Kernel {
     const resolvedVersion = this.resolveRegistryVersion(payload, requestVersion);
     await this.packageCache.putPayload(name, resolvedVersion, resolvedVersion, payload);
     if (requestVersion === "latest") {
-      await this.packageCache.putLatestAlias(name, resolvedVersion);
+      await this.packageCache.putLatestAlias(name, resolvedVersion, payload.cacheKey);
     }
   }
 
@@ -261,6 +281,69 @@ export class Kernel {
 
   private async fetchRegistryMetadata(name: string, version: string) {
     return this.fetchRegistryJson<RegistryPackageMetadata>(name, version, true);
+  }
+
+  private async loadPackageCatalog() {
+    if (!this.packageCache || !this.packageCache.isAvailable()) return null;
+    if (this.packageCatalogPromise) return this.packageCatalogPromise;
+
+    this.packageCatalogPromise = this.fetchRegistryCatalog()
+      .then(async (catalog) => {
+        await this.packageCache?.putCatalog(catalog);
+        return catalog;
+      })
+      .catch(async () => this.packageCache?.getCatalog() ?? null);
+
+    return this.packageCatalogPromise;
+  }
+
+  private async fetchRegistryCatalog() {
+    const url = this.buildRegistryCatalogUrl();
+    const response = await fetch(url, {
+      headers: this.buildAuthHeaders(),
+      credentials: "include",
+    });
+    this.maybeHandleUnauthorized(response, { requestUrl: url });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch registry catalog (${response.status})`);
+    }
+    return (await response.json()) as RegistryPackageCatalog;
+  }
+
+  private findCatalogEntry(
+    catalog: RegistryPackageCatalog | null,
+    packageName: string,
+    requestVersion: string,
+  ) {
+    if (!catalog?.packages?.length) return null;
+    const normalizedName = String(packageName || "").trim();
+    const normalizedVersion = String(requestVersion || "latest").trim() || "latest";
+    const matchesName = (entry: RegistryPackageCatalogEntry) =>
+      entry.name === normalizedName || Boolean(entry.aliases?.includes(normalizedName));
+    const matches = catalog.packages.filter(matchesName);
+    if (matches.length === 0) return null;
+    if (normalizedVersion === "latest") {
+      return matches[0] ?? null;
+    }
+    return (
+      matches.find((entry) => entry.version === normalizedVersion) ??
+      matches.find((entry) => entry.packageVersion === normalizedVersion) ??
+      null
+    );
+  }
+
+  private isCachedPayloadFresh(
+    payload: RegistryPackagePayload,
+    metadata: Pick<RegistryPackageMetadata, "version" | "packageVersion" | "cacheKey"> | null,
+  ) {
+    if (!metadata) return true;
+    const cachedVersion = this.resolveRegistryVersion(payload, payload.version || "latest");
+    const latestVersion = this.resolveRegistryVersion(metadata, cachedVersion);
+    if (cachedVersion !== latestVersion) return false;
+    if (metadata.cacheKey && payload.cacheKey && metadata.cacheKey !== payload.cacheKey) {
+      return false;
+    }
+    return true;
   }
 
   private async fetchRegistryJson<T>(
@@ -318,6 +401,17 @@ export class Kernel {
     )}/${encodeURIComponent(version || "latest")}`;
     if (!metadataOnly) return base;
     return `${base}?meta=1`;
+  }
+
+  private buildRegistryCatalogUrl() {
+    const base = this.registryUrl.replace(/\/+$/, "");
+    if (base.endsWith("/registry-tenant")) {
+      return `${base.slice(0, -"/registry-tenant".length)}/registry-tenant-catalog`;
+    }
+    if (base.endsWith("/registry")) {
+      return `${base.slice(0, -"/registry".length)}/registry-catalog`;
+    }
+    return `${base}/catalog`;
   }
 
   private resolveRegistryVersion(
