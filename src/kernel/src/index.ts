@@ -96,6 +96,7 @@ export class Kernel {
     }
     this.installPreviewReactGuard();
     this.initSessionRenewal();
+    this.initPwaSupport();
   }
 
   async load(name: string, version: string = "latest") {
@@ -476,6 +477,22 @@ export class Kernel {
 `;
 
     return `${source}\n${patch}`;
+  }
+
+  private initPwaSupport() {
+    if (typeof window === "undefined") return;
+    if (this.previewMode) return;
+    if (!("serviceWorker" in navigator)) return;
+    const manifest = document.querySelector<HTMLLinkElement>('link[rel="manifest"]');
+    if (!manifest?.href) return;
+
+    window.addEventListener("load", () => {
+      navigator.serviceWorker
+        .register("/service-worker.js", { scope: "/" })
+        .catch(() => {
+          // PWA support is optional; boot must not fail if registration is blocked.
+        });
+    });
   }
 
   private initGlobalContext() {
