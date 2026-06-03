@@ -411,7 +411,7 @@ export default function ProfilePage() {
               style={sidebarPositionStyle}
             >
               <div className="flex items-center gap-3 px-3 py-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#202124] text-sm font-semibold text-white shadow-sm">ADA</div>
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#202124] text-sm font-semibold text-white shadow-sm">CW</div>
                 <div className="min-w-0">
                   <p className="text-sm font-semibold text-[#202124]">{copy.layout.brandTitle}</p>
                   <p className="text-xs text-[#5F6368]">{copy.layout.brandSubtitle}</p>

@@ -28,7 +28,7 @@ export const SidebarNav = ({
         className="fixed top-3 z-[60] hidden md:block"
         style={isRtl ? { right: desktopRailLeft } : { left: desktopRailLeft }}
       >
-        <img src="/images/lw_dark.png" alt="ADA" className="h-12 w-auto" />
+        <img src="/brand/ashna-cloudway-logo-white-on-black.png" alt="Ashna CloudWay" className="h-12 w-auto" />
       </div>
 
       <nav

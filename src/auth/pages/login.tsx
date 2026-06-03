@@ -154,7 +154,7 @@ export default function LoginPage() {
 
       <main className="auth-login-page relative min-h-[100dvh] overflow-x-hidden bg-[#F6F8FC] text-[#202124]" dir={localeDir(locale)}>
         <div className="pointer-events-none absolute bottom-8 left-8 z-0 login-bg-logo opacity-[0.08]">
-          <Image src="/images/lm_dark.png" alt="" width={180} height={180} priority className="h-[130px] w-auto md:h-[160px]" />
+          <Image src={branding.logo_icon} alt="" width={180} height={180} priority className="h-[130px] w-auto md:h-[160px]" />
         </div>
 
         <LoginToastStack toasts={toasts} isRtl={isRtl} />

@@ -230,7 +230,7 @@ export const AdminShell = ({ children }: AdminShellProps) => {
       <header className={`fixed left-4 right-4 top-4 z-40 px-4 py-2.5 ${shellPanelClass} ${headerOffsetClass}`} ref={topBarRef}>
         <div className="flex items-center justify-between gap-3">
           <div className="min-w-0 px-1">
-            <p className="text-xs font-medium text-[#5F6368]">ADA Admin</p>
+            <p className="text-xs font-medium text-[#5F6368]">CloudWay Admin</p>
             <h1 className={`truncate text-lg text-[#202124] md:text-xl ${isRtl ? 'text-right' : 'text-left'}`}>{headerTitle}</h1>
           </div>
 
@@ -433,9 +433,9 @@ export const AdminShell = ({ children }: AdminShellProps) => {
             style={sidebarPositionStyle}
           >
             <div className="flex items-center gap-3 px-3 py-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#202124] text-sm font-semibold text-white shadow-sm">ADA</div>
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#202124] text-sm font-semibold text-white shadow-sm">CW</div>
               <div className="min-w-0">
-                <p className="text-sm font-semibold text-[#202124]">ADA Admin</p>
+                <p className="text-sm font-semibold text-[#202124]">CloudWay Admin</p>
                 <p className="text-xs text-[#5F6368]">{messages.topBar.panelName}</p>
               </div>
             </div>

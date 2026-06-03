@@ -187,7 +187,7 @@ export const config: AuthConfig = {
     ghasedakUdh: asBool(process.env.AUTH_OTP_SMS_GHASEDAK_UDH, true),
   },
   totp: {
-    issuer: (process.env.AUTH_TOTP_ISSUER || '').trim() || 'ADA IDP',
+    issuer: (process.env.AUTH_TOTP_ISSUER || '').trim() || 'Ashna CloudWay',
     digits: asInt(process.env.AUTH_TOTP_DIGITS, 6, 6, 8),
     periodSec: asInt(process.env.AUTH_TOTP_PERIOD_SEC, 30, 15, 60),
     window: asInt(process.env.AUTH_TOTP_WINDOW, 1, 0, 2),

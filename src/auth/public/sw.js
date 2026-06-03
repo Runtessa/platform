@@ -1,10 +1,9 @@
-const CACHE_NAME = 'ada-auth-pwa-v2';
+const CACHE_NAME = 'cloudway-auth-pwa-v1';
 const APP_SHELL = [
   '/login',
   '/manifest.webmanifest',
-  '/pwa/icon-192.png',
-  '/pwa/icon-512.png',
-  '/images/lm.png',
+  '/brand/ashna-cloudway-icon-white-transparent.png',
+  '/brand/ashna-cloudway-logo-white-on-black.png',
 ];
 
 self.addEventListener('install', (event) => {

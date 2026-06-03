@@ -8,7 +8,7 @@ import { useUiLocale } from '../lib/ui/locale';
 import { getAuthMessages } from '../lib/ui/i18n';
 
 const RENEW_INTERVAL_MS = 5 * 60 * 1000;
-const INSTALL_BANNER_DISMISS_KEY = 'ada-auth-install-banner-dismissed-at';
+const INSTALL_BANNER_DISMISS_KEY = 'cloudway-auth-install-banner-dismissed-at';
 const INSTALL_BANNER_DISMISS_MS = 24 * 60 * 60 * 1000;
 
 type BeforeInstallPromptEvent = Event & {
@@ -202,15 +202,16 @@ export default function App({ Component, pageProps }: AppProps) {
 
   const appHead = (
     <Head>
-      <link rel="icon" type="image/png" href="/images/lm.png" />
+      <link rel="icon" type="image/png" href="/brand/ashna-cloudway-icon-white-transparent.png" />
       <link rel="manifest" href="/manifest.webmanifest" />
-      <link rel="apple-touch-icon" href="/pwa/icon-192.png" />
-      <meta name="application-name" content="ADA Auth" />
-      <meta name="theme-color" content="#1A73E8" />
+      <link rel="apple-touch-icon" href="/brand/ashna-cloudway-icon-white-transparent.png" />
+      <meta name="application-name" content="Ashna CloudWay" />
+      <meta name="description" content="The familiar path from code to cloud." />
+      <meta name="theme-color" content="#000000" />
       <meta name="mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-      <meta name="apple-mobile-web-app-title" content="ADA Auth" />
+      <meta name="apple-mobile-web-app-title" content="CloudWay" />
       <meta name="format-detection" content="telephone=no" />
     </Head>
   );
