@@ -6,7 +6,7 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: 'Architecture',
-      items: ['architecture/overview', 'architecture/dependency-graph'],
+      items: ['architecture/overview', 'architecture/idpcore-map', 'architecture/dependency-graph'],
     },
     {
       type: 'category',
