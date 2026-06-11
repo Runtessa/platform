@@ -10,7 +10,7 @@
     <script defer>
       if (window.Kernel) {
         var kernel = new window.Kernel({});
-        kernel.boot("@app/dashboard");
+        kernel.boot();
       } else {
         console.error("Kernel failed to load");
       }

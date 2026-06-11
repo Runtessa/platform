@@ -4,13 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Server-Driven Micro-Frontend</title>
-  <script src="/bundle.js?4cfe7d6f5f82c598a8f9"></script></head>
+    <script src="/bundle.js?3978f4841c2936d56eca"></script>
+  </head>
   <body>
     <div id="root"></div>
     <script defer>
       if (window.Kernel) {
         var kernel = new window.Kernel({});
-        kernel.boot("@app/dashboard");
+        kernel.boot();
       } else {
         console.error("Kernel failed to load");
       }

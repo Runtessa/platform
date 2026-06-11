@@ -1,5 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
+import * as ReactRouter from "react-router";
+import * as ReactRouterDom from "react-router-dom";
 import {
   BrowserPackageCache,
   RegistryPackageCatalog,
@@ -7,6 +9,8 @@ import {
   RegistryPackageMetadata,
   RegistryPackagePayload,
 } from "./packageCache";
+import { normalizeRouteManifest } from "./routeManifest";
+import { createKernelRouterElement } from "./routerRuntime";
 
 window.React = React;
 interface Options {
@@ -51,6 +55,9 @@ const KERNEL_BUILTIN_MODULES = new Set([
   "React",
   "react-dom",
   "react-dom/client",
+  "react-router",
+  "react-router-dom",
+  "react-router/dom",
   ...Array.from(DATA_CONTEXT_PACKAGE_NAMES),
 ]);
 
@@ -534,7 +541,7 @@ export class Kernel {
     return `${pathname || "/"}${search || ""}${hash || ""}`;
   }
 
-  private redirectToLogin() {
+  redirectToLogin() {
     if (typeof window === "undefined") return;
     if (this.authRedirectInFlight) return;
     this.authRedirectInFlight = true;
@@ -944,6 +951,10 @@ export class Kernel {
     if (name === "react" || name === "React") return React;
     if (name === "react-dom/client") return { createRoot };
     if (name === "react-dom") return { createRoot };
+    if (name === "react-router") return ReactRouter;
+    if (name === "react-router-dom" || name === "react-router/dom") {
+      return ReactRouterDom;
+    }
     if (DATA_CONTEXT_PACKAGE_NAMES.has(name)) {
       return this.getDataContextModule();
     }
@@ -1209,13 +1220,46 @@ export class Kernel {
     return proxy;
   }
 
+  private renderElement(containerId: string, element: React.ReactNode) {
+    const container = document.getElementById(containerId);
+    if (!container) {
+      throw new Error(`Container "${containerId}" not found`);
+    }
+    const root = createRoot(container);
+    const wrapped = this.previewMode
+      ? React.createElement(this.getPreviewErrorBoundaryType(), null, element)
+      : element;
+    root.render(wrapped);
+  }
+
+  private async mountRouteManifest(
+    routes: ReturnType<typeof normalizeRouteManifest>,
+    containerId: string,
+  ) {
+    if (!routes) {
+      throw new Error("Route manifest is empty");
+    }
+    const element = createKernelRouterElement(
+      {
+        api: this.api,
+        load: (name: string, version = "latest") => this.load(name, version),
+        redirectToLogin: () => this.redirectToLogin(),
+      },
+      routes,
+    );
+    this.renderElement(containerId, element);
+  }
+
   async mount(name: string, containerId = "root", version = "latest") {
     const pkg = await this.load(name, version);
     if (!pkg) {
       throw new Error(`Package ${name} does not found`);
     }
-    const container = document.getElementById(containerId)!;
-    const root = createRoot(container); // Create a root
+    const routes = normalizeRouteManifest(pkg);
+    if (routes) {
+      await this.mountRouteManifest(routes, containerId);
+      return;
+    }
     const Component = pkg.App ?? pkg.default ?? pkg;
     if (!Component) {
       throw new Error(`Package ${name} has no App export`);
@@ -1223,14 +1267,26 @@ export class Kernel {
     const baseElement = React.isValidElement(Component)
       ? Component
       : React.createElement(Component);
-    const element = this.previewMode
-      ? React.createElement(this.getPreviewErrorBoundaryType(), null, baseElement)
-      : baseElement;
-    root.render(element);
+    this.renderElement(containerId, baseElement);
   }
 
-  async boot(name: string, containerId = "root", version = "latest") {
-    return this.mount(name, containerId, version);
+  async boot(name = "@app/routes", containerId = "root", version = "latest") {
+    const candidates =
+      name === "@app/routes" ? ["@app/routes", "@app/dashboard"] : [name];
+    let lastError: unknown = null;
+
+    for (const candidate of candidates) {
+      try {
+        await this.mount(candidate, containerId, version);
+        return;
+      } catch (error) {
+        lastError = error;
+      }
+    }
+
+    throw lastError instanceof Error
+      ? lastError
+      : new Error("Kernel boot failed");
   }
 }
 
