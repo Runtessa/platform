@@ -19,8 +19,7 @@ ENV NPM_CONFIG_FETCH_TIMEOUT=1800000
 
 COPY .docker-build/container-agent/package.json ./
 COPY .docker-build/container-agent/package-lock.json ./
-RUN --mount=type=cache,target=/root/.npm,id=npm-container-agent,sharing=locked \
-    npm ci --omit=dev --ignore-scripts --no-audit --no-fund \
+RUN npm ci --omit=dev --ignore-scripts --no-audit --no-fund \
     && npm cache clean --force
 
 COPY .docker-build/container-agent/dist ./dist

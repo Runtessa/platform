@@ -23,8 +23,7 @@ ENV NPM_CONFIG_FETCH_TIMEOUT=1800000
 
 COPY .docker-build/auth/package.json ./
 COPY .docker-build/auth/package-lock.json ./
-RUN --mount=type=cache,target=/root/.npm,id=npm-auth,sharing=locked \
-    npm ci --omit=dev --ignore-scripts --no-audit --no-fund \
+RUN npm ci --omit=dev --ignore-scripts --no-audit --no-fund \
     && npm cache clean --force
 
 COPY .docker-build/auth/.next ./.next
