@@ -22,7 +22,7 @@
     "@idp/shared": "file:../packages/shared",
     "@babel/core": "7.29.7",
     "@babel/preset-env": "7.29.0",
-    "@babel/preset-react": "7.28.5",
+    "@babel/preset-react": "8.0.1",
     "@babel/preset-typescript": "7.28.5",
     "@mastra/core": "1.1.0",
     "@monaco-editor/react": "4.7.0",
