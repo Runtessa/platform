@@ -27,6 +27,10 @@ pnpm-debug.log*
 
 .env
 .env.local
+**/.env
+**/.env.*
+**/*.env
+**/*.env.*
 
 project.dump.md
 project_dumps

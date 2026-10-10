@@ -54,7 +54,9 @@ jobs:
           npm --prefix src/container-agent ci
 
       - name: Run exact local Docker flow
-        run: npm run docker:build:local
+        run: |
+          npm run docker:init-env
+          npm run docker:build:local
 
   build-images:
     name: Build ${{ matrix.service.image_name }}
