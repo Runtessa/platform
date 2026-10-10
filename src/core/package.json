@@ -52,7 +52,7 @@
     "@types/node": "20.19.27",
     "@types/pg": "8.16.0",
     "concurrently": "8.2.2",
-    "cross-env": "7.0.3",
+    "cross-env": "10.1.0",
     "ts-node": "10.9.2"
   },
   "license": "Apache-2.0",
