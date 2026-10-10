@@ -42,6 +42,10 @@ services:
 
   core:
     image: ${CORE_IMAGE}
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+      - seccomp=./docker/runtime/seccomp.json
     restart: unless-stopped
     env_file:
       - ./env/core.env
@@ -55,6 +59,10 @@ services:
 
   ide:
     image: ${IDE_IMAGE}
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+      - seccomp=./docker/runtime/seccomp.json
     restart: unless-stopped
     env_file:
       - ./env/ide.env

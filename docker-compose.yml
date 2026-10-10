@@ -20,6 +20,10 @@ services:
       - redis_data:/data
 
   core:
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+      - seccomp=./docker/runtime/seccomp.json
     build:
       context: .
       dockerfile: src/core/Dockerfile
@@ -46,6 +50,10 @@ services:
       - ./docker/env/auth.env:/app/.env:ro
 
   ide:
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+      - seccomp=./docker/runtime/seccomp.json
     build:
       context: .
       dockerfile: src/ideNew/Dockerfile

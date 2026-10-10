@@ -4,7 +4,7 @@ const ts = require('typescript');
 const root = path.resolve(__dirname, '../..');
 const load = (file, mocks = {}) => {
   const code = ts.transpileModule(fs.readFileSync(path.join(root, file), 'utf8'), {
-    compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
+    compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020, esModuleInterop: true },
     fileName: file,
   }).outputText;
   const module = { exports: {} };

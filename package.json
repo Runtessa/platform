@@ -18,6 +18,8 @@
     "security:history": "node scripts/security/scan-history.mjs",
     "test:env-setup": "node --test scripts/docker/init-env.test.mjs",
     "test:logging": "node --test scripts/security/logging-*.test.cjs",
+    "test:runtime": "npm run build:shared && npm --prefix src/core run build && node --test --test-concurrency=1 scripts/security/runtime-isolation.test.cjs scripts/security/runtime-models.test.cjs scripts/security/runtime-capabilities.test.cjs",
+    "test:runtime:integration": "npm run build:shared && npm --prefix src/core run build && node scripts/security/runtime-postgres.test.cjs",
     "start": "npm run build && npm run build:front && node dist/server.js",
     "core:dev": "npm --prefix src/core run dev",
     "core:start": "npm --prefix src/core run start",

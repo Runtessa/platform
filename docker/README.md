@@ -14,6 +14,11 @@ This folder contains a full image-based runtime stack for:
 
 Kernel is built inside the core image (not a standalone container).
 
+Live code and model execution run inside the existing Core and IDE services.
+Before starting them, review the [Linux isolation requirements and remaining
+limits](runtime/README.md). Unsupported sandbox startup returns an error rather
+than executing tenant code in the platform process.
+
 ## Initialize private configuration
 
 From the repository root, run:
@@ -43,7 +48,7 @@ Before starting services:
   to private files when you configure those integrations.
 - When bind-mounting these files using the root Compose stack, ensure the
   container's application user can read them. Keep access limited to that user;
-  the IDE image runs as the `node` user.
+  the Core and IDE images run as the `node` user.
 
 Runtime environment files are ignored by Git and excluded from Docker build
 contexts. Publish only the `*.env.example` templates. Keep a private backup of
