@@ -34,6 +34,8 @@ Live tenant code execution and the existing service topology remain design const
 - Improve adapter role/grant validation and operational diagnostics.
 - Provide realistic, credential-free sample applications and migration examples.
 - Define release/version compatibility and support windows once releases stabilize.
+- Replace the temporary Ubuntu 22.04 native-isolation CI runner with a newer host
+  and reviewed namespace policy before GitHub retires it on 2027-04-17.
 
 Changes to the process boundary, tenant identifiers or SSO contracts should start with
 a scoped design discussion and tests. OIDC conformance is not currently a project claim.

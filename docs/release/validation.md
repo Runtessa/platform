@@ -27,6 +27,13 @@ nested devpts mount. Only the disposable test container's label isolation was
 disabled for the compatibility check; the Compose security settings were not
 relaxed. Validate the target deployment's host policy separately.
 
+GitHub's moving Ubuntu runner rejected native restricted execution during the first
+CI run. Native isolation checks are now pinned to Ubuntu 22.04 with an explicit
+namespace preflight; host protections are not disabled. This is a temporary CI host:
+[GitHub retires that runner on 2027-04-17](https://github.com/actions/runner-images/issues/14254).
+Move these checks to a newer compatible runner with a reviewed application-specific
+host policy before retirement; do not hide failures or add an in-process fallback.
+
 The fresh installation smoke creates its own PostgreSQL containers and synthetic
 configuration. It does not perform an interactive IDE → Auth SSO walkthrough or
 prove the entire Compose deployment. IDE/Auth production images, upgrade/restore

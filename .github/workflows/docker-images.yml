@@ -3,6 +3,20 @@ name: Docker Images
 on:
   push:
     branches: [main]
+    paths:
+      - 'src/**'
+      - 'scripts/docker/**'
+      - 'scripts/release/prepare-monaco.mjs'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'docker/**'
+      - 'docker-compose.yml'
+      - '.dockerignore'
+      - 'LICENSE'
+      - 'NOTICE'
+      - 'THIRD_PARTY_NOTICES.md'
+      - 'licenses/**'
+      - '.github/workflows/docker-images.yml'
     tags:
       - 'v*'
   workflow_dispatch:
