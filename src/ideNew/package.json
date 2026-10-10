@@ -48,7 +48,7 @@
     "tedious": "20.3.3",
     "typescript": "5.9.3",
     "typeorm": "0.3.31",
-    "zod": "3.25.76"
+    "zod": "4.6.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "4.1.18",
