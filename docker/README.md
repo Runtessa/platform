@@ -19,6 +19,11 @@ Before starting them, review the [Linux isolation requirements and remaining
 limits](runtime/README.md). Unsupported sandbox startup returns an error rather
 than executing tenant code in the platform process.
 
+Core and IDE require [explicit platform schema migrations](../scripts/database/README.md)
+before first startup or an upgrade. They do not create or alter tables at startup.
+Existing databases need baseline validation/adoption; do not run fresh-install SQL
+over an unverified existing schema.
+
 ## Initialize private configuration
 
 From the repository root, run:

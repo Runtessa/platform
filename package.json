@@ -53,7 +53,13 @@
     "seed-packages": "ts-node src/core/seed-packages.ts",
     "dump": "node dump-project.js",
     "vscode:test": "npm --prefix src/ide-vscode run test",
-    "vscode:host": "npm --prefix src/ide-vscode run dev:host"
+    "vscode:host": "npm --prefix src/ide-vscode run dev:host",
+    "test:database": "npm run build:shared && node --test --test-concurrency=1 scripts/database/*.test.cjs",
+    "db:status": "npm run build:shared && node src/packages/shared/dist/database/cli.js status",
+    "db:plan": "npm run build:shared && node src/packages/shared/dist/database/cli.js plan",
+    "db:diff": "npm run build:shared && node src/packages/shared/dist/database/cli.js diff",
+    "db:migrate": "npm run build:shared && node src/packages/shared/dist/database/cli.js migrate",
+    "db:adopt": "npm run build:shared && node src/packages/shared/dist/database/cli.js adopt"
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
