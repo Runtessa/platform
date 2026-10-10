@@ -166,8 +166,8 @@ Recommended model:
 ### IDE save/publish flow
 
 1. Developer edits code in `src/ideNew` editor UI.
-2. IDE calls Core APIs for modules, UI entities, ACL, or models.
-3. Draft data is saved in Core-owned records.
+2. The browser calls IDE authoring APIs for modules, UI entities, ACL, or models.
+3. IDE saves Core-owned records through its direct `CoreDataSource` connection.
 4. Preview uses `src/public/preview.html` and Kernel source/bundle mode.
 5. Publish creates revisions and marks artifacts as published.
 6. Runtime non-dev paths consume published artifacts.
@@ -194,12 +194,14 @@ Recommended model:
   - OAuth authorize/token/userinfo endpoints
   - tenant SSO whitelist and client provisioning
 
-- IDE ↔ Core
-  - `/api/modules`
-  - `/api/ui-entities`
-  - `/api/acl/config`
-  - `/api/registry/*`
-  - `/api/registry-tenant/*`
+- IDE → Core database
+  - `CoreDataSource` configured with `CORE_DATABASE_URL`
+  - authoring APIs such as `/api/modules`, `/api/ui-entities`, and `/api/acl/config`
+    run in IDE and operate on Core-owned records
+  - tenant preview runs in the browser against Core
+
+- IDE → Auth
+  - internal tenant SSO registration through `IDE_AUTH_SERVICE_URL`
 
 - Kernel ↔ Core
   - registry endpoints
@@ -213,6 +215,9 @@ Recommended model:
 
 - IDE ↔ Codex Gateway
   - assistant execution, workspace, and streaming routes
+
+See the [dependency graph](./dependency-graph.md) for transport directions,
+separate databases and Redis monitoring/orchestration paths.
 
 ## Refactor hotspots
 

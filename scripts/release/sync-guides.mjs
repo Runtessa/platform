@@ -8,6 +8,7 @@ const guides = {
   'docs/platform/overview.md': ['platform/overview', 'Platform tour'],
   'docs/platform/authoring.md': ['platform/authoring', 'Authoring and publication'],
   'docs/platform/tooling.md': ['platform/tooling', 'Development and operations tools'],
+  'docs/architecture/dependency-graph.md': ['architecture/dependency-graph', 'Dependency Graph'],
   'docs/tutorials/first-application.md': ['tutorials/first-application', 'Your first application'],
   'docs/developer-guide.md': ['platform/developer-guide', 'Platform developer guide'],
   'docs/platform-cookbook/README.md': ['cookbook/overview', 'Application cookbook'],

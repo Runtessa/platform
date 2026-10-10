@@ -33,6 +33,8 @@ The platform guides and cookbook explain how to work with the system. The
 [developer guide](developer-guide.md) and
 [architecture map](site/docs/architecture/idpcore-map.md) explain where that
 behavior belongs in the source.
+The [dependency graph](architecture/dependency-graph.md) distinguishes browser
+requests, direct database access and optional infrastructure connections.
 
 The [route inventory](site/docs/reference/routes.md),
 [service inventory](site/docs/reference/services.md) and
