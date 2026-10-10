@@ -24,3 +24,38 @@ html[data-theme='dark'] {
   display: table;
   width: 100%;
 }
+
+.home-hero { display: grid; grid-template-columns: 1.2fr 1fr; gap: 3rem; align-items: center; padding-top: 5rem; padding-bottom: 4rem; }
+.home-eyebrow { color: var(--ifm-color-primary); font-size: .9rem; font-weight: 600; letter-spacing: .02em; }
+.home-intro h1 { font-size: clamp(2.3rem, 4vw, 3.6rem); line-height: 1.12; letter-spacing: -.04em; margin-bottom: 1.5rem; }
+.home-intro h1 span { color: var(--ifm-color-primary); }
+.home-lead { font-size: 1.15rem; line-height: 1.75; max-width: 36rem; }
+.home-actions { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+.home-status { margin-top: 1.5rem; font-size: .9rem; color: var(--ifm-color-emphasis-700); }
+.home-code { min-width: 0; border: 1px solid var(--ifm-color-emphasis-300); border-radius: 12px; background: var(--ifm-background-surface-color); overflow: hidden; }
+.home-code-title { display: flex; justify-content: space-between; gap: .75rem; padding: 1rem 1.25rem; border-bottom: 1px solid var(--ifm-color-emphasis-300); font-size: .85rem; }
+.home-code pre { font-size: .85rem; border-radius: 0; }
+.home-code p { padding: 0 1.25rem 1rem; margin: 0; font-size: .85rem; color: var(--ifm-color-emphasis-700); }
+.home-section { padding-top: 3rem; padding-bottom: 3rem; }
+.home-section h2 { font-size: clamp(1.65rem, 3vw, 2.3rem); letter-spacing: -.025em; }
+.home-capabilities { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem 3rem; padding-top: 1rem; }
+.home-capabilities article { padding: 1.5rem 0; border-top: 1px solid var(--ifm-color-emphasis-300); }
+.home-capabilities h3 { font-size: 1.2rem; }
+.home-capabilities p { color: var(--ifm-color-emphasis-700); margin: 0; }
+.home-boundary { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+.home-flow { text-align: center; }
+.home-flow div { display: flex; flex-direction: column; gap: .35rem; border: 1px solid var(--ifm-color-emphasis-300); border-radius: 8px; padding: 1.25rem; background: var(--ifm-background-surface-color); }
+.home-flow span { color: var(--ifm-color-emphasis-700); font-size: .9rem; }
+.home-flow .home-flow-arrow { display: block; font-size: 1.4rem; padding: .2rem; color: var(--ifm-color-primary); }
+.home-read-more { padding-bottom: 5rem; }
+a:focus-visible { outline: 3px solid var(--ifm-color-primary); outline-offset: 4px; }
+@media (max-width: 996px) {
+  .home-hero { grid-template-columns: 1fr; gap: 2rem; padding-top: 3rem; }
+  .home-boundary { grid-template-columns: 1fr; gap: 2rem; }
+}
+@media (max-width: 600px) {
+  .home-capabilities { grid-template-columns: 1fr; gap: 0; }
+  .home-section { padding-top: 2rem; padding-bottom: 2rem; }
+  .home-actions .button { width: 100%; }
+  .home-code pre { font-size: .75rem; }
+}

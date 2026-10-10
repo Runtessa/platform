@@ -8,6 +8,11 @@ Tenant backend code is split across `Modules` and `Models`.
 - Create it from the `Modules` tree and choose route path plus HTTP method.
 - Export a single handler with `module.exports = async function handler(req, adapters) {}`.
 
+GET application pages use the frontend shell. For a backend walkthrough, use a
+non-conflicting API path such as `/api/hello`, and grant anonymous access explicitly
+only for a public demonstration route. Draft execution requires an authenticated
+DEVELOPER/ADMIN bound to the selected tenant; a preview header is not authorization.
+
 ## Module Example
 
 ```js

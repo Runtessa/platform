@@ -2,13 +2,14 @@ import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'IdpCore Docs',
-  tagline: 'Architecture, APIs, and operations for the IDP platform',
+  title: 'IdpCore',
+  tagline: 'Author, publish and run live tenant applications',
   favicon: 'img/favicon.svg',
-  url: 'http://localhost',
-  baseUrl: '/',
-  organizationName: 'idp',
-  projectName: 'idpcore-docs',
+  url: process.env.DOCS_URL || 'https://alirezadadrass.github.io',
+  baseUrl: process.env.DOCS_BASE_URL || '/Idp/',
+  organizationName: 'AlirezaDadrass',
+  projectName: 'Idp',
+  trailingSlash: true,
   onBrokenLinks: 'throw',
   i18n: {
     defaultLocale: 'en',
@@ -17,7 +18,7 @@ const config: Config = {
   markdown: {
     mermaid: true,
     hooks: {
-      onBrokenMarkdownLinks: 'warn',
+      onBrokenMarkdownLinks: 'throw',
     },
   },
   themes: ['@docusaurus/theme-mermaid'],
@@ -27,8 +28,8 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          routeBasePath: '/',
-          editUrl: undefined,
+          routeBasePath: 'docs',
+
         },
         blog: false,
         theme: {
@@ -41,9 +42,12 @@ const config: Config = {
     image: 'img/social-card.svg',
     navbar: {
       title: 'IdpCore',
+      logo: { alt: 'IdpCore', src: 'img/favicon.svg' },
       items: [
-        { to: '/', label: 'Docs', position: 'left' },
-        { to: '/reference/routes', label: 'API', position: 'left' },
+        { to: '/docs/getting-started', label: 'Get started', position: 'left' },
+        { to: '/docs/', label: 'Documentation', position: 'left' },
+        { href: 'https://github.com/AlirezaDadrass/Idp', label: 'GitHub', position: 'right' },
+        { to: '/docs/security', label: 'Security', position: 'left' },
       ],
     },
     footer: {
@@ -52,13 +56,13 @@ const config: Config = {
         {
           title: 'Docs',
           items: [
-            { label: 'Architecture', to: '/architecture/overview' },
-            { label: 'Service Inventory', to: '/reference/services' },
-            { label: 'Routes', to: '/reference/routes' },
+            { label: 'Architecture', to: '/docs/architecture/overview' },
+            { label: 'Migrations', to: '/docs/operations/migrations' },
+            { label: 'Routes', to: '/docs/reference/routes' },
           ],
         },
       ],
-      copyright: `Generated ${new Date().toISOString().slice(0, 10)}`,
+      copyright: 'Copyright 2026 Alireza Dadrass and IdpCore contributors. Apache-2.0.',
     },
     prism: {
       additionalLanguages: ['bash', 'json', 'yaml'],

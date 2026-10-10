@@ -1,0 +1,17 @@
+name: Scoped proposal
+description: Propose an improvement to the live application platform.
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to solve
+      description: Explain the user or operator need and current limitation.
+    validations:
+      required: true
+  - type: textarea
+    id: approach
+    attributes:
+      label: Proposed approach and alternatives
+      description: Include affected boundaries, compatibility and verification where relevant.
+    validations:
+      required: true

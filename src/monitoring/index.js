@@ -21,13 +21,18 @@ registerErrorHandler(app);
 
 const host = (process.env.MONITORING_HOST || '0.0.0.0').trim();
 const port = parseIntBounded(process.env.MONITORING_PORT, 3011, 1, 65535);
-const { server, protocol } = createIngressServer(app);
+
 const monitoringPubSubIngest = createMonitoringPubSubIngest();
 
-server.listen(port, host, () => {
-  console.log(`[monitoring] listening on ${protocol}://${host}:${port} (version: ${pkg.version})`);
-  monitoringPubSubIngest.start().catch((error) => {
-    const message = String(error?.message || error || 'failed to start monitoring pubsub ingest');
-    console.error(`[monitoring] ${message}`);
+createIngressServer(app).then(({ server, protocol }) => {
+  server.listen(port, host, () => {
+    console.log(`[monitoring] listening on ${protocol}://${host}:${port} (version: ${pkg.version})`);
+    monitoringPubSubIngest.start().catch((error) => {
+      const message = String(error?.message || error || 'failed to start monitoring pubsub ingest');
+      console.error(`[monitoring] ${message}`);
+    });
   });
+}).catch(() => {
+  console.error('TLS server initialization failed; check private configuration.');
+  process.exitCode = 1;
 });

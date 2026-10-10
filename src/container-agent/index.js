@@ -193,14 +193,19 @@ const port = parseIntBounded(
   1,
   65535
 );
-const { server, protocol } = createServer();
 
-server.listen(port, host, () => {
-  console.log(
-    `[container-manager] listening on ${protocol}://${host}:${port} (engine=${managerConfig.resolveEngineLabel()}, version=${pkg.version})`
-  );
-  orchestratorWorker.start().catch((error) => {
-    const message = String(error?.message || error || 'failed to start redis orchestration worker');
-    console.error(`[container-manager] ${message}`);
+
+createServer().then(({ server, protocol }) => {
+  server.listen(port, host, () => {
+    console.log(
+      `[container-manager] listening on ${protocol}://${host}:${port} (engine=${managerConfig.resolveEngineLabel()}, version=${pkg.version})`
+    );
+    orchestratorWorker.start().catch((error) => {
+      const message = String(error?.message || error || 'failed to start redis orchestration worker');
+      console.error(`[container-manager] ${message}`);
+    });
   });
+}).catch(() => {
+  console.error('TLS server initialization failed; check private configuration.');
+  process.exitCode = 1;
 });

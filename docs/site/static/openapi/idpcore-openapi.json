@@ -2,12 +2,12 @@
   "openapi": "3.0.3",
   "info": {
     "title": "IdpCore API",
-    "version": "1.0.0",
-    "description": "Generated API catalog for IdpCore services"
+    "version": "0.1.0",
+    "description": "Source-derived route inventory; request schemas, authorization and response contracts require handler-source review."
   },
   "servers": [
     {
-      "url": "http://localhost:3000",
+      "url": "http://localhost:3005",
       "description": "Local core"
     },
     {
@@ -630,6 +630,21 @@
         "x-source-file": "src/auth/routes/profile/two-factor.ts"
       }
     },
+    "/api/profile/avatar": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "auth POST /api/profile/avatar",
+        "operationId": "auth_post__api_profile_avatar",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/auth/routes/profile/account.ts"
+      }
+    },
     "/api/profile/avatar/upload": {
       "post": {
         "tags": [
@@ -637,6 +652,21 @@
         ],
         "summary": "auth POST /api/profile/avatar/upload",
         "operationId": "auth_post__api_profile_avatar_upload",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/auth/routes/profile/account.ts"
+      }
+    },
+    "/api/profile/contact": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "auth POST /api/profile/contact",
+        "operationId": "auth_post__api_profile_contact",
         "responses": {
           "200": {
             "description": "OK"
@@ -667,6 +697,21 @@
         ],
         "summary": "auth POST /api/profile/password",
         "operationId": "auth_post__api_profile_password",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/auth/routes/profile/account.ts"
+      }
+    },
+    "/api/profile/sessions/{sessionRandId}/revoke": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "auth POST /api/profile/sessions/:sessionRandId/revoke",
+        "operationId": "auth_post__api_profile_sessions__sessionRandId__revoke",
         "responses": {
           "200": {
             "description": "OK"
@@ -1050,6 +1095,21 @@
         "x-source-file": "src/auth/routes/auth/session.ts"
       }
     },
+    "/auth/start": {
+      "get": {
+        "tags": [
+          "core"
+        ],
+        "summary": "core GET /auth/start",
+        "operationId": "core_get__auth_start",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/core/app/routes/authSsoRoutes.ts"
+      }
+    },
     "/health": {
       "get": {
         "tags": [
@@ -1080,6 +1140,21 @@
         "x-source-file": "src/monitoring/lib/routes.js"
       }
     },
+    "/kernel-source.js": {
+      "get": {
+        "tags": [
+          "core"
+        ],
+        "summary": "core GET /kernel-source.js",
+        "operationId": "core_get__kernel_source_js",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/core/server.ts"
+      }
+    },
     "/login": {
       "get": {
         "tags": [
@@ -1093,6 +1168,21 @@
           }
         },
         "x-source-file": "src/core/app/routes/authSsoRoutes.ts"
+      }
+    },
+    "/manifest.webmanifest": {
+      "get": {
+        "tags": [
+          "core"
+        ],
+        "summary": "core GET /manifest.webmanifest",
+        "operationId": "core_get__manifest_webmanifest",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/core/server.ts"
       }
     },
     "/modules": {
@@ -1254,6 +1344,148 @@
         "x-source-file": "src/auth/routes/oauth/userinfo.ts"
       }
     },
+    "/orchestration/agents": {
+      "get": {
+        "tags": [
+          "core"
+        ],
+        "summary": "core GET /orchestration/agents",
+        "operationId": "core_get__orchestration_agents",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/core/app/routers/api.ts"
+      }
+    },
+    "/orchestration/agents/heartbeat": {
+      "post": {
+        "tags": [
+          "core"
+        ],
+        "summary": "core POST /orchestration/agents/heartbeat",
+        "operationId": "core_post__orchestration_agents_heartbeat",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/core/app/routers/api.ts"
+      }
+    },
+    "/orchestration/operations": {
+      "get": {
+        "tags": [
+          "core"
+        ],
+        "summary": "core GET /orchestration/operations",
+        "operationId": "core_get__orchestration_operations",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/core/app/routers/api.ts"
+      }
+    },
+    "/orchestration/workloads": {
+      "get": {
+        "tags": [
+          "core"
+        ],
+        "summary": "core GET /orchestration/workloads",
+        "operationId": "core_get__orchestration_workloads",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/core/app/routers/api.ts"
+      },
+      "post": {
+        "tags": [
+          "core"
+        ],
+        "summary": "core POST /orchestration/workloads",
+        "operationId": "core_post__orchestration_workloads",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/core/app/routers/api.ts"
+      }
+    },
+    "/orchestration/workloads/{id}": {
+      "delete": {
+        "tags": [
+          "core"
+        ],
+        "summary": "core DELETE /orchestration/workloads/:id",
+        "operationId": "core_delete__orchestration_workloads__id_",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/core/app/routers/api.ts"
+      },
+      "get": {
+        "tags": [
+          "core"
+        ],
+        "summary": "core GET /orchestration/workloads/:id",
+        "operationId": "core_get__orchestration_workloads__id_",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/core/app/routers/api.ts"
+      },
+      "patch": {
+        "tags": [
+          "core"
+        ],
+        "summary": "core PATCH /orchestration/workloads/:id",
+        "operationId": "core_patch__orchestration_workloads__id_",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/core/app/routers/api.ts"
+      }
+    },
+    "/orchestration/workloads/{id}/placements": {
+      "get": {
+        "tags": [
+          "core"
+        ],
+        "summary": "core GET /orchestration/workloads/:id/placements",
+        "operationId": "core_get__orchestration_workloads__id__placements",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/core/app/routers/api.ts"
+      },
+      "put": {
+        "tags": [
+          "core"
+        ],
+        "summary": "core PUT /orchestration/workloads/:id/placements",
+        "operationId": "core_put__orchestration_workloads__id__placements",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/core/app/routers/api.ts"
+      }
+    },
     "/profile": {
       "get": {
         "tags": [
@@ -1267,6 +1499,36 @@
           }
         },
         "x-source-file": "src/auth/server.ts"
+      }
+    },
+    "/registry-catalog": {
+      "get": {
+        "tags": [
+          "core"
+        ],
+        "summary": "core GET /registry-catalog",
+        "operationId": "core_get__registry_catalog",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/core/app/routers/api.ts"
+      }
+    },
+    "/registry-tenant-catalog": {
+      "get": {
+        "tags": [
+          "core"
+        ],
+        "summary": "core GET /registry-tenant-catalog",
+        "operationId": "core_get__registry_tenant_catalog",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/core/app/routers/api.ts"
       }
     },
     "/registry-tenant/*": {
@@ -1297,6 +1559,21 @@
           }
         },
         "x-source-file": "src/core/app/routers/api.ts"
+      }
+    },
+    "/service-worker.js": {
+      "get": {
+        "tags": [
+          "core"
+        ],
+        "summary": "core GET /service-worker.js",
+        "operationId": "core_get__service_worker_js",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/core/server.ts"
       }
     },
     "/ui-entities": {
@@ -1711,6 +1988,21 @@
         "x-source-file": "src/ideNew/src/pages/api/admin/logs/[id].ts"
       }
     },
+    "/api/admin/maintenance/backfill-published-source": {
+      "post": {
+        "tags": [
+          "ide"
+        ],
+        "summary": "ide ANY /api/admin/maintenance/backfill-published-source",
+        "operationId": "ide_post__api_admin_maintenance_backfill_published_source",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/ideNew/src/pages/api/admin/maintenance/backfill-published-source.ts"
+      }
+    },
     "/api/admin/monitoring/rules/[id]": {
       "post": {
         "tags": [
@@ -1739,6 +2031,109 @@
           }
         },
         "x-source-file": "src/ideNew/src/pages/api/admin/monitoring/runtime.ts"
+      }
+    },
+    "/api/admin/orchestration/agents": {
+      "post": {
+        "tags": [
+          "ide"
+        ],
+        "summary": "ide ANY /api/admin/orchestration/agents",
+        "operationId": "ide_post__api_admin_orchestration_agents",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/ideNew/src/pages/api/admin/orchestration/agents.ts"
+      }
+    },
+    "/api/admin/orchestration/operations": {
+      "post": {
+        "tags": [
+          "ide"
+        ],
+        "summary": "ide ANY /api/admin/orchestration/operations",
+        "operationId": "ide_post__api_admin_orchestration_operations",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/ideNew/src/pages/api/admin/orchestration/operations.ts"
+      }
+    },
+    "/api/admin/orchestration/workloads": {
+      "get": {
+        "tags": [
+          "ide"
+        ],
+        "summary": "ide GET /api/admin/orchestration/workloads",
+        "operationId": "ide_get__api_admin_orchestration_workloads",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/ideNew/src/pages/api/admin/orchestration/workloads/index.ts"
+      }
+    },
+    "/api/admin/orchestration/workloads/[id]": {
+      "get": {
+        "tags": [
+          "ide"
+        ],
+        "summary": "ide GET /api/admin/orchestration/workloads/[id]",
+        "operationId": "ide_get__api_admin_orchestration_workloads__id_",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/ideNew/src/pages/api/admin/orchestration/workloads/[id].ts"
+      },
+      "delete": {
+        "tags": [
+          "ide"
+        ],
+        "summary": "ide DELETE /api/admin/orchestration/workloads/[id]",
+        "operationId": "ide_delete__api_admin_orchestration_workloads__id_",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/ideNew/src/pages/api/admin/orchestration/workloads/[id].ts"
+      }
+    },
+    "/api/admin/publish-requests": {
+      "post": {
+        "tags": [
+          "ide"
+        ],
+        "summary": "ide ANY /api/admin/publish-requests",
+        "operationId": "ide_post__api_admin_publish_requests",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/ideNew/src/pages/api/admin/publish-requests.ts"
+      }
+    },
+    "/api/admin/publish-requests/[id]": {
+      "post": {
+        "tags": [
+          "ide"
+        ],
+        "summary": "ide ANY /api/admin/publish-requests/[id]",
+        "operationId": "ide_post__api_admin_publish_requests__id_",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/ideNew/src/pages/api/admin/publish-requests/[id].ts"
       }
     },
     "/api/admin/shared-modules": {
@@ -2690,6 +3085,21 @@
         "x-source-file": "src/ideNew/src/pages/api/assistant/tenant-dump.ts"
       }
     },
+    "/api/assistant/workspace/activate": {
+      "post": {
+        "tags": [
+          "ide"
+        ],
+        "summary": "ide ANY /api/assistant/workspace/activate",
+        "operationId": "ide_post__api_assistant_workspace_activate",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/ideNew/src/pages/api/assistant/workspace/activate.ts"
+      }
+    },
     "/api/authentication/login": {
       "post": {
         "tags": [
@@ -2946,6 +3356,51 @@
           }
         },
         "x-source-file": "src/ideNew/src/pages/api/modules/[id]/versions.ts"
+      }
+    },
+    "/api/publish-requests": {
+      "post": {
+        "tags": [
+          "ide"
+        ],
+        "summary": "ide ANY /api/publish-requests",
+        "operationId": "ide_post__api_publish_requests",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/ideNew/src/pages/api/publish-requests/index.ts"
+      }
+    },
+    "/api/publish-requests/[id]/approve": {
+      "post": {
+        "tags": [
+          "ide"
+        ],
+        "summary": "ide ANY /api/publish-requests/[id]/approve",
+        "operationId": "ide_post__api_publish_requests__id__approve",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/ideNew/src/pages/api/publish-requests/[id]/approve.ts"
+      }
+    },
+    "/api/publish-requests/[id]/reject": {
+      "post": {
+        "tags": [
+          "ide"
+        ],
+        "summary": "ide ANY /api/publish-requests/[id]/reject",
+        "operationId": "ide_post__api_publish_requests__id__reject",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/ideNew/src/pages/api/publish-requests/[id]/reject.ts"
       }
     },
     "/api/ui-entities": {

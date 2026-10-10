@@ -18,7 +18,7 @@ const readTlsFile = (filePath, label) => {
   }
 };
 
-const ensureSelfSignedCerts = (keyPath, certPath) => {
+const ensureSelfSignedCerts = async (keyPath, certPath) => {
   const resolvedKeyPath = resolveTlsPath(keyPath);
   const resolvedCertPath = resolveTlsPath(certPath);
   const hasKey = fs.existsSync(resolvedKeyPath);
@@ -35,10 +35,10 @@ const ensureSelfSignedCerts = (keyPath, certPath) => {
   }
 
   const attrs = [{ name: 'commonName', value: process.env.MONITORING_TLS_CN || 'localhost' }];
-  const cert = selfsigned.generate(attrs, {
+  const cert = await selfsigned.generate(attrs, {
     keySize: 2048,
     algorithm: 'sha256',
-    days: parseIntBounded(process.env.MONITORING_TLS_SELF_SIGNED_DAYS, 825, 1, 3650),
+    notAfterDate: new Date(Date.now() + parseIntBounded(process.env.MONITORING_TLS_SELF_SIGNED_DAYS, 825, 1, 3650) * 86400000),
     extensions: [{ name: 'subjectAltName', altNames }],
   });
 
@@ -50,7 +50,7 @@ const ensureSelfSignedCerts = (keyPath, certPath) => {
   );
 };
 
-const createIngressServer = (app) => {
+const createIngressServer = async (app) => {
   const tlsRequired = asBool(process.env.MONITORING_TLS_REQUIRED, DEFAULTS.tlsRequired);
   const tlsEnabled = asBool(process.env.MONITORING_TLS_ENABLED, true);
   const autoSelfSigned = asBool(process.env.MONITORING_TLS_AUTO_SELF_SIGNED, true);
@@ -66,7 +66,7 @@ const createIngressServer = (app) => {
   }
 
   if (autoSelfSigned) {
-    ensureSelfSignedCerts(keyPath, certPath);
+    await ensureSelfSignedCerts(keyPath, certPath);
   } else if (!fs.existsSync(resolveTlsPath(keyPath)) || !fs.existsSync(resolveTlsPath(certPath))) {
     throw new Error(
       'TLS cert/key not found. Set MONITORING_TLS_KEY_PATH and MONITORING_TLS_CERT_PATH or enable MONITORING_TLS_AUTO_SELF_SIGNED',

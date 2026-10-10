@@ -16,7 +16,7 @@ const readTlsFile = (filePath, label, cwd) => {
   }
 };
 
-const ensureSelfSignedCerts = ({
+const ensureSelfSignedCerts = async ({
   keyPath,
   certPath,
   pickEnv,
@@ -38,15 +38,15 @@ const ensureSelfSignedCerts = ({
       value: pickEnv('CONTAINER_MANAGER_TLS_CN', 'CONTAINER_AGENT_TLS_CN') || 'localhost',
     },
   ];
-  const cert = selfsigned.generate(attrs, {
+  const cert = await selfsigned.generate(attrs, {
     keySize: 2048,
     algorithm: 'sha256',
-    days: parseIntBounded(
+    notAfterDate: new Date(Date.now() + parseIntBounded(
       pickEnv('CONTAINER_MANAGER_TLS_SELF_SIGNED_DAYS', 'CONTAINER_AGENT_TLS_SELF_SIGNED_DAYS'),
       825,
       1,
       3650
-    ),
+    ) * 86400000),
     extensions: [
       {
         name: 'subjectAltName',
@@ -74,7 +74,7 @@ const createServerFactory =
     logger = console,
     defaultTlsRequired = true,
   }) =>
-  () => {
+  async () => {
     const tlsRequired = asBool(
       pickEnv('CONTAINER_MANAGER_TLS_REQUIRED', 'CONTAINER_AGENT_TLS_REQUIRED'),
       defaultTlsRequired
@@ -107,7 +107,7 @@ const createServerFactory =
     }
 
     if (autoSelfSigned) {
-      ensureSelfSignedCerts({
+      await ensureSelfSignedCerts({
         keyPath,
         certPath,
         pickEnv,

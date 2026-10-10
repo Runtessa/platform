@@ -179,11 +179,11 @@ function buildOpenApi(expressRoutes, nextRoutes) {
     openapi: '3.0.3',
     info: {
       title: 'IdpCore API',
-      version: '1.0.0',
-      description: 'Generated API catalog for IdpCore services',
+      version: '0.1.0',
+      description: 'Source-derived route inventory; request schemas, authorization and response contracts require handler-source review.',
     },
     servers: [
-      { url: 'http://localhost:3000', description: 'Local core' },
+      { url: 'http://localhost:3005', description: 'Local core' },
       { url: 'http://localhost:3015', description: 'Local auth' },
       { url: 'http://localhost:3002', description: 'Local IDE' },
     ],

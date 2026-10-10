@@ -40,3 +40,15 @@ project_dumps
 *.dump.md
 docs/site/.docusaurus/
 docs/site/build/
+
+# Generated web assets are prepared from the locked Monaco package.
+src/ideNew/public/monaco/
+**/.next/
+*.tsbuildinfo
+
+# Kernel webpack output; build from src/kernel before packaging Core.
+src/public/bundle.js
+src/public/bundle.js.map
+src/public/bundle.js.LICENSE.txt
+src/public/index.html
+.release-preview/

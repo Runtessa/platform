@@ -35,25 +35,11 @@ High-level flow:
 
 ## 3. Local Setup
 
-### Prerequisites
-
-- Node.js 20+
-- npm
-- running DB/Redis as required by `.env`
-
-### Install
-
-```bash
-npm install
-```
-
-### Environment
-
-Use service-specific examples where available:
-
-- `src/core/.env.example`
-- `src/ideNew` env vars as needed by Next.js
-- `src/auth` env vars as needed by auth service
+Follow the canonical [Getting started](getting-started.md) guide. The supported
+live runtime uses Linux with namespaces and bubblewrap, Node 22.13+ in the 22.x
+line, PostgreSQL 17 and private generated configuration. Use locked installs and
+explicit platform migrations before starting Core/IDE. Older Node 20 instructions
+and automatic schema synchronization are no longer supported.
 
 ---
 

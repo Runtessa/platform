@@ -3,6 +3,10 @@ FROM node:22-alpine AS runner
 
 WORKDIR /app
 
+COPY LICENSE NOTICE THIRD_PARTY_NOTICES.md /app/
+COPY licenses /app/licenses
+
+
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV AUTH_HOST=0.0.0.0

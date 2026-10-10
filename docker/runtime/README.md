@@ -29,6 +29,10 @@ by the platform process.
 - Core now runs as the existing `node` image user. IDE already uses that user.
   Do not enable privileged containers or turn off seccomp to work around a host
   that disables user namespaces. Unsupported startup fails closed.
+- SELinux/container policy can also deny nested devpts mounts used by bubblewrap.
+  The maintainer's Fedora Podman host rejected this mount under its default container
+  label. Validate the target host's policy; the project does not automatically
+  disable SELinux or add a permissive Compose setting.
 - Development starts build the platform runtime once. Editing a tenant module or
   model still takes effect on the next invocation, without rebuilding the platform
   or restarting a service.

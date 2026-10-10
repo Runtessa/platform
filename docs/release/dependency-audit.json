@@ -1,0 +1,1834 @@
+{
+  "date": "2026-10-10",
+  "reports": [
+    {
+      "directory": ".",
+      "counts": {
+        "info": 0,
+        "low": 4,
+        "moderate": 8,
+        "high": 6,
+        "critical": 0,
+        "total": 18
+      },
+      "vulnerabilities": {
+        "@ai-sdk/provider-utils": {
+          "name": "@ai-sdk/provider-utils",
+          "severity": "low",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1193659,
+              "name": "@ai-sdk/provider-utils",
+              "dependency": "@ai-sdk/provider-utils",
+              "title": "@ai-sdk/provider-utils has an Uncontrolled Resource Consumption issue",
+              "url": "https://github.com/advisories/GHSA-866g-f22w-33x8",
+              "severity": "low",
+              "cwe": [
+                "CWE-400"
+              ],
+              "cvss": {
+                "score": 4.3,
+                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:L"
+              },
+              "range": ">=4.0.0-beta.10 <4.0.33"
+            },
+            {
+              "source": 1193660,
+              "name": "@ai-sdk/provider-utils",
+              "dependency": "@ai-sdk/provider-utils",
+              "title": "@ai-sdk/provider-utils has an Uncontrolled Resource Consumption issue",
+              "url": "https://github.com/advisories/GHSA-866g-f22w-33x8",
+              "severity": "low",
+              "cwe": [
+                "CWE-400"
+              ],
+              "cvss": {
+                "score": 4.3,
+                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:L"
+              },
+              "range": "<3.0.28"
+            }
+          ],
+          "effects": [
+            "@ai-sdk/ui-utils",
+            "@mastra/core"
+          ],
+          "range": ">=4.0.0-beta.10 <4.0.33 || <3.0.28",
+          "nodes": [
+            "node_modules/@ai-sdk/provider-utils",
+            "node_modules/@ai-sdk/provider-utils-v5",
+            "node_modules/@ai-sdk/provider-utils-v6"
+          ],
+          "fixAvailable": true
+        },
+        "@ai-sdk/ui-utils": {
+          "name": "@ai-sdk/ui-utils",
+          "severity": "low",
+          "isDirect": false,
+          "via": [
+            "@ai-sdk/provider-utils"
+          ],
+          "effects": [],
+          "range": "*",
+          "nodes": [
+            "node_modules/@ai-sdk/ui-utils-v5"
+          ],
+          "fixAvailable": true
+        },
+        "@mastra/core": {
+          "name": "@mastra/core",
+          "severity": "moderate",
+          "isDirect": true,
+          "via": [
+            "@ai-sdk/provider-utils",
+            "@ai-sdk/provider-utils",
+            "@ai-sdk/ui-utils",
+            "gray-matter"
+          ],
+          "effects": [],
+          "range": "<=0.0.0-zod-v4-stuff-20250825154219 || 0.10.2-alpha.0 - 0.24.10-alpha.0 || >=1.1.0-alpha.0",
+          "nodes": [
+            "node_modules/@mastra/core"
+          ],
+          "fixAvailable": true
+        },
+        "argparse": {
+          "name": "argparse",
+          "severity": "moderate",
+          "isDirect": false,
+          "via": [
+            "sprintf-js"
+          ],
+          "effects": [
+            "js-yaml"
+          ],
+          "range": "1.0.0 - 1.0.10",
+          "nodes": [
+            "node_modules/argparse"
+          ],
+          "fixAvailable": true
+        },
+        "braces": {
+          "name": "braces",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1240992,
+              "name": "braces",
+              "dependency": "braces",
+              "title": "braces vulnerable to stack-exhaustion denial of service through deeply nested patterns",
+              "url": "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
+              "severity": "high",
+              "cwe": [
+                "CWE-674"
+              ],
+              "cvss": {
+                "score": 7.5,
+                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+              },
+              "range": "<=3.0.3"
+            }
+          ],
+          "effects": [
+            "chokidar",
+            "micromatch"
+          ],
+          "range": "*",
+          "nodes": [
+            "node_modules/braces"
+          ],
+          "fixAvailable": {
+            "name": "http-proxy-middleware",
+            "version": "0.2.0",
+            "isSemVerMajor": true
+          }
+        },
+        "chokidar": {
+          "name": "chokidar",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "braces"
+          ],
+          "effects": [
+            "tailwindcss"
+          ],
+          "range": "2.0.0 - 3.6.0",
+          "nodes": [
+            "node_modules/tailwindcss/node_modules/chokidar"
+          ],
+          "fixAvailable": {
+            "name": "tailwindcss",
+            "version": "4.3.3",
+            "isSemVerMajor": true
+          }
+        },
+        "dompurify": {
+          "name": "dompurify",
+          "severity": "low",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1240621,
+              "name": "dompurify",
+              "dependency": "dompurify",
+              "title": "DOMPurify: IN_PLACE: node-removing afterSanitize hook leaves detached subtree event handlers armed, causing DOM XSS",
+              "url": "https://github.com/advisories/GHSA-p98j-92pf-mc4p",
+              "severity": "low",
+              "cwe": [
+                "CWE-79"
+              ],
+              "cvss": {
+                "score": 0,
+                "vectorString": null
+              },
+              "range": ">=3.4.13 <=3.4.15"
+            },
+            {
+              "source": 1241204,
+              "name": "dompurify",
+              "dependency": "dompurify",
+              "title": "DOMPurify: IN_PLACE returns a force-removed rawtext root whose text carries attacker markup — pure HTML reparse executes",
+              "url": "https://github.com/advisories/GHSA-6688-9rhm-gjv2",
+              "severity": "low",
+              "cwe": [
+                "CWE-79"
+              ],
+              "cvss": {
+                "score": 0,
+                "vectorString": null
+              },
+              "range": "<=3.4.15"
+            }
+          ],
+          "effects": [
+            "monaco-editor"
+          ],
+          "range": "<=3.4.15",
+          "nodes": [
+            "node_modules/dompurify"
+          ],
+          "fixAvailable": {
+            "name": "monaco-editor",
+            "version": "0.56.0",
+            "isSemVerMajor": true
+          }
+        },
+        "fast-glob": {
+          "name": "fast-glob",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "micromatch"
+          ],
+          "effects": [],
+          "range": "*",
+          "nodes": [
+            "node_modules/fast-glob"
+          ],
+          "fixAvailable": true
+        },
+        "gray-matter": {
+          "name": "gray-matter",
+          "severity": "moderate",
+          "isDirect": false,
+          "via": [
+            "js-yaml"
+          ],
+          "effects": [
+            "@mastra/core"
+          ],
+          "range": ">=2.0.2",
+          "nodes": [
+            "node_modules/gray-matter"
+          ],
+          "fixAvailable": true
+        },
+        "http-proxy-middleware": {
+          "name": "http-proxy-middleware",
+          "severity": "high",
+          "isDirect": true,
+          "via": [
+            "micromatch"
+          ],
+          "effects": [],
+          "range": ">=0.3.0",
+          "nodes": [
+            "node_modules/http-proxy-middleware"
+          ],
+          "fixAvailable": {
+            "name": "http-proxy-middleware",
+            "version": "0.2.0",
+            "isSemVerMajor": true
+          }
+        },
+        "js-yaml": {
+          "name": "js-yaml",
+          "severity": "moderate",
+          "isDirect": false,
+          "via": [
+            "argparse"
+          ],
+          "effects": [
+            "gray-matter"
+          ],
+          "range": "3.2.7 - 3.15.2",
+          "nodes": [
+            "node_modules/js-yaml"
+          ],
+          "fixAvailable": true
+        },
+        "micromatch": {
+          "name": "micromatch",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "braces"
+          ],
+          "effects": [
+            "fast-glob",
+            "http-proxy-middleware",
+            "tailwindcss"
+          ],
+          "range": ">=0.2.0",
+          "nodes": [
+            "node_modules/micromatch"
+          ],
+          "fixAvailable": {
+            "name": "http-proxy-middleware",
+            "version": "0.2.0",
+            "isSemVerMajor": true
+          }
+        },
+        "monaco-editor": {
+          "name": "monaco-editor",
+          "severity": "low",
+          "isDirect": true,
+          "via": [
+            "dompurify"
+          ],
+          "effects": [],
+          "range": ">=0.57.0-rc.2",
+          "nodes": [
+            "node_modules/monaco-editor"
+          ],
+          "fixAvailable": {
+            "name": "monaco-editor",
+            "version": "0.56.0",
+            "isSemVerMajor": true
+          }
+        },
+        "mssql": {
+          "name": "mssql",
+          "severity": "moderate",
+          "isDirect": true,
+          "via": [
+            "tedious"
+          ],
+          "effects": [
+            "typeorm"
+          ],
+          "range": ">=4.2.1",
+          "nodes": [
+            "node_modules/mssql"
+          ],
+          "fixAvailable": {
+            "name": "mssql",
+            "version": "4.2.0",
+            "isSemVerMajor": true
+          }
+        },
+        "sprintf-js": {
+          "name": "sprintf-js",
+          "severity": "moderate",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1241202,
+              "name": "sprintf-js",
+              "dependency": "sprintf-js",
+              "title": "sprintf-js vulnerable to denial of service through unbounded precision specifiers",
+              "url": "https://github.com/advisories/GHSA-hp3w-g68c-fv3c",
+              "severity": "moderate",
+              "cwe": [
+                "CWE-1284"
+              ],
+              "cvss": {
+                "score": 5.3,
+                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+              },
+              "range": "<=1.1.3"
+            }
+          ],
+          "effects": [
+            "argparse",
+            "tedious"
+          ],
+          "range": "*",
+          "nodes": [
+            "node_modules/sprintf-js",
+            "node_modules/tedious/node_modules/sprintf-js"
+          ],
+          "fixAvailable": {
+            "name": "tedious",
+            "version": "2.3.1",
+            "isSemVerMajor": true
+          }
+        },
+        "tailwindcss": {
+          "name": "tailwindcss",
+          "severity": "high",
+          "isDirect": true,
+          "via": [
+            "chokidar",
+            "fast-glob",
+            "micromatch"
+          ],
+          "effects": [],
+          "range": "<=0.0.0-oxide-insiders.ff2c25f || 2.1.0-canary.1 - 3.4.19",
+          "nodes": [
+            "node_modules/tailwindcss"
+          ],
+          "fixAvailable": {
+            "name": "tailwindcss",
+            "version": "4.3.3",
+            "isSemVerMajor": true
+          }
+        },
+        "tedious": {
+          "name": "tedious",
+          "severity": "moderate",
+          "isDirect": true,
+          "via": [
+            "sprintf-js"
+          ],
+          "effects": [
+            "mssql"
+          ],
+          "range": "0.0.0-dev || >=2.4.0",
+          "nodes": [
+            "node_modules/tedious"
+          ],
+          "fixAvailable": {
+            "name": "tedious",
+            "version": "2.3.1",
+            "isSemVerMajor": true
+          }
+        },
+        "typeorm": {
+          "name": "typeorm",
+          "severity": "moderate",
+          "isDirect": true,
+          "via": [
+            "mssql"
+          ],
+          "effects": [],
+          "range": ">=0.2.42-dev.2834729",
+          "nodes": [
+            "node_modules/typeorm"
+          ],
+          "fixAvailable": {
+            "name": "typeorm",
+            "version": "0.2.41",
+            "isSemVerMajor": true
+          }
+        }
+      }
+    },
+    {
+      "directory": "src/core",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 4,
+        "high": 3,
+        "critical": 0,
+        "total": 7
+      },
+      "vulnerabilities": {
+        "braces": {
+          "name": "braces",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1240992,
+              "name": "braces",
+              "dependency": "braces",
+              "title": "braces vulnerable to stack-exhaustion denial of service through deeply nested patterns",
+              "url": "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
+              "severity": "high",
+              "cwe": [
+                "CWE-674"
+              ],
+              "cvss": {
+                "score": 7.5,
+                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+              },
+              "range": "<=3.0.3"
+            }
+          ],
+          "effects": [
+            "micromatch"
+          ],
+          "range": "*",
+          "nodes": [
+            "node_modules/braces"
+          ],
+          "fixAvailable": {
+            "name": "http-proxy-middleware",
+            "version": "0.2.0",
+            "isSemVerMajor": true
+          }
+        },
+        "http-proxy-middleware": {
+          "name": "http-proxy-middleware",
+          "severity": "high",
+          "isDirect": true,
+          "via": [
+            "micromatch"
+          ],
+          "effects": [],
+          "range": ">=0.3.0",
+          "nodes": [
+            "node_modules/http-proxy-middleware"
+          ],
+          "fixAvailable": {
+            "name": "http-proxy-middleware",
+            "version": "0.2.0",
+            "isSemVerMajor": true
+          }
+        },
+        "micromatch": {
+          "name": "micromatch",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "braces"
+          ],
+          "effects": [
+            "http-proxy-middleware"
+          ],
+          "range": ">=0.2.0",
+          "nodes": [
+            "node_modules/micromatch"
+          ],
+          "fixAvailable": {
+            "name": "http-proxy-middleware",
+            "version": "0.2.0",
+            "isSemVerMajor": true
+          }
+        },
+        "mssql": {
+          "name": "mssql",
+          "severity": "moderate",
+          "isDirect": true,
+          "via": [
+            "tedious"
+          ],
+          "effects": [
+            "typeorm"
+          ],
+          "range": ">=4.2.1",
+          "nodes": [
+            "node_modules/mssql"
+          ],
+          "fixAvailable": {
+            "name": "mssql",
+            "version": "4.2.0",
+            "isSemVerMajor": true
+          }
+        },
+        "sprintf-js": {
+          "name": "sprintf-js",
+          "severity": "moderate",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1241202,
+              "name": "sprintf-js",
+              "dependency": "sprintf-js",
+              "title": "sprintf-js vulnerable to denial of service through unbounded precision specifiers",
+              "url": "https://github.com/advisories/GHSA-hp3w-g68c-fv3c",
+              "severity": "moderate",
+              "cwe": [
+                "CWE-1284"
+              ],
+              "cvss": {
+                "score": 5.3,
+                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+              },
+              "range": "<=1.1.3"
+            }
+          ],
+          "effects": [
+            "tedious"
+          ],
+          "range": "*",
+          "nodes": [
+            "node_modules/sprintf-js"
+          ],
+          "fixAvailable": {
+            "name": "mssql",
+            "version": "4.2.0",
+            "isSemVerMajor": true
+          }
+        },
+        "tedious": {
+          "name": "tedious",
+          "severity": "moderate",
+          "isDirect": false,
+          "via": [
+            "sprintf-js"
+          ],
+          "effects": [
+            "mssql"
+          ],
+          "range": "0.0.0-dev || >=2.4.0",
+          "nodes": [
+            "node_modules/tedious"
+          ],
+          "fixAvailable": {
+            "name": "mssql",
+            "version": "4.2.0",
+            "isSemVerMajor": true
+          }
+        },
+        "typeorm": {
+          "name": "typeorm",
+          "severity": "moderate",
+          "isDirect": true,
+          "via": [
+            "mssql"
+          ],
+          "effects": [],
+          "range": ">=0.2.42-dev.2834729",
+          "nodes": [
+            "node_modules/typeorm"
+          ],
+          "fixAvailable": {
+            "name": "typeorm",
+            "version": "0.2.41",
+            "isSemVerMajor": true
+          }
+        }
+      }
+    },
+    {
+      "directory": "src/ideNew",
+      "counts": {
+        "info": 0,
+        "low": 4,
+        "moderate": 6,
+        "high": 5,
+        "critical": 0,
+        "total": 15
+      },
+      "vulnerabilities": {
+        "@ai-sdk/provider-utils": {
+          "name": "@ai-sdk/provider-utils",
+          "severity": "low",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1193659,
+              "name": "@ai-sdk/provider-utils",
+              "dependency": "@ai-sdk/provider-utils",
+              "title": "@ai-sdk/provider-utils has an Uncontrolled Resource Consumption issue",
+              "url": "https://github.com/advisories/GHSA-866g-f22w-33x8",
+              "severity": "low",
+              "cwe": [
+                "CWE-400"
+              ],
+              "cvss": {
+                "score": 4.3,
+                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:L"
+              },
+              "range": ">=4.0.0-beta.10 <4.0.33"
+            },
+            {
+              "source": 1193660,
+              "name": "@ai-sdk/provider-utils",
+              "dependency": "@ai-sdk/provider-utils",
+              "title": "@ai-sdk/provider-utils has an Uncontrolled Resource Consumption issue",
+              "url": "https://github.com/advisories/GHSA-866g-f22w-33x8",
+              "severity": "low",
+              "cwe": [
+                "CWE-400"
+              ],
+              "cvss": {
+                "score": 4.3,
+                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:L"
+              },
+              "range": "<3.0.28"
+            }
+          ],
+          "effects": [
+            "@ai-sdk/ui-utils",
+            "@mastra/core"
+          ],
+          "range": ">=4.0.0-beta.10 <4.0.33 || <3.0.28",
+          "nodes": [
+            "node_modules/@ai-sdk/provider-utils",
+            "node_modules/@ai-sdk/provider-utils-v5",
+            "node_modules/@ai-sdk/provider-utils-v6"
+          ],
+          "fixAvailable": true
+        },
+        "@ai-sdk/ui-utils": {
+          "name": "@ai-sdk/ui-utils",
+          "severity": "low",
+          "isDirect": false,
+          "via": [
+            "@ai-sdk/provider-utils"
+          ],
+          "effects": [],
+          "range": "*",
+          "nodes": [
+            "node_modules/@ai-sdk/ui-utils-v5"
+          ],
+          "fixAvailable": true
+        },
+        "@mastra/core": {
+          "name": "@mastra/core",
+          "severity": "moderate",
+          "isDirect": true,
+          "via": [
+            "@ai-sdk/provider-utils",
+            "@ai-sdk/provider-utils",
+            "@ai-sdk/ui-utils",
+            "gray-matter"
+          ],
+          "effects": [],
+          "range": "<=0.0.0-zod-v4-stuff-20250825154219 || 0.10.2-alpha.0 - 0.24.10-alpha.0 || >=1.1.0-alpha.0",
+          "nodes": [
+            "node_modules/@mastra/core"
+          ],
+          "fixAvailable": true
+        },
+        "argparse": {
+          "name": "argparse",
+          "severity": "moderate",
+          "isDirect": false,
+          "via": [
+            "sprintf-js"
+          ],
+          "effects": [
+            "js-yaml"
+          ],
+          "range": "1.0.0 - 1.0.10",
+          "nodes": [
+            "node_modules/argparse"
+          ],
+          "fixAvailable": true
+        },
+        "braces": {
+          "name": "braces",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1240992,
+              "name": "braces",
+              "dependency": "braces",
+              "title": "braces vulnerable to stack-exhaustion denial of service through deeply nested patterns",
+              "url": "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
+              "severity": "high",
+              "cwe": [
+                "CWE-674"
+              ],
+              "cvss": {
+                "score": 7.5,
+                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+              },
+              "range": "<=3.0.3"
+            }
+          ],
+          "effects": [
+            "chokidar",
+            "micromatch"
+          ],
+          "range": "*",
+          "nodes": [
+            "node_modules/braces"
+          ],
+          "fixAvailable": {
+            "name": "tailwindcss",
+            "version": "4.3.3",
+            "isSemVerMajor": true
+          }
+        },
+        "chokidar": {
+          "name": "chokidar",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "braces"
+          ],
+          "effects": [
+            "tailwindcss"
+          ],
+          "range": "2.0.0 - 3.6.0",
+          "nodes": [
+            "node_modules/chokidar"
+          ],
+          "fixAvailable": {
+            "name": "tailwindcss",
+            "version": "4.3.3",
+            "isSemVerMajor": true
+          }
+        },
+        "dompurify": {
+          "name": "dompurify",
+          "severity": "low",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1240621,
+              "name": "dompurify",
+              "dependency": "dompurify",
+              "title": "DOMPurify: IN_PLACE: node-removing afterSanitize hook leaves detached subtree event handlers armed, causing DOM XSS",
+              "url": "https://github.com/advisories/GHSA-p98j-92pf-mc4p",
+              "severity": "low",
+              "cwe": [
+                "CWE-79"
+              ],
+              "cvss": {
+                "score": 0,
+                "vectorString": null
+              },
+              "range": ">=3.4.13 <=3.4.15"
+            },
+            {
+              "source": 1241204,
+              "name": "dompurify",
+              "dependency": "dompurify",
+              "title": "DOMPurify: IN_PLACE returns a force-removed rawtext root whose text carries attacker markup — pure HTML reparse executes",
+              "url": "https://github.com/advisories/GHSA-6688-9rhm-gjv2",
+              "severity": "low",
+              "cwe": [
+                "CWE-79"
+              ],
+              "cvss": {
+                "score": 0,
+                "vectorString": null
+              },
+              "range": "<=3.4.15"
+            }
+          ],
+          "effects": [
+            "monaco-editor"
+          ],
+          "range": "<=3.4.15",
+          "nodes": [
+            "node_modules/dompurify"
+          ],
+          "fixAvailable": {
+            "name": "monaco-editor",
+            "version": "0.56.0",
+            "isSemVerMajor": true
+          }
+        },
+        "fast-glob": {
+          "name": "fast-glob",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "micromatch"
+          ],
+          "effects": [],
+          "range": "*",
+          "nodes": [
+            "node_modules/fast-glob"
+          ],
+          "fixAvailable": true
+        },
+        "gray-matter": {
+          "name": "gray-matter",
+          "severity": "moderate",
+          "isDirect": false,
+          "via": [
+            "js-yaml"
+          ],
+          "effects": [
+            "@mastra/core"
+          ],
+          "range": ">=2.0.2",
+          "nodes": [
+            "node_modules/gray-matter"
+          ],
+          "fixAvailable": true
+        },
+        "js-yaml": {
+          "name": "js-yaml",
+          "severity": "moderate",
+          "isDirect": false,
+          "via": [
+            "argparse"
+          ],
+          "effects": [
+            "gray-matter"
+          ],
+          "range": "3.2.7 - 3.15.2",
+          "nodes": [
+            "node_modules/js-yaml"
+          ],
+          "fixAvailable": true
+        },
+        "micromatch": {
+          "name": "micromatch",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "braces"
+          ],
+          "effects": [
+            "fast-glob",
+            "tailwindcss"
+          ],
+          "range": ">=0.2.0",
+          "nodes": [
+            "node_modules/micromatch"
+          ],
+          "fixAvailable": {
+            "name": "tailwindcss",
+            "version": "4.3.3",
+            "isSemVerMajor": true
+          }
+        },
+        "monaco-editor": {
+          "name": "monaco-editor",
+          "severity": "low",
+          "isDirect": true,
+          "via": [
+            "dompurify"
+          ],
+          "effects": [],
+          "range": ">=0.57.0-rc.2",
+          "nodes": [
+            "node_modules/monaco-editor"
+          ],
+          "fixAvailable": {
+            "name": "monaco-editor",
+            "version": "0.56.0",
+            "isSemVerMajor": true
+          }
+        },
+        "sprintf-js": {
+          "name": "sprintf-js",
+          "severity": "moderate",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1241202,
+              "name": "sprintf-js",
+              "dependency": "sprintf-js",
+              "title": "sprintf-js vulnerable to denial of service through unbounded precision specifiers",
+              "url": "https://github.com/advisories/GHSA-hp3w-g68c-fv3c",
+              "severity": "moderate",
+              "cwe": [
+                "CWE-1284"
+              ],
+              "cvss": {
+                "score": 5.3,
+                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+              },
+              "range": "<=1.1.3"
+            }
+          ],
+          "effects": [
+            "argparse",
+            "tedious"
+          ],
+          "range": "*",
+          "nodes": [
+            "node_modules/sprintf-js",
+            "node_modules/tedious/node_modules/sprintf-js"
+          ],
+          "fixAvailable": {
+            "name": "tedious",
+            "version": "2.3.1",
+            "isSemVerMajor": true
+          }
+        },
+        "tailwindcss": {
+          "name": "tailwindcss",
+          "severity": "high",
+          "isDirect": true,
+          "via": [
+            "chokidar",
+            "fast-glob",
+            "micromatch"
+          ],
+          "effects": [],
+          "range": "<=0.0.0-oxide-insiders.ff2c25f || 2.1.0-canary.1 - 3.4.19",
+          "nodes": [
+            "node_modules/tailwindcss"
+          ],
+          "fixAvailable": {
+            "name": "tailwindcss",
+            "version": "4.3.3",
+            "isSemVerMajor": true
+          }
+        },
+        "tedious": {
+          "name": "tedious",
+          "severity": "moderate",
+          "isDirect": true,
+          "via": [
+            "sprintf-js"
+          ],
+          "effects": [],
+          "range": "0.0.0-dev || >=2.4.0",
+          "nodes": [
+            "node_modules/tedious"
+          ],
+          "fixAvailable": {
+            "name": "tedious",
+            "version": "2.3.1",
+            "isSemVerMajor": true
+          }
+        }
+      }
+    },
+    {
+      "directory": "src/ide-vscode",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "vulnerabilities": {}
+    },
+    {
+      "directory": "src/auth",
+      "counts": {
+        "info": 0,
+        "low": 1,
+        "moderate": 0,
+        "high": 5,
+        "critical": 0,
+        "total": 6
+      },
+      "vulnerabilities": {
+        "braces": {
+          "name": "braces",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1240992,
+              "name": "braces",
+              "dependency": "braces",
+              "title": "braces vulnerable to stack-exhaustion denial of service through deeply nested patterns",
+              "url": "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
+              "severity": "high",
+              "cwe": [
+                "CWE-674"
+              ],
+              "cvss": {
+                "score": 7.5,
+                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+              },
+              "range": "<=3.0.3"
+            }
+          ],
+          "effects": [
+            "chokidar",
+            "micromatch"
+          ],
+          "range": "*",
+          "nodes": [
+            "node_modules/braces"
+          ],
+          "fixAvailable": {
+            "name": "tailwindcss",
+            "version": "4.3.3",
+            "isSemVerMajor": true
+          }
+        },
+        "chokidar": {
+          "name": "chokidar",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "braces"
+          ],
+          "effects": [
+            "tailwindcss"
+          ],
+          "range": "2.0.0 - 3.6.0",
+          "nodes": [
+            "node_modules/chokidar"
+          ],
+          "fixAvailable": {
+            "name": "tailwindcss",
+            "version": "4.3.3",
+            "isSemVerMajor": true
+          }
+        },
+        "esbuild": {
+          "name": "esbuild",
+          "severity": "low",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1120680,
+              "name": "esbuild",
+              "dependency": "esbuild",
+              "title": "esbuild allows arbitrary file read when running the development server on Windows",
+              "url": "https://github.com/advisories/GHSA-g7r4-m6w7-qqqr",
+              "severity": "low",
+              "cwe": [
+                "CWE-22"
+              ],
+              "cvss": {
+                "score": 2.5,
+                "vectorString": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:N/I:L/A:N"
+              },
+              "range": ">=0.27.3 <0.28.1"
+            }
+          ],
+          "effects": [],
+          "range": "0.27.3 - 0.28.0",
+          "nodes": [
+            "node_modules/esbuild"
+          ],
+          "fixAvailable": true
+        },
+        "fast-glob": {
+          "name": "fast-glob",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "micromatch"
+          ],
+          "effects": [],
+          "range": "*",
+          "nodes": [
+            "node_modules/fast-glob"
+          ],
+          "fixAvailable": true
+        },
+        "micromatch": {
+          "name": "micromatch",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "braces"
+          ],
+          "effects": [
+            "fast-glob",
+            "tailwindcss"
+          ],
+          "range": ">=0.2.0",
+          "nodes": [
+            "node_modules/micromatch"
+          ],
+          "fixAvailable": {
+            "name": "tailwindcss",
+            "version": "4.3.3",
+            "isSemVerMajor": true
+          }
+        },
+        "tailwindcss": {
+          "name": "tailwindcss",
+          "severity": "high",
+          "isDirect": true,
+          "via": [
+            "chokidar",
+            "fast-glob",
+            "micromatch"
+          ],
+          "effects": [],
+          "range": "<=0.0.0-oxide-insiders.ff2c25f || 2.1.0-canary.1 - 3.4.19",
+          "nodes": [
+            "node_modules/tailwindcss"
+          ],
+          "fixAvailable": {
+            "name": "tailwindcss",
+            "version": "4.3.3",
+            "isSemVerMajor": true
+          }
+        }
+      }
+    },
+    {
+      "directory": "src/kernel",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "vulnerabilities": {}
+    },
+    {
+      "directory": "src/monitoring",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "vulnerabilities": {}
+    },
+    {
+      "directory": "src/container-agent",
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "vulnerabilities": {}
+    },
+    {
+      "directory": "docs/site",
+      "counts": {
+        "info": 0,
+        "low": 3,
+        "moderate": 0,
+        "high": 29,
+        "critical": 0,
+        "total": 32
+      },
+      "vulnerabilities": {
+        "@docusaurus/babel": {
+          "name": "@docusaurus/babel",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "@docusaurus/utils"
+          ],
+          "effects": [
+            "@docusaurus/core"
+          ],
+          "range": "<=4.0.0-canary-6835",
+          "nodes": [
+            "node_modules/@docusaurus/babel"
+          ],
+          "fixAvailable": false
+        },
+        "@docusaurus/bundler": {
+          "name": "@docusaurus/bundler",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "@docusaurus/babel",
+            "@docusaurus/utils",
+            "copy-webpack-plugin"
+          ],
+          "effects": [],
+          "range": "<=4.0.0-canary-6835",
+          "nodes": [
+            "node_modules/@docusaurus/bundler"
+          ],
+          "fixAvailable": true
+        },
+        "@docusaurus/core": {
+          "name": "@docusaurus/core",
+          "severity": "high",
+          "isDirect": true,
+          "via": [
+            "@docusaurus/babel",
+            "@docusaurus/bundler",
+            "@docusaurus/mdx-loader",
+            "@docusaurus/utils",
+            "@docusaurus/utils-validation",
+            "chokidar",
+            "webpack-dev-server"
+          ],
+          "effects": [
+            "@docusaurus/plugin-content-blog",
+            "@docusaurus/plugin-content-docs",
+            "@docusaurus/plugin-content-pages",
+            "@docusaurus/plugin-css-cascade-layers",
+            "@docusaurus/plugin-debug",
+            "@docusaurus/plugin-google-analytics",
+            "@docusaurus/plugin-google-gtag",
+            "@docusaurus/plugin-google-tag-manager",
+            "@docusaurus/plugin-sitemap",
+            "@docusaurus/plugin-svgr",
+            "@docusaurus/preset-classic",
+            "@docusaurus/theme-classic",
+            "@docusaurus/theme-mermaid",
+            "@docusaurus/theme-search-algolia"
+          ],
+          "range": "<=4.0.0-canary-6835",
+          "nodes": [
+            "node_modules/@docusaurus/core"
+          ],
+          "fixAvailable": false
+        },
+        "@docusaurus/mdx-loader": {
+          "name": "@docusaurus/mdx-loader",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "@docusaurus/utils",
+            "@docusaurus/utils-validation"
+          ],
+          "effects": [],
+          "range": "<=4.0.0-canary-6835",
+          "nodes": [
+            "node_modules/@docusaurus/mdx-loader"
+          ],
+          "fixAvailable": true
+        },
+        "@docusaurus/plugin-content-blog": {
+          "name": "@docusaurus/plugin-content-blog",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "@docusaurus/core",
+            "@docusaurus/mdx-loader",
+            "@docusaurus/theme-common",
+            "@docusaurus/utils",
+            "@docusaurus/utils-validation"
+          ],
+          "effects": [],
+          "range": "<=4.0.0-canary-6835",
+          "nodes": [
+            "node_modules/@docusaurus/plugin-content-blog"
+          ],
+          "fixAvailable": true
+        },
+        "@docusaurus/plugin-content-docs": {
+          "name": "@docusaurus/plugin-content-docs",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "@docusaurus/core",
+            "@docusaurus/mdx-loader",
+            "@docusaurus/theme-common",
+            "@docusaurus/utils",
+            "@docusaurus/utils-validation"
+          ],
+          "effects": [],
+          "range": "<=4.0.0-canary-6835",
+          "nodes": [
+            "node_modules/@docusaurus/plugin-content-docs"
+          ],
+          "fixAvailable": true
+        },
+        "@docusaurus/plugin-content-pages": {
+          "name": "@docusaurus/plugin-content-pages",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "@docusaurus/core",
+            "@docusaurus/mdx-loader",
+            "@docusaurus/utils",
+            "@docusaurus/utils-validation"
+          ],
+          "effects": [],
+          "range": "<=4.0.0-canary-6835",
+          "nodes": [
+            "node_modules/@docusaurus/plugin-content-pages"
+          ],
+          "fixAvailable": true
+        },
+        "@docusaurus/plugin-css-cascade-layers": {
+          "name": "@docusaurus/plugin-css-cascade-layers",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "@docusaurus/core",
+            "@docusaurus/utils",
+            "@docusaurus/utils-validation"
+          ],
+          "effects": [
+            "@docusaurus/preset-classic"
+          ],
+          "range": "<=4.0.0-canary-6835",
+          "nodes": [
+            "node_modules/@docusaurus/plugin-css-cascade-layers"
+          ],
+          "fixAvailable": false
+        },
+        "@docusaurus/plugin-debug": {
+          "name": "@docusaurus/plugin-debug",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "@docusaurus/core",
+            "@docusaurus/utils"
+          ],
+          "effects": [],
+          "range": "<=4.0.0-canary-6835",
+          "nodes": [
+            "node_modules/@docusaurus/plugin-debug"
+          ],
+          "fixAvailable": true
+        },
+        "@docusaurus/plugin-google-analytics": {
+          "name": "@docusaurus/plugin-google-analytics",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "@docusaurus/core",
+            "@docusaurus/utils-validation"
+          ],
+          "effects": [
+            "@docusaurus/preset-classic"
+          ],
+          "range": "*",
+          "nodes": [
+            "node_modules/@docusaurus/plugin-google-analytics"
+          ],
+          "fixAvailable": false
+        },
+        "@docusaurus/plugin-google-gtag": {
+          "name": "@docusaurus/plugin-google-gtag",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "@docusaurus/core",
+            "@docusaurus/utils-validation"
+          ],
+          "effects": [],
+          "range": "<=4.0.0-canary-6835",
+          "nodes": [
+            "node_modules/@docusaurus/plugin-google-gtag"
+          ],
+          "fixAvailable": true
+        },
+        "@docusaurus/plugin-google-tag-manager": {
+          "name": "@docusaurus/plugin-google-tag-manager",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "@docusaurus/core",
+            "@docusaurus/utils-validation"
+          ],
+          "effects": [
+            "@docusaurus/preset-classic"
+          ],
+          "range": "<=4.0.0-canary-6835",
+          "nodes": [
+            "node_modules/@docusaurus/plugin-google-tag-manager"
+          ],
+          "fixAvailable": false
+        },
+        "@docusaurus/plugin-sitemap": {
+          "name": "@docusaurus/plugin-sitemap",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "@docusaurus/core",
+            "@docusaurus/utils",
+            "@docusaurus/utils-validation"
+          ],
+          "effects": [],
+          "range": "<=4.0.0-canary-6835",
+          "nodes": [
+            "node_modules/@docusaurus/plugin-sitemap"
+          ],
+          "fixAvailable": true
+        },
+        "@docusaurus/plugin-svgr": {
+          "name": "@docusaurus/plugin-svgr",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "@docusaurus/core",
+            "@docusaurus/utils",
+            "@docusaurus/utils-validation"
+          ],
+          "effects": [
+            "@docusaurus/preset-classic"
+          ],
+          "range": "<=4.0.0-canary-6835",
+          "nodes": [
+            "node_modules/@docusaurus/plugin-svgr"
+          ],
+          "fixAvailable": false
+        },
+        "@docusaurus/preset-classic": {
+          "name": "@docusaurus/preset-classic",
+          "severity": "high",
+          "isDirect": true,
+          "via": [
+            "@docusaurus/core",
+            "@docusaurus/plugin-content-blog",
+            "@docusaurus/plugin-content-docs",
+            "@docusaurus/plugin-content-pages",
+            "@docusaurus/plugin-css-cascade-layers",
+            "@docusaurus/plugin-debug",
+            "@docusaurus/plugin-google-analytics",
+            "@docusaurus/plugin-google-gtag",
+            "@docusaurus/plugin-google-tag-manager",
+            "@docusaurus/plugin-sitemap",
+            "@docusaurus/plugin-svgr",
+            "@docusaurus/theme-classic",
+            "@docusaurus/theme-common",
+            "@docusaurus/theme-search-algolia"
+          ],
+          "effects": [],
+          "range": "<=4.0.0-canary-6835",
+          "nodes": [
+            "node_modules/@docusaurus/preset-classic"
+          ],
+          "fixAvailable": false
+        },
+        "@docusaurus/theme-classic": {
+          "name": "@docusaurus/theme-classic",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "@docusaurus/core",
+            "@docusaurus/mdx-loader",
+            "@docusaurus/plugin-content-blog",
+            "@docusaurus/plugin-content-docs",
+            "@docusaurus/plugin-content-pages",
+            "@docusaurus/theme-common",
+            "@docusaurus/utils",
+            "@docusaurus/utils-validation"
+          ],
+          "effects": [],
+          "range": "<=4.0.0-canary-6835",
+          "nodes": [
+            "node_modules/@docusaurus/theme-classic"
+          ],
+          "fixAvailable": true
+        },
+        "@docusaurus/theme-common": {
+          "name": "@docusaurus/theme-common",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "@docusaurus/mdx-loader",
+            "@docusaurus/utils"
+          ],
+          "effects": [
+            "@docusaurus/plugin-content-blog",
+            "@docusaurus/plugin-content-docs"
+          ],
+          "range": "<=4.0.0-canary-6835",
+          "nodes": [
+            "node_modules/@docusaurus/theme-common"
+          ],
+          "fixAvailable": true
+        },
+        "@docusaurus/theme-mermaid": {
+          "name": "@docusaurus/theme-mermaid",
+          "severity": "high",
+          "isDirect": true,
+          "via": [
+            "@docusaurus/core",
+            "@docusaurus/theme-common",
+            "@docusaurus/utils-validation",
+            "@mermaid-js/layout-elk",
+            "mermaid"
+          ],
+          "effects": [],
+          "range": "*",
+          "nodes": [
+            "node_modules/@docusaurus/theme-mermaid"
+          ],
+          "fixAvailable": {
+            "name": "@docusaurus/theme-mermaid",
+            "version": "3.7.0",
+            "isSemVerMajor": true
+          }
+        },
+        "@docusaurus/theme-search-algolia": {
+          "name": "@docusaurus/theme-search-algolia",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "@docusaurus/core",
+            "@docusaurus/plugin-content-docs",
+            "@docusaurus/theme-common",
+            "@docusaurus/utils",
+            "@docusaurus/utils-validation"
+          ],
+          "effects": [],
+          "range": "<=4.0.0-canary-6835",
+          "nodes": [
+            "node_modules/@docusaurus/theme-search-algolia"
+          ],
+          "fixAvailable": true
+        },
+        "@docusaurus/utils": {
+          "name": "@docusaurus/utils",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "globby",
+            "micromatch"
+          ],
+          "effects": [
+            "@docusaurus/babel",
+            "@docusaurus/bundler",
+            "@docusaurus/mdx-loader",
+            "@docusaurus/plugin-css-cascade-layers",
+            "@docusaurus/theme-common",
+            "@docusaurus/utils-validation"
+          ],
+          "range": "<=4.0.0-canary-6835",
+          "nodes": [
+            "node_modules/@docusaurus/utils"
+          ],
+          "fixAvailable": false
+        },
+        "@docusaurus/utils-validation": {
+          "name": "@docusaurus/utils-validation",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "@docusaurus/utils"
+          ],
+          "effects": [
+            "@docusaurus/mdx-loader"
+          ],
+          "range": "<=4.0.0-canary-6835",
+          "nodes": [
+            "node_modules/@docusaurus/utils-validation"
+          ],
+          "fixAvailable": true
+        },
+        "@mermaid-js/layout-elk": {
+          "name": "@mermaid-js/layout-elk",
+          "severity": "low",
+          "isDirect": true,
+          "via": [
+            "mermaid"
+          ],
+          "effects": [
+            "@docusaurus/theme-mermaid"
+          ],
+          "range": "*",
+          "nodes": [
+            "node_modules/@mermaid-js/layout-elk"
+          ],
+          "fixAvailable": {
+            "name": "@docusaurus/theme-mermaid",
+            "version": "3.7.0",
+            "isSemVerMajor": true
+          }
+        },
+        "braces": {
+          "name": "braces",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1240992,
+              "name": "braces",
+              "dependency": "braces",
+              "title": "braces vulnerable to stack-exhaustion denial of service through deeply nested patterns",
+              "url": "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
+              "severity": "high",
+              "cwe": [
+                "CWE-674"
+              ],
+              "cvss": {
+                "score": 7.5,
+                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+              },
+              "range": "<=3.0.3"
+            }
+          ],
+          "effects": [
+            "chokidar",
+            "micromatch"
+          ],
+          "range": "*",
+          "nodes": [
+            "node_modules/braces"
+          ],
+          "fixAvailable": false
+        },
+        "chokidar": {
+          "name": "chokidar",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "braces"
+          ],
+          "effects": [
+            "@docusaurus/core",
+            "webpack-dev-server"
+          ],
+          "range": "2.0.0 - 3.6.0",
+          "nodes": [
+            "node_modules/chokidar"
+          ],
+          "fixAvailable": false
+        },
+        "copy-webpack-plugin": {
+          "name": "copy-webpack-plugin",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "fast-glob",
+            "globby"
+          ],
+          "effects": [
+            "@docusaurus/bundler"
+          ],
+          "range": "6.0.0 - 12.0.2",
+          "nodes": [
+            "node_modules/copy-webpack-plugin"
+          ],
+          "fixAvailable": true
+        },
+        "fast-glob": {
+          "name": "fast-glob",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "micromatch"
+          ],
+          "effects": [
+            "copy-webpack-plugin",
+            "globby"
+          ],
+          "range": "*",
+          "nodes": [
+            "node_modules/fast-glob"
+          ],
+          "fixAvailable": false
+        },
+        "globby": {
+          "name": "globby",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "fast-glob"
+          ],
+          "effects": [
+            "@docusaurus/utils",
+            "copy-webpack-plugin"
+          ],
+          "range": ">=8.0.0",
+          "nodes": [
+            "node_modules/copy-webpack-plugin/node_modules/globby",
+            "node_modules/globby"
+          ],
+          "fixAvailable": false
+        },
+        "http-proxy-middleware": {
+          "name": "http-proxy-middleware",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "micromatch"
+          ],
+          "effects": [
+            "webpack-dev-server"
+          ],
+          "range": ">=0.3.0",
+          "nodes": [
+            "node_modules/http-proxy-middleware"
+          ],
+          "fixAvailable": false
+        },
+        "katex": {
+          "name": "katex",
+          "severity": "low",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1241206,
+              "name": "katex",
+              "dependency": "katex",
+              "title": "KaTeX: Existing prototype pollution can bypass trust restrictions",
+              "url": "https://github.com/advisories/GHSA-238p-pmpm-9mq7",
+              "severity": "low",
+              "cwe": [
+                "CWE-807"
+              ],
+              "cvss": {
+                "score": 0,
+                "vectorString": null
+              },
+              "range": ">=0.11.0 <0.18.2"
+            }
+          ],
+          "effects": [
+            "mermaid"
+          ],
+          "range": "0.11.0 - 0.18.1",
+          "nodes": [
+            "node_modules/katex"
+          ],
+          "fixAvailable": {
+            "name": "@docusaurus/theme-mermaid",
+            "version": "3.7.0",
+            "isSemVerMajor": true
+          }
+        },
+        "mermaid": {
+          "name": "mermaid",
+          "severity": "low",
+          "isDirect": false,
+          "via": [
+            "katex"
+          ],
+          "effects": [
+            "@docusaurus/theme-mermaid",
+            "@mermaid-js/layout-elk"
+          ],
+          "range": ">=10.9.0-rc.1",
+          "nodes": [
+            "node_modules/mermaid"
+          ],
+          "fixAvailable": {
+            "name": "@docusaurus/theme-mermaid",
+            "version": "3.7.0",
+            "isSemVerMajor": true
+          }
+        },
+        "micromatch": {
+          "name": "micromatch",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "braces"
+          ],
+          "effects": [
+            "@docusaurus/utils",
+            "fast-glob",
+            "http-proxy-middleware"
+          ],
+          "range": ">=0.2.0",
+          "nodes": [
+            "node_modules/micromatch"
+          ],
+          "fixAvailable": false
+        },
+        "webpack-dev-server": {
+          "name": "webpack-dev-server",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            "chokidar",
+            "http-proxy-middleware"
+          ],
+          "effects": [
+            "@docusaurus/core"
+          ],
+          "range": ">=1.15.0",
+          "nodes": [
+            "node_modules/webpack-dev-server"
+          ],
+          "fixAvailable": false
+        }
+      }
+    }
+  ]
+}

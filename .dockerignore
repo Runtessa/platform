@@ -34,3 +34,4 @@ pnpm-debug.log*
 
 project.dump.md
 project_dumps
+.release-preview

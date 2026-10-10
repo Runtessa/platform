@@ -10,7 +10,7 @@ This folder contains a full image-based runtime stack for:
 - container-agent
 - codex-gateway
 - postgres (17)
-- redis (latest)
+- redis (8.8; its upstream license is separate from IdpCore's Apache-2.0 license)
 
 Kernel is built inside the core image (not a standalone container).
 
@@ -53,7 +53,7 @@ Before starting services:
   to private files when you configure those integrations.
 - When bind-mounting these files using the root Compose stack, ensure the
   container's application user can read them. Keep access limited to that user;
-  the Core and IDE images run as the `node` user.
+  the Core and IDE images run as the `node` user. The root development Compose stack now uses `env_file`, so it does not require changing private-file permissions.
 
 Runtime environment files are ignored by Git and excluded from Docker build
 contexts. Publish only the `*.env.example` templates. Keep a private backup of
@@ -78,8 +78,9 @@ not scan ignored local configuration or previous commits.
 
 The history check scans every reachable commit across the fetched references.
 It also catches credentials committed and later deleted within a pull request.
-It is expected to fail on the original history until the prepared cleanup is
-applied; do not hide those findings with a baseline or allowlist.
+Private original-history recovery references may still exist locally and make an
+all-reference scan fail. Never push those references. Scan the exact public branch
+also before release; do not hide findings with a baseline or allowlist.
 
 The secret-scan workflow runs both scans on pushes and pull requests, fetching
 the complete history and using a checksum-verified Gitleaks release. Historical
@@ -87,7 +88,14 @@ secret cleanup and revocation of real exposed credentials are still required
 before making this repository public. Removing a file from the current tree
 does not remove earlier committed copies.
 
-## Run everything
+## Local source installation
+
+Use [Getting started](../docs/getting-started.md) for the root Compose build, fresh
+database initialization and migrations. Its ports bind to localhost and private
+values are passed through `env_file`. The registry stack below is a deployment
+template: configure domains, image versions and migrations before using it.
+
+## Run the configured registry stack
 
 ```bash
 docker compose -f docker/docker-compose.yml --env-file docker/.env up -d

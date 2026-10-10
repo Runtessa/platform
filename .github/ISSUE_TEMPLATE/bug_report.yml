@@ -1,0 +1,26 @@
+name: Bug report
+description: Report a reproducible problem with synthetic data.
+body:
+  - type: markdown
+    attributes:
+      value: "For sensitive findings, follow SECURITY.md. Do not include credentials or private tenant data."
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Include a minimal example, affected component and commit.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, Node version, container engine and relevant configuration without secrets.
+    validations:
+      required: true
