@@ -1,0 +1,149 @@
+[
+  {
+    "id": "D01",
+    "hash": "c577d3b003f2a981e92d4d26f7ad48389d77614a65ea66f75e6d9b3496297679",
+    "disposition": "consolidated",
+    "priority": "done"
+  },
+  {
+    "id": "D02",
+    "hash": "ef3f20fc99674764bff845265d152ab0b49df13cb85e824d350ab99451ad5b98",
+    "disposition": "consolidated",
+    "priority": "done"
+  },
+  {
+    "id": "D03",
+    "hash": "8263b44c3533b542eb4a737acc346db034963447a68e37746a69e6e9948e5f9a",
+    "disposition": "consolidated",
+    "priority": "done"
+  },
+  {
+    "id": "D04",
+    "hash": "4fbc97e8dc6549e2bdaa818fafe28249e0ca264cbc21841be31cc6a183c5c0b2",
+    "disposition": "consolidated",
+    "priority": "done"
+  },
+  {
+    "id": "D05",
+    "hash": "1115c5e72a6cc9aaeee74f1a82a4632e0dcdfc2caefbc1e74f7bc0cd5038023a",
+    "disposition": "consolidated",
+    "priority": "done"
+  },
+  {
+    "id": "D06",
+    "hash": "7f54de3ad4419d662a0d92538c4533b7b2e26e87708ac7c97dbcd7ed56b6fdd2",
+    "disposition": "planned-extraction",
+    "priority": "P1"
+  },
+  {
+    "id": "D07",
+    "hash": "de75954bd7c39fb30ef5d2b633305d04f739283a4d3490ac388d51abbc31848c",
+    "disposition": "planned-extraction",
+    "priority": "P1"
+  },
+  {
+    "id": "D08",
+    "hash": "ecdb745a9ac0b8d83946d8717b27b1fc0fa78cd524fc5edb3f46efeec5c981ae",
+    "disposition": "planned-extraction",
+    "priority": "P2"
+  },
+  {
+    "id": "D09",
+    "hash": "48b975c23c676e5d88d5f8b66e0d237c40bdcb4f8abbd2a15cf09364c57de816",
+    "disposition": "reference-prototype",
+    "priority": "P3"
+  },
+  {
+    "id": "D10",
+    "hash": "bfe93501bd3d32de83996dba76c363f89b032176b56c15546aaae634603a21f4",
+    "disposition": "planned-extraction",
+    "priority": "P1"
+  },
+  {
+    "id": "D11",
+    "hash": "177fea8c3db3bb558f8cf89415ff11ddbfa4d4632ec994ee2d71bcca32f76b31",
+    "disposition": "planned-extraction",
+    "priority": "P2"
+  },
+  {
+    "id": "D12",
+    "hash": "4e73bb4ef775b9bebf2018bfafce676949d9df6549bb8e25512e7d11a28fa227",
+    "disposition": "planned-extraction",
+    "priority": "P1"
+  },
+  {
+    "id": "D13",
+    "hash": "163619cb265e7ac34720e2a6dc0cf58554a2c077d31642ba7ef65174b93f4e39",
+    "disposition": "planned-extraction",
+    "priority": "P2"
+  },
+  {
+    "id": "D14",
+    "hash": "9883064096f35d03d141b0ea474ed98f8e73d639a5f8404b048c64539fb2f6ae",
+    "disposition": "consolidated",
+    "priority": "done",
+    "previousHashes": [
+      "74e0f6acd90dded6947b0d642e66fc7e84725814f632577b1a1145fd33a1e25b"
+    ]
+  },
+  {
+    "id": "D15",
+    "hash": "d510ea7aee1907015ef46fb79b110f24512620c37ccbfde01ae5c3d4536e0d13",
+    "disposition": "planned-extraction",
+    "priority": "P1"
+  },
+  {
+    "id": "D16",
+    "hash": "cc67c7c6a44d995928c6302ad01cea68abb6ad75450c4d8dd362315ee747cec5",
+    "disposition": "reference-prototype",
+    "priority": "P3"
+  },
+  {
+    "id": "D17",
+    "hash": "294a1893801b3415ee66722a6c2bda802f68ed4453d05e4ad530ed75cdd9db7e",
+    "disposition": "planned-extraction",
+    "priority": "P1"
+  },
+  {
+    "id": "D18",
+    "hash": "5db1a604944cf8599927d9407958dbb53b9df6c44413074ad069617c97527260",
+    "disposition": "planned-extraction",
+    "priority": "P2"
+  },
+  {
+    "id": "D19",
+    "hash": "c80b4f06d0d0117f10c055707433af25c3cb03ed873f82eaa46e2cc7092a2269",
+    "disposition": "planned-extraction",
+    "priority": "P2"
+  },
+  {
+    "id": "D20",
+    "hash": "cd648c28adf9d0958a2bed5560a496212ea6f5b706992d15dc03bd80a64f3f95",
+    "disposition": "planned-extraction",
+    "priority": "P1"
+  },
+  {
+    "id": "D21",
+    "hash": "10014703dc5ef8ec971ddfe3fdd42aedc4686ebb5e99530aa2b4ae2c97cb5c29",
+    "disposition": "retained-boundary",
+    "priority": "P2"
+  },
+  {
+    "id": "D22",
+    "hash": "dcfec180effe21cfb9435353ab58995eb13e7c7dd18822e7c519674433dfa8cd",
+    "disposition": "planned-extraction",
+    "priority": "P2"
+  },
+  {
+    "id": "D23",
+    "hash": "002abab35115ee687e8497217598966cd2ce929eef0698a2b9be1f2c4dcb32a8",
+    "disposition": "planned-extraction",
+    "priority": "P2"
+  },
+  {
+    "id": "D24",
+    "hash": "a065afc9e5fc172cf0877ae0a9bb7d6d1f26bfddf8a7e9dcf8b2cdb70816f8ec",
+    "disposition": "retained-boundary",
+    "priority": "P2"
+  }
+]

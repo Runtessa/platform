@@ -38,14 +38,26 @@ the [architecture map](docs/site/docs/architecture/idpcore-map.md).
 
 ## Checks
 
-Use the [README verification commands](README.md#verify-a-change) relevant to your
+Use the [README verification commands](README.md#development-and-verification) relevant to your
 change. For cross-service or security changes, run the full listed checks. Database
 tests need Docker/Podman; runtime tests need Linux, bubblewrap and namespaces.
+
+Run `npm run quality:source` to locate reviewed duplicate candidates and syntax
+errors. Source comments use stable IDs from the [integrity audit](docs/release/code-integrity-audit.md).
+When moving code, preserve public exports and add contract coverage first. Refresh
+the snapshot with `npm run quality:source -- --output docs/release/source-audit.json`.
+Run shared/IDE builds before consumer checks: the IDE build recreates `shared/dist`,
+so running it alongside Core compilation or runtime tests can remove their inputs.
+Build the shared package before `npm run test:contracts`. Auth and Monitoring tests
+also need their separately installed dependencies and disposable container storage.
+Run `npm run vscode:test` for an actual isolated extension host; headless Linux CI
+uses `xvfb-run --auto-servernum npm run vscode:test`.
 
 For UI changes, also build the affected web application and inspect desktop/mobile
 layouts. For documentation, run `npm run docs:build` and check the public `/Idp/`
 base path. Use `npm run security:secrets` and `npm run security:history` with
-Gitleaks 8.30.1 before submitting; scanners redact findings.
+Gitleaks 8.30.1 before submitting; scanners redact findings. Run
+`npm run test:secret-scope` after installing Gitleaks to verify publication-ref coverage.
 
 Dependency changes must update the authoritative locks and any standalone service
 locks used to package images. Explain major upgrades or remaining advisories.

@@ -37,6 +37,7 @@ const createContainerHandlers = ({
     const list = await docker.listContainers(query);
     const serviceFilter = String(input?.service || '').trim();
     const search = String(input?.search || '').trim().toLowerCase();
+    // Duplicate D13: see docs/release/code-integrity-audit.md before changing either copy.
     const filtered = list.filter((row) => {
       if (serviceFilter) {
         const service = String(row.Labels?.['idp.service'] || '').trim();

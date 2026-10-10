@@ -29,6 +29,7 @@ const registerContainerReadRoutes = ({
       const list = await docker.listContainers(query);
       const serviceFilter = String(req.query.service || '').trim();
       const search = String(req.query.search || '').trim().toLowerCase();
+      // Duplicate D13: see docs/release/code-integrity-audit.md before changing either copy.
       const filtered = list.filter((row) => {
         if (serviceFilter) {
           const service = String(row.Labels?.['idp.service'] || '').trim();

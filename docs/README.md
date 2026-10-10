@@ -47,6 +47,7 @@ source read.
 
 This is a developer preview with targeted authorization, logging, isolation,
 migration and installation checks. Read the [validation record](release/validation.md),
+[code integrity and duplication audit](release/code-integrity-audit.md),
 [dependency policy](dependencies.md), [security policy](../SECURITY.md) and
 [roadmap](../ROADMAP.md) for the current limits.
 

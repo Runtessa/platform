@@ -5,6 +5,8 @@ a production application. This runbook records the release checks and external a
 that cannot be proven by a local build.
 
 See the [dated validation record](validation.md) for completed checks and their limits.
+The [code integrity audit](code-integrity-audit.md) records marked duplication,
+completed consolidation and the remaining architecture/testing backlog.
 
 ## Repository gates
 
@@ -13,6 +15,8 @@ See the [dated validation record](validation.md) for completed checks and their 
 - [ ] Audit all install roots and review the generated dependency report.
 - [ ] Install from locks; build Core, IDE, Auth, Kernel and documentation.
 - [ ] Run tenant authorization, logging, environment, migration and execution tests.
+- [ ] Run source audit and shared/Gateway/Agent contracts, Auth OAuth, Monitoring
+      Redis contracts and the actual VS Code extension host tests.
 - [ ] Exercise a fresh disposable installation and document any host limitations.
 - [ ] Run `npm run test:container` to check the actual Core image's migration CLI,
       HTTP ingress, live execution and runtime compiler under the outer seccomp policy.

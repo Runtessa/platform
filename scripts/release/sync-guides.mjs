@@ -18,6 +18,7 @@ const guides = {
   'docs/platform-cookbook/04-ui-modules.md': ['cookbook/ui', 'React and Kernel'],
   'docs/platform-cookbook/05-shared-projects.md': ['cookbook/shared', 'Shared projects'],
   'docs/release/validation.md': ['project/validation', 'Developer preview validation'],
+  'docs/release/code-integrity-audit.md': ['project/code-integrity', 'Code integrity and duplication'],
   'docs/getting-started.md': ['getting-started', 'Getting started'],
   'SECURITY.md': ['security', 'Security'],
   'CONTRIBUTING.md': ['contributing', 'Contributing'],

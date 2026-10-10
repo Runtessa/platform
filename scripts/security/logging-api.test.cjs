@@ -67,6 +67,7 @@ test('server errors preserve generic response and successes preserve payload', a
 
 test('assistant compilation failures omit input source and preserve fallback behavior', async () => {
   const { compileUiSource } = load('src/ideNew/src/lib/assistant/compiler.ts', {
+    '@/lib/shared-build/css-module-source': load('src/ideNew/src/lib/shared-build/css-module-source.ts'),
     '@idp/shared': shared,
     '@babel/core': { transformSync: () => { throw Error('synthetic-source-secret'); } },
     '@babel/preset-env': {}, '@babel/preset-react': {}, '@babel/preset-typescript': {},

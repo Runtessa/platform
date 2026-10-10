@@ -1,3 +1,4 @@
+// Reference prototype; duplicate candidates D09, D16 are tracked in docs/release/code-integrity-audit.md.
 import { useMemo, useState } from 'react';
 import {
   FiAlertTriangle,

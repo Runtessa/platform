@@ -34,6 +34,6 @@ html[data-theme='dark'] {
   --platform-band: #0f1a2c;
 }
 .navbar { border-bottom: 1px solid var(--platform-border); }
-.markdown table { display: table; width: 100%; }
+.markdown table { display: block; width: 100%; max-width: 100%; overflow-x: auto; }
 .markdown code { overflow-wrap: anywhere; }
 .footer__links { max-width: 1140px; margin: 0 auto 2rem; }

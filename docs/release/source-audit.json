@@ -1,0 +1,516 @@
+{
+  "scope": "Git-tracked and non-ignored untracked src/scripts JS/TS; excludes public babel/lib/monaco vendors",
+  "method": "Exact function-body tokens, ignoring whitespace/comments; identifiers/literals preserved; minimum 80 tokens and 10 lines. Matches need human review. Does not detect all near-duplicates.",
+  "files": 801,
+  "totalLines": 103480,
+  "parseDiagnostics": [],
+  "reintroducedGroups": [],
+  "duplicateGroups": [
+    {
+      "id": "D06",
+      "disposition": "planned-extraction",
+      "priority": "P1",
+      "hash": "7f54de3ad4419d662a0d92538c4533b7b2e26e87708ac7c97dbcd7ed56b6fdd2",
+      "tokens": 202,
+      "occurrences": [
+        {
+          "file": "src/ideNew/src/pages/api/admin/tenants.ts",
+          "name": "normalizeAuthDbConfig",
+          "start": 57,
+          "end": 84
+        },
+        {
+          "file": "src/ideNew/src/pages/api/admin/tenants/[id].ts",
+          "name": "normalizeAuthDbConfig",
+          "start": 215,
+          "end": 242
+        }
+      ]
+    },
+    {
+      "id": "D07",
+      "disposition": "planned-extraction",
+      "priority": "P1",
+      "hash": "de75954bd7c39fb30ef5d2b633305d04f739283a4d3490ac388d51abbc31848c",
+      "tokens": 175,
+      "occurrences": [
+        {
+          "file": "src/ideNew/src/lib/assistant/toolOperations.ts",
+          "name": "rebuildSharedProject",
+          "start": 275,
+          "end": 304
+        },
+        {
+          "file": "src/ideNew/src/lib/assistant/toolRollback.ts",
+          "name": "rebuildSharedProject",
+          "start": 87,
+          "end": 116
+        }
+      ]
+    },
+    {
+      "id": "D08",
+      "disposition": "planned-extraction",
+      "priority": "P2",
+      "hash": "ecdb745a9ac0b8d83946d8717b27b1fc0fa78cd524fc5edb3f46efeec5c981ae",
+      "tokens": 83,
+      "occurrences": [
+        {
+          "file": "src/ideNew/src/pages/api/admin/teams/[id].ts",
+          "name": "serializeMember",
+          "start": 85,
+          "end": 95
+        },
+        {
+          "file": "src/ideNew/src/pages/api/admin/teams/[id]/members/[memberId].ts",
+          "name": "serializeMember",
+          "start": 33,
+          "end": 43
+        },
+        {
+          "file": "src/ideNew/src/pages/api/admin/teams/[id]/members/index.ts",
+          "name": "serializeMember",
+          "start": 38,
+          "end": 48
+        }
+      ]
+    },
+    {
+      "id": "D09",
+      "disposition": "reference-prototype",
+      "priority": "P3",
+      "hash": "48b975c23c676e5d88d5f8b66e0d237c40bdcb4f8abbd2a15cf09364c57de816",
+      "tokens": 147,
+      "occurrences": [
+        {
+          "file": "src/auth/docs/new_admin.tsx",
+          "name": "<anonymous>",
+          "start": 723,
+          "end": 745
+        },
+        {
+          "file": "src/auth/docs/new_design.tsx",
+          "name": "<anonymous>",
+          "start": 870,
+          "end": 892
+        }
+      ]
+    },
+    {
+      "id": "D10",
+      "disposition": "planned-extraction",
+      "priority": "P1",
+      "hash": "bfe93501bd3d32de83996dba76c363f89b032176b56c15546aaae634603a21f4",
+      "tokens": 147,
+      "occurrences": [
+        {
+          "file": "src/ideNew/src/pages/api/admin/tenants.ts",
+          "name": "parseAdapterConfigObject",
+          "start": 155,
+          "end": 178
+        },
+        {
+          "file": "src/ideNew/src/pages/api/admin/tenants/[id].ts",
+          "name": "parseAdapterConfigObject",
+          "start": 296,
+          "end": 319
+        }
+      ]
+    },
+    {
+      "id": "D11",
+      "disposition": "planned-extraction",
+      "priority": "P2",
+      "hash": "177fea8c3db3bb558f8cf89415ff11ddbfa4d4632ec994ee2d71bcca32f76b31",
+      "tokens": 145,
+      "occurrences": [
+        {
+          "file": "src/core/app/controllers/RegistryController.ts",
+          "name": "findPackage",
+          "start": 65,
+          "end": 83
+        },
+        {
+          "file": "src/core/app/controllers/RegistryController.ts",
+          "name": "findPackage",
+          "start": 186,
+          "end": 204
+        }
+      ]
+    },
+    {
+      "id": "D12",
+      "disposition": "planned-extraction",
+      "priority": "P1",
+      "hash": "4e73bb4ef775b9bebf2018bfafce676949d9df6549bb8e25512e7d11a28fa227",
+      "tokens": 138,
+      "occurrences": [
+        {
+          "file": "src/ideNew/src/pages/api/admin/tenants.ts",
+          "name": "normalizeBrandingConfig",
+          "start": 90,
+          "end": 107
+        },
+        {
+          "file": "src/ideNew/src/pages/api/admin/tenants/[id].ts",
+          "name": "normalizeBrandingConfig",
+          "start": 248,
+          "end": 265
+        }
+      ]
+    },
+    {
+      "id": "D13",
+      "disposition": "planned-extraction",
+      "priority": "P2",
+      "hash": "163619cb265e7ac34720e2a6dc0cf58554a2c077d31642ba7ef65174b93f4e39",
+      "tokens": 127,
+      "occurrences": [
+        {
+          "file": "src/container-agent/lib/orchestrator-handlers-containers.js",
+          "name": "<anonymous>",
+          "start": 41,
+          "end": 58
+        },
+        {
+          "file": "src/container-agent/lib/routes-containers-read.js",
+          "name": "<anonymous>",
+          "start": 33,
+          "end": 50
+        }
+      ]
+    },
+    {
+      "id": "D15",
+      "disposition": "planned-extraction",
+      "priority": "P1",
+      "hash": "d510ea7aee1907015ef46fb79b110f24512620c37ccbfde01ae5c3d4536e0d13",
+      "tokens": 124,
+      "occurrences": [
+        {
+          "file": "src/ideNew/src/pages/api/modules/[id].ts",
+          "name": "ensureAclEndpoint",
+          "start": 55,
+          "end": 71
+        },
+        {
+          "file": "src/ideNew/src/pages/api/modules/index.ts",
+          "name": "ensureAclEndpoint",
+          "start": 53,
+          "end": 69
+        }
+      ]
+    },
+    {
+      "id": "D17",
+      "disposition": "planned-extraction",
+      "priority": "P1",
+      "hash": "294a1893801b3415ee66722a6c2bda802f68ed4453d05e4ad530ed75cdd9db7e",
+      "tokens": 110,
+      "occurrences": [
+        {
+          "file": "src/ideNew/src/lib/assistant/toolOperations.ts",
+          "name": "cleanupTailwindPackages",
+          "start": 442,
+          "end": 461
+        },
+        {
+          "file": "src/ideNew/src/lib/assistant/toolRollback.ts",
+          "name": "cleanupTailwindPackages",
+          "start": 33,
+          "end": 52
+        }
+      ]
+    },
+    {
+      "id": "D16",
+      "disposition": "reference-prototype",
+      "priority": "P3",
+      "hash": "cc67c7c6a44d995928c6302ad01cea68abb6ad75450c4d8dd362315ee747cec5",
+      "tokens": 110,
+      "occurrences": [
+        {
+          "file": "src/auth/docs/new_admin.tsx",
+          "name": "SettingRow",
+          "start": 189,
+          "end": 204
+        },
+        {
+          "file": "src/auth/docs/new_design.tsx",
+          "name": "SettingRow",
+          "start": 195,
+          "end": 210
+        }
+      ]
+    },
+    {
+      "id": "D18",
+      "disposition": "planned-extraction",
+      "priority": "P2",
+      "hash": "5db1a604944cf8599927d9407958dbb53b9df6c44413074ad069617c97527260",
+      "tokens": 100,
+      "occurrences": [
+        {
+          "file": "src/ideNew/src/pages/api/admin/shared-modules/[id]/files/[fileId].ts",
+          "name": "normalizeFileExtension",
+          "start": 32,
+          "end": 44
+        },
+        {
+          "file": "src/ideNew/src/pages/api/admin/shared-modules/[id]/files/index.ts",
+          "name": "normalizeFileExtension",
+          "start": 31,
+          "end": 43
+        }
+      ]
+    },
+    {
+      "id": "D19",
+      "disposition": "planned-extraction",
+      "priority": "P2",
+      "hash": "c80b4f06d0d0117f10c055707433af25c3cb03ed873f82eaa46e2cc7092a2269",
+      "tokens": 100,
+      "occurrences": [
+        {
+          "file": "src/ideNew/src/pages/api/admin/shared-packages/[id]/files/[fileId].ts",
+          "name": "normalizeFileExtension",
+          "start": 37,
+          "end": 49
+        },
+        {
+          "file": "src/ideNew/src/pages/api/admin/shared-packages/[id]/files/index.ts",
+          "name": "normalizeFileExtension",
+          "start": 37,
+          "end": 49
+        }
+      ]
+    },
+    {
+      "id": "D20",
+      "disposition": "planned-extraction",
+      "priority": "P1",
+      "hash": "cd648c28adf9d0958a2bed5560a496212ea6f5b706992d15dc03bd80a64f3f95",
+      "tokens": 97,
+      "occurrences": [
+        {
+          "file": "src/ideNew/src/pages/api/admin/tenants.ts",
+          "name": "normalizeResourceConfig",
+          "start": 30,
+          "end": 42
+        },
+        {
+          "file": "src/ideNew/src/pages/api/admin/tenants/[id].ts",
+          "name": "normalizeResourceConfig",
+          "start": 188,
+          "end": 200
+        }
+      ]
+    },
+    {
+      "id": "D21",
+      "disposition": "retained-boundary",
+      "priority": "P2",
+      "hash": "10014703dc5ef8ec971ddfe3fdd42aedc4686ebb5e99530aa2b4ae2c97cb5c29",
+      "tokens": 94,
+      "occurrences": [
+        {
+          "file": "src/ideNew/src/lib/assistant/gateway-runtime/container-agent-client.ts",
+          "name": "<anonymous>",
+          "start": 33,
+          "end": 44
+        },
+        {
+          "file": "src/ideNew/src/lib/container-manager-client.ts",
+          "name": "<anonymous>",
+          "start": 43,
+          "end": 54
+        }
+      ]
+    },
+    {
+      "id": "D22",
+      "disposition": "planned-extraction",
+      "priority": "P2",
+      "hash": "dcfec180effe21cfb9435353ab58995eb13e7c7dd18822e7c519674433dfa8cd",
+      "tokens": 88,
+      "occurrences": [
+        {
+          "file": "src/ideNew/src/pages/api/modules/[id].ts",
+          "name": "normalizeMethod",
+          "start": 13,
+          "end": 26
+        },
+        {
+          "file": "src/ideNew/src/pages/api/modules/index.ts",
+          "name": "normalizeMethod",
+          "start": 11,
+          "end": 24
+        }
+      ]
+    },
+    {
+      "id": "D23",
+      "disposition": "planned-extraction",
+      "priority": "P2",
+      "hash": "002abab35115ee687e8497217598966cd2ce929eef0698a2b9be1f2c4dcb32a8",
+      "tokens": 83,
+      "occurrences": [
+        {
+          "file": "src/ideNew/src/pages/api/models/[id].ts",
+          "name": "normalizeFileExtension",
+          "start": 39,
+          "end": 49
+        },
+        {
+          "file": "src/ideNew/src/pages/api/models/index.ts",
+          "name": "normalizeFileExtension",
+          "start": 40,
+          "end": 50
+        }
+      ]
+    },
+    {
+      "id": "D24",
+      "disposition": "retained-boundary",
+      "priority": "P2",
+      "hash": "a065afc9e5fc172cf0877ae0a9bb7d6d1f26bfddf8a7e9dcf8b2cdb70816f8ec",
+      "tokens": 81,
+      "occurrences": [
+        {
+          "file": "src/ide-vscode/src/preview.ts",
+          "name": "normalizePreviewRoute",
+          "start": 41,
+          "end": 54
+        },
+        {
+          "file": "src/ideNew/src/pages/editor.tsx",
+          "name": "normalizePreviewRouteValue",
+          "start": 150,
+          "end": 163
+        }
+      ]
+    }
+  ],
+  "largestFiles": [
+    {
+      "file": "src/ideNew/src/pages/editor.tsx",
+      "lines": 2607
+    },
+    {
+      "file": "src/kernel/src/index.ts",
+      "lines": 1295
+    },
+    {
+      "file": "src/auth/docs/new_design.tsx",
+      "lines": 1292
+    },
+    {
+      "file": "src/auth/docs/new_admin.tsx",
+      "lines": 1029
+    },
+    {
+      "file": "src/auth/pages/profile.tsx",
+      "lines": 666
+    },
+    {
+      "file": "src/core/core/monitoring/MonitoringService.ts",
+      "lines": 658
+    },
+    {
+      "file": "src/ideNew/src/pages/api/admin/tenants/[id].ts",
+      "lines": 633
+    },
+    {
+      "file": "src/ideNew/src/lib/assistant/respond-runtime/agent-session.ts",
+      "lines": 617
+    },
+    {
+      "file": "src/auth/components/layout/AdminShell.tsx",
+      "lines": 598
+    },
+    {
+      "file": "src/core/app/controllers/RegistryController.ts",
+      "lines": 593
+    },
+    {
+      "file": "src/auth/lib/ui/i18n/messages/de.ts",
+      "lines": 548
+    },
+    {
+      "file": "src/auth/lib/ui/i18n/messages/ar.ts",
+      "lines": 547
+    },
+    {
+      "file": "src/auth/lib/ui/i18n/messages/en.ts",
+      "lines": 547
+    },
+    {
+      "file": "src/auth/lib/ui/i18n/messages/fa.ts",
+      "lines": 547
+    },
+    {
+      "file": "src/ideNew/src/pages/admin/containers/containers.tsx",
+      "lines": 527
+    },
+    {
+      "file": "src/ideNew/src/components/editor/ai-panel/shared.tsx",
+      "lines": 523
+    },
+    {
+      "file": "src/auth/components/profile/hooks/useProfileData.ts",
+      "lines": 521
+    },
+    {
+      "file": "src/ideNew/src/components/editor/hooks/useEditorSaveActions.ts",
+      "lines": 512
+    },
+    {
+      "file": "src/ideNew/src/lib/assistant/orchestrator.ts",
+      "lines": 489
+    },
+    {
+      "file": "src/ideNew/src/lib/assistant/respond-runtime/codex-normalization.ts",
+      "lines": 487
+    },
+    {
+      "file": "src/ideNew/src/lib/assistant/respond-runtime/codex-client.ts",
+      "lines": 486
+    },
+    {
+      "file": "src/ideNew/src/lib/tenant-adapter-config.ts",
+      "lines": 478
+    },
+    {
+      "file": "src/auth/pages/admin/tenants.tsx",
+      "lines": 471
+    },
+    {
+      "file": "src/ideNew/src/lib/assistant/toolOperations.ts",
+      "lines": 464
+    },
+    {
+      "file": "src/ideNew/src/pages/admin/publish-requests/[id].tsx",
+      "lines": 464
+    },
+    {
+      "file": "src/ideNew/src/lib/auth.ts",
+      "lines": 453
+    },
+    {
+      "file": "src/ide-vscode/src/commands/actions.ts",
+      "lines": 439
+    },
+    {
+      "file": "src/ideNew/src/lib/assistant/toolAclSharedTools.ts",
+      "lines": 437
+    },
+    {
+      "file": "src/core/app/controllers/UIEntityController.ts",
+      "lines": 427
+    },
+    {
+      "file": "src/core/app/controllers/OrchestrationController.ts",
+      "lines": 419
+    }
+  ]
+}

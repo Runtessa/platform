@@ -54,6 +54,7 @@ source read.
 
 This is a developer preview with targeted authorization, logging, isolation,
 migration and installation checks. Read the [validation record](/docs/project/validation),
+[code integrity and duplication audit](/docs/project/code-integrity),
 [dependency policy](/docs/project/dependencies), [security policy](/docs/security) and
 [roadmap](/docs/project/roadmap) for the current limits.
 

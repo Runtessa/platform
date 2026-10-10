@@ -330,7 +330,11 @@ IDE and Auth. Optional providers/agents require explicit installation configurat
 | --- | --- |
 | Core / shared | `npm run build:shared`, `npm --prefix src/core run build`, `npm --prefix src/core test` |
 | IDE access and authoring | `npm --prefix src/ideNew run type-check`, `npm --prefix src/ideNew run test:security` |
-| Auth / Kernel / VS Code | The package's build/type checks; `npm run vscode:type-check` |
+| Auth | Server/web build and type checks; `npm run test:auth` |
+| Kernel / VS Code | Package builds/types; `npm run vscode:test` executes the isolated extension host |
+| Gateway / Agent / shared parsing | `npm run test:contracts` |
+| Monitoring | `npm run test:monitoring` (HTTP and actual disposable Redis) |
+| Code integrity | `npm run quality:source`; review the [marked duplication inventory](docs/release/code-integrity-audit.md) |
 | Restricted execution | `npm run test:runtime`, `npm run test:runtime:integration` |
 | Schema and fresh install | `npm run test:database`, `npm run test:installation`, `npm run test:container` |
 | Diagnostics and configuration | `npm run test:logging`, `npm run test:env-setup`, `npm run test:tls` |
