@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { createSession, issueSessionCookie } from '../../lib/sessions';
 import { requestIp, requestUserAgent } from '../../lib/http';
 import { logActivity } from '../../lib/activity';
+import { authErrorDiagnostics } from '../../lib/error-diagnostics';
 import { readUserSecurityState } from '../../lib/services/auth';
 import { resolveTenantOrgContext, upsertUserTenantMembership } from '../../lib/services/user-tenant-context';
 import { appendAuthContext, resolveTenantHostForCookie, toErrorMessage, wantsJson } from '../helpers';
@@ -114,7 +115,7 @@ export const completeLoginForUser = async (
         tenantName: context.tenantName,
         tenantOrgRandId: context.tenantOrgRandId || null,
         userRandId: user.randId,
-        error: toErrorMessage(error, 'tenant membership sync failed'),
+        error: authErrorDiagnostics(error),
       });
     }
   }

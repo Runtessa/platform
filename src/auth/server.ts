@@ -10,6 +10,7 @@ import { closeSessionCache } from './lib/session-cache';
 import { applyCorsForApi, defaultHelmet, parseBearer } from './lib/security';
 import { attachSessionContext } from './lib/middleware/session';
 import { bootstrapAuthDefaults } from './lib/services/bootstrap';
+import { authErrorDiagnostics } from './lib/error-diagnostics';
 import { safeEqual } from './lib/crypto';
 import { registerTenantDirectoryRoutes } from './routes/tenant-directory';
 import { registerAdminRoutes, isAuthAdmin } from './routes/admin';
@@ -106,7 +107,7 @@ const boot = async (): Promise<void> => {
   app.all('*', (req, res) => nextHandler(req, res));
 
   app.use((error: unknown, _req: Request, res: Response, _next: express.NextFunction) => {
-    console.error('[auth-service] request error', error);
+    console.error('[auth-service] request error', authErrorDiagnostics(error));
     const statusCode = (error as { statusCode?: number }).statusCode || 500;
     res.status(statusCode).json({
       error: error instanceof Error ? error.message : 'Unexpected server error',
@@ -130,6 +131,6 @@ const boot = async (): Promise<void> => {
 };
 
 boot().catch((error) => {
-  console.error('[auth-service] boot failure', error);
+  console.error('[auth-service] boot failure', authErrorDiagnostics(error));
   process.exit(1);
 });

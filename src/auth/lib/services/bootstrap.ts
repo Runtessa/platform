@@ -5,6 +5,7 @@ import { findCurrentUserByEmail, schemas, upsertVersionedRecord } from './versio
 import {
   createOrUpdateWhitelistTenant,
   extractTenantNameFromRedirectUri,
+  findWhitelistTenant,
 } from './tenant-whitelist';
 
 const env = (key: string, fallback = ''): string => (process.env[key] || '').trim() || fallback;
@@ -33,7 +34,13 @@ const seedTenantWhitelist = async (tenantRandId: string, logger: BootstrapLogger
   const allowRegistration = toBool(env('AUTH_BOOTSTRAP_TENANT_ALLOW_REGISTRATION', 'true'), true);
   const tenantDisplayName = env('AUTH_BOOTSTRAP_TENANT_NAME', 'Default Tenant');
 
-  const { plainToken } = await createOrUpdateWhitelistTenant({
+  if (!explicitToken && !(await findWhitelistTenant(tenantName))) {
+    throw Object.assign(new Error('AUTH_BOOTSTRAP_TENANT_SSO_TOKEN is required to bootstrap a new tenant'), {
+      code: 'AUTH_BOOTSTRAP_TENANT_SSO_TOKEN_REQUIRED',
+    });
+  }
+
+  await createOrUpdateWhitelistTenant({
     tenantName,
     tenantRandId,
     token: explicitToken || undefined,
@@ -46,9 +53,6 @@ const seedTenantWhitelist = async (tenantRandId: string, logger: BootstrapLogger
   });
 
   logger.log(`[auth-service] tenant whitelist entry upserted: ${tenantName}`);
-  if (plainToken) {
-    logger.log(`[auth-service] tenant sso token: ${plainToken}`);
-  }
 };
 
 const seedClient = async (tenantRandId: string, logger: BootstrapLogger): Promise<void> => {
@@ -84,7 +88,6 @@ const seedClient = async (tenantRandId: string, logger: BootstrapLogger): Promis
 
   await repo.save(row);
   logger.log(`[auth-service] oauth client created: ${clientId}`);
-  logger.log(`[auth-service] oauth client secret: ${clientSecret}`);
 };
 
 const seedAdmin = async (tenantRandId: string, logger: BootstrapLogger): Promise<void> => {
@@ -136,7 +139,6 @@ const seedAdmin = async (tenantRandId: string, logger: BootstrapLogger): Promise
   );
 
   logger.log(`[auth-service] admin user created: ${email}`);
-  logger.log(`[auth-service] admin password: ${password}`);
 };
 
 export const bootstrapAuthDefaults = async (logger: BootstrapLogger = defaultLogger): Promise<void> => {

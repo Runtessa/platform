@@ -17,6 +17,7 @@
     "security:secrets": "node scripts/security/scan-secrets.mjs",
     "security:history": "node scripts/security/scan-history.mjs",
     "test:env-setup": "node --test scripts/docker/init-env.test.mjs",
+    "test:logging": "node --test scripts/security/logging-*.test.cjs",
     "start": "npm run build && npm run build:front && node dist/server.js",
     "core:dev": "npm --prefix src/core run dev",
     "core:start": "npm --prefix src/core run start",

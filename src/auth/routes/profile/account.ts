@@ -9,6 +9,7 @@ import {
   updateProfilePassword,
 } from '../../lib/services/profile';
 import { logActivity } from '../../lib/activity';
+import { authErrorDiagnostics } from '../../lib/error-diagnostics';
 import {
   removeManagedAvatarFromDisk,
   saveAvatarDataUrlToDisk,
@@ -105,7 +106,7 @@ export const registerProfileAccountRoutes = (app: express.Express): void => {
         try {
           await removeManagedAvatarFromDisk(previousAvatar);
         } catch (avatarError) {
-          console.warn('[auth] failed to remove old avatar file', avatarError);
+          console.warn('[auth] failed to remove old avatar file', authErrorDiagnostics(avatarError));
         }
       }
 
@@ -175,7 +176,7 @@ export const registerProfileAccountRoutes = (app: express.Express): void => {
         try {
           await removeManagedAvatarFromDisk(previousAvatar);
         } catch (avatarError) {
-          console.warn('[auth] failed to remove old avatar file', avatarError);
+          console.warn('[auth] failed to remove old avatar file', authErrorDiagnostics(avatarError));
         }
       }
       res.status(200).json({ ok: true, profile });

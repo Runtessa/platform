@@ -45,7 +45,7 @@ Standalone authentication + SSO service built with:
    ```bash
    npm --prefix src/auth run seed
    ```
-   Seeding now also creates the tenant whitelist entry, prints the tenant SSO token, and marks bootstrap admin with `meta.authAdmin=true`.
+   Seeding creates the tenant whitelist entry and marks the bootstrap admin with `meta.authAdmin=true`. Set `AUTH_BOOTSTRAP_TENANT_SSO_TOKEN` before creating a new tenant and supply the same token to Core. Bootstrap never prints passwords, client secrets, or SSO tokens; retrieve them from your private environment configuration. Existing whitelist entries can be reused without supplying a new token.
    You can also auto-bootstrap on service startup with `AUTH_BOOTSTRAP_ON_START=true` (enabled by default in development).
 5. Run dev server:
    ```bash

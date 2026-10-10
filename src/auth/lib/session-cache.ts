@@ -1,5 +1,6 @@
 import Redis from 'ioredis';
 import { AuthSessionEntity } from './typeorm/entities';
+import { authErrorDiagnostics } from './error-diagnostics';
 
 type CachedSession = {
   id: string;
@@ -30,8 +31,7 @@ let warned = false;
 const warnRedis = (error: unknown) => {
   if (warned || redisDisabled) return;
   warned = true;
-  const message = error instanceof Error ? error.message : String(error);
-  console.warn(`[auth-service] redis session cache disabled: ${message}`);
+  console.warn('[auth-service] redis session cache disabled', authErrorDiagnostics(error));
 };
 
 const getRedis = async (): Promise<Redis | null> => {
