@@ -15,6 +15,9 @@ relicense them. Distributors must retain applicable package/bundle license texts
 
 ## External container software
 
+The optional Codex gateway image pins `@openai/codex` 0.162.1 (Apache-2.0);
+its global CLI installation is separate from the lockfile inventory below.
+
 The Compose stacks reference separately distributed upstream images. Node.js,
 PostgreSQL, Redis, Nginx, Alpine Linux and bubblewrap retain their own component
 licenses and notices; IdpCore does not relicense these images. Redis 8.8 is
