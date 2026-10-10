@@ -21,7 +21,8 @@ const main = async () => {
   let database, source, phase = 'image build';
   const command = args => execFileSync(engine, args, { stdio: 'ignore' });
   try {
-    command(['build', '--tag', image, '--file', 'src/core/Dockerfile', '.']);
+    execFileSync(engine, ['build', '--tag', image, '--file', 'src/core/Dockerfile', '.'],
+      { stdio: 'inherit' });
     phase = 'test network';
     command(['network', 'create', network]);
     database = await disposablePostgres({ network });
