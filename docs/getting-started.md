@@ -96,7 +96,8 @@ Open the IDE at **http://localhost:3002** and use your private `ADMIN_EMAIL` and
 requires a configured tenant and published UI.
 
 Use the IDE tenant-management screen to create/select the local tenant with hostname
-`localhost`. Add a GET backend module at `/api/hello` using the README example, save and
+`localhost`. Add a GET backend module at `/api/hello` using the
+[first application tutorial](tutorials/first-application.md), save and
 publish, enable anonymous access for that demonstration route in its ACL, and request
 `http://localhost:3005/api/hello`. Other routes remain protected unless explicitly
 configured otherwise; see the [ACL cookbook](platform-cookbook/03-acl.md).

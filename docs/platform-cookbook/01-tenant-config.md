@@ -18,13 +18,13 @@ This platform separates tenant setup into admin-managed configuration and editor
     "timeout": 5000
   },
   "adapterAccess": {
-    "postgres:pga1": {
-      "allow": ["orm", "query"]
+    "postgres": {
+      "allow": ["pga1"]
     }
   },
   "adapterConfig": {
-    "postgres:pga1": {
-      "secretKey": "DB_MAIN_URL"
+    "postgres": {
+      "pga1": { "secretKey": "DB_MAIN_URL" }
     }
   },
   "authDbConfig": {
@@ -43,3 +43,11 @@ This platform separates tenant setup into admin-managed configuration and editor
 - `adapterAccess` defines which named adapters backend code may request.
 - `resourceConfig.timeout` is in milliseconds.
 - `authDbConfig.mode` should stay `shared` unless the tenant is explicitly provisioned for a dedicated auth database.
+
+The access map is keyed by **adapter type** (`postgres`), whose `allow` array
+contains named connections (`pga1`). Backend ORM calls join those into the key
+`postgres:pga1`. The configuration map nests the connection name under its type.
+An adapter grant does not create a database or user; provision those separately.
+
+See [the platform tour](../platform/overview.md) for identity and runtime ownership,
+and [authoring](../platform/authoring.md) for configuration versus publication.

@@ -295,9 +295,9 @@ Then test:
 
 ## 13. Quick Start Checklist for New Developers
 
-1. Install dependencies (`npm install`).
-2. Configure env files for `core`, `ideNew`, `auth`.
-3. Run `npm run apps:dev`.
+1. Complete the locked dependency and private configuration steps in [Getting started](getting-started.md).
+2. Prepare platform schemas through the explicit migration workflow.
+3. Start the local services using the installation guide; use `apps:dev` only with host-compatible private configuration.
 4. Open IDE and select tenant.
 5. Create/edit one module and one UI entity.
 6. Edit ACL files from side form and save.

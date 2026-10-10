@@ -10,7 +10,7 @@ The project is a developer preview. Publishing the source is separate from deplo
 a production application. This runbook records the release checks and external actions
 that cannot be proven by a local build.
 
-See the [dated validation record](https://github.com/AlirezaDadrass/Idp/blob/main/docs/release/validation.md) for completed checks and their limits.
+See the [dated validation record](/docs/project/validation) for completed checks and their limits.
 
 ## Repository gates
 

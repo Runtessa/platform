@@ -1,34 +1,59 @@
 ---
-title: The live application platform
-description: Authoring, runtime boundaries and deployment for IdpCore
+title: Documentation
 slug: /
 ---
 
-IdpCore is a self-hosted TypeScript platform for tenant-specific backend modules,
-database model classes and React interfaces. Edit in the IDE, preview a draft,
-publish a revision, and run the selected code without restarting the platform.
+<!-- Generated from docs/README.md; edit the source guide. -->
 
-Start with [Getting started](getting-started.md), then explore architecture and
-the route inventory. The source is licensed under
-[Apache-2.0](https://github.com/AlirezaDadrass/Idp/blob/main/LICENSE).
+# IdpCore documentation
 
-## Developer preview
+IdpCore combines a tenant application runtime with the tools for authoring its
+backend, data models and React UI. Start with the platform tour, install a local
+workspace, then follow an application from draft to published execution.
 
-This project exposes a working foundation with regression tests and explicit limits.
-It does not claim a hardened public SaaS or full OIDC conformance. Review the
-[security policy](security.md) and [runtime boundary](operations/runtime.md).
+## Choose a path
 
-## Find the right guide
-
-| Task | Guide |
+| Goal | Reading path |
 | --- | --- |
-| Install locally | [Getting started](getting-started.md) |
-| Understand service ownership | [Architecture](architecture/overview.md) |
-| Prepare or upgrade platform tables | [Migrations](operations/migrations.md) |
-| Assess live execution | [Runtime boundary](operations/runtime.md) |
-| Find implemented routes | [Route inventory](reference/routes.md) |
-| Change the platform | [Contributing](contributing.md) |
-| Prepare a public release | [Release runbook](project/release.md) |
+| Evaluate the platform | [Platform tour](/docs/platform/overview) → [Architecture map](https://github.com/AlirezaDadrass/Idp/blob/main/docs/site/docs/architecture/idpcore-map.md) → [Validation](/docs/project/validation) |
+| Build a tenant application | [Installation](/docs/getting-started) → [First application](/docs/tutorials/first-application) → [Cookbook](/docs/cookbook/overview) |
+| Understand publication | [Authoring lifecycle](/docs/platform/authoring) → [Backend](/docs/cookbook/backend) → [UI](/docs/cookbook/ui) |
+| Develop outside the browser | [Tooling](/docs/platform/tooling) → [VS Code extension](https://github.com/AlirezaDadrass/Idp/blob/main/src/ide-vscode/README.md) |
+| Operate an installation | [Runtime requirements](/docs/operations/runtime) → [Migrations](/docs/operations/migrations) → [Docker](https://github.com/AlirezaDadrass/Idp/blob/main/docker/README.md) |
+| Contribute to the platform | [Developer guide](/docs/platform/developer-guide) → [Contributing](/docs/contributing) |
 
-Generated routes are an inventory, not a complete validated API contract. Read the
-handler source for permissions, request fields and error behavior.
+## Concepts to understand first
+
+- A **tenant** selects an application's hostname, runtime settings, access policy
+  and adapter grants. It is not just an editor folder.
+- A **module** is an HTTP handler. A **UI entity** is a browser package.
+- **Models** are executable TypeORM classes. Their schema operations are separate
+  from module/UI publication and from platform migrations.
+- **Draft** is the authoring state. **Published** is the selected runtime artifact
+  for module/UI traffic. A preview header is not authorization.
+- **Kernel** runs in the browser and loads UI packages. It is not a deployment service.
+- **Shared projects** contain reusable versioned backend or UI code.
+
+## Guides and source references
+
+The platform guides and cookbook explain how to work with the system. The
+[developer guide](/docs/platform/developer-guide) and
+[architecture map](https://github.com/AlirezaDadrass/Idp/blob/main/docs/site/docs/architecture/idpcore-map.md) explain where that
+behavior belongs in the source.
+
+The [route inventory](https://github.com/AlirezaDadrass/Idp/blob/main/docs/site/docs/reference/routes.md),
+[service inventory](https://github.com/AlirezaDadrass/Idp/blob/main/docs/site/docs/reference/services.md) and
+[OpenAPI inventory](https://github.com/AlirezaDadrass/Idp/blob/main/docs/site/docs/reference/openapi-spec.md) are generated from source.
+They help locate endpoints, but do not certify request/response contracts or
+end-to-end behavior. Mounted route prefixes and dynamic routes may need a direct
+source read.
+
+## Current maturity
+
+This is a developer preview with targeted authorization, logging, isolation,
+migration and installation checks. Read the [validation record](/docs/project/validation),
+[dependency policy](/docs/project/dependencies), [security policy](/docs/security) and
+[roadmap](/docs/project/roadmap) for the current limits.
+
+The website's landing page is available in English and Persian. Technical guides
+are currently English. The source Markdown remains usable directly on GitHub.

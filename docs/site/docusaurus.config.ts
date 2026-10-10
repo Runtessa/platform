@@ -11,6 +11,7 @@ const config: Config = {
   projectName: 'Idp',
   trailingSlash: true,
   onBrokenLinks: 'throw',
+  onBrokenAnchors: 'throw',
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
@@ -46,6 +47,8 @@ const config: Config = {
       items: [
         { to: '/docs/getting-started', label: 'Get started', position: 'left' },
         { to: '/docs/', label: 'Documentation', position: 'left' },
+        { to: '/docs/platform/overview', label: 'Platform', position: 'left' },
+        { to: '/fa/', label: 'فارسی', position: 'right' },
         { href: 'https://github.com/AlirezaDadrass/Idp', label: 'GitHub', position: 'right' },
         { to: '/docs/security', label: 'Security', position: 'left' },
       ],
@@ -54,11 +57,28 @@ const config: Config = {
       style: 'dark',
       links: [
         {
-          title: 'Docs',
+          title: 'Build',
           items: [
+            { label: 'First application', to: '/docs/tutorials/first-application' },
+            { label: 'Application cookbook', to: '/docs/cookbook/overview' },
+            { label: 'Authoring workflow', to: '/docs/platform/authoring' },
+          ],
+        },
+        {
+          title: 'Understand',
+          items: [
+            { label: 'Platform tour', to: '/docs/platform/overview' },
             { label: 'Architecture', to: '/docs/architecture/overview' },
-            { label: 'Migrations', to: '/docs/operations/migrations' },
-            { label: 'Routes', to: '/docs/reference/routes' },
+            { label: 'Live runtime', to: '/docs/operations/runtime' },
+          ],
+        },
+        {
+          title: 'Project',
+          items: [
+            { label: 'GitHub', href: 'https://github.com/AlirezaDadrass/Idp' },
+            { label: 'Contributing', to: '/docs/contributing' },
+            { label: 'Roadmap', to: '/docs/project/roadmap' },
+            { label: 'Security & validation', to: '/docs/project/validation' },
           ],
         },
       ],

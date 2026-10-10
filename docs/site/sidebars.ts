@@ -4,10 +4,11 @@ const sidebars: SidebarsConfig = {
   docs: [
     'intro',
     'getting-started',
-    'security',
-    'contributing',
+    'tutorials/first-application',
+    { type: 'category', label: 'Platform', items: ['platform/overview', 'platform/authoring', 'platform/tooling', 'platform/developer-guide'] },
+    { type: 'category', label: 'Application cookbook', items: ['cookbook/overview', 'cookbook/tenant-config', 'cookbook/backend', 'cookbook/acl', 'cookbook/ui', 'cookbook/shared'] },
     { type: 'category', label: 'Operations', items: ['operations/migrations', 'operations/runtime'] },
-    { type: 'category', label: 'Project', items: ['project/roadmap', 'project/dependencies', 'project/release'] },
+    { type: 'category', label: 'Project', items: ['project/roadmap', 'project/dependencies', 'project/validation', 'project/release', 'security', 'contributing'] },
     {
       type: 'category',
       label: 'Architecture',

@@ -4,6 +4,19 @@ import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const guides = {
+  'docs/README.md': ['intro', 'Documentation'],
+  'docs/platform/overview.md': ['platform/overview', 'Platform tour'],
+  'docs/platform/authoring.md': ['platform/authoring', 'Authoring and publication'],
+  'docs/platform/tooling.md': ['platform/tooling', 'Development and operations tools'],
+  'docs/tutorials/first-application.md': ['tutorials/first-application', 'Your first application'],
+  'docs/developer-guide.md': ['platform/developer-guide', 'Platform developer guide'],
+  'docs/platform-cookbook/README.md': ['cookbook/overview', 'Application cookbook'],
+  'docs/platform-cookbook/01-tenant-config.md': ['cookbook/tenant-config', 'Tenant configuration'],
+  'docs/platform-cookbook/02-backend-modules.md': ['cookbook/backend', 'Backend modules and models'],
+  'docs/platform-cookbook/03-acl.md': ['cookbook/acl', 'Application access control'],
+  'docs/platform-cookbook/04-ui-modules.md': ['cookbook/ui', 'React and Kernel'],
+  'docs/platform-cookbook/05-shared-projects.md': ['cookbook/shared', 'Shared projects'],
+  'docs/release/validation.md': ['project/validation', 'Developer preview validation'],
   'docs/getting-started.md': ['getting-started', 'Getting started'],
   'SECURITY.md': ['security', 'Security'],
   'CONTRIBUTING.md': ['contributing', 'Contributing'],
@@ -28,6 +41,7 @@ for (const [source, [id, title]] of Object.entries(guides)) {
   });
   const output = path.join(root, 'docs/site/docs', `${id}.md`);
   mkdirSync(path.dirname(output), { recursive: true });
-  writeFileSync(output, `---\ntitle: ${title}\n---\n\n<!-- Generated from ${source}; edit the source guide. -->\n\n${transformed}`);
+  const slug = id === 'intro' ? '\nslug: /' : '';
+  writeFileSync(output, `---\ntitle: ${title}${slug}\n---\n\n<!-- Generated from ${source}; edit the source guide. -->\n\n${transformed}`);
 }
 console.log('Synchronized canonical guides into the documentation site.');

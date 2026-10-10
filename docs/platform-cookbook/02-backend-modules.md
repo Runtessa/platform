@@ -47,7 +47,7 @@ class ExampleItem {
   @PrimaryGeneratedColumn('uuid')
   id;
 
-  @Column()
+  @Column({ type: 'varchar' })
   name;
 
   @Column({ default: true })
@@ -62,3 +62,36 @@ module.exports = { ExampleItem };
 - Keep route handlers thin.
 - Move reusable server logic into shared backend projects when multiple modules or tenants need it.
 - Add ACL entries for protected routes.
+
+## Provisioning a model-backed route
+
+1. Create a database/schema and a narrowly scoped database role for the tenant.
+2. Store the connection value in tenant secret storage.
+3. Enable a named adapter (for example `postgres` with `allow: ["pga1"]`) and
+   reference the secret under that named adapter's configuration.
+4. Review/back up the intended schema change before saving the model in Studio;
+   Studio save actions attempt schema synchronization after persisting source.
+5. Verify repository queries before publishing the module that depends on them.
+6. Define the route's permission/role/endpoint ACL and test the published request.
+
+The named ORM key is `postgres:pga1`; `adapters.orm(...)` must be awaited.
+The runtime exposes additional query/read-only adapter interfaces, but the Studio
+assistant's generated backend contract uses ORM for database-backed module logic.
+
+## Model changes and publication
+
+Models do not share module/UI published snapshot semantics. A model edit and its
+schema operation can affect runtime independently. Code restoration does not restore
+table contents, and publishing a module does not apply database changes.
+
+The current model migration endpoint performs TypeORM schema synchronization, not
+the platform's versioned SQL migration stream. A failed schema action does not undo
+the preceding model source save. Validate this workflow on staging before changing
+models that address existing data.
+
+Platform tables use [explicit migrations](../../scripts/database/README.md).
+Tenant model/schema operations are a different workflow. See
+[authoring and publication](../platform/authoring.md) before coordinating changes.
+
+For a first endpoint without a data adapter, use the
+[first application tutorial](../tutorials/first-application.md).
