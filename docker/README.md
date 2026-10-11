@@ -1,4 +1,4 @@
-# IDP Ecosystem Docker Stack
+# Runtessa Docker Stack
 
 This folder contains a full image-based runtime stack for:
 
@@ -48,7 +48,8 @@ Before starting services:
   in `nginx/conf.d/idp.conf` to match. The templates use `example.com`; the existing
   proxy configuration still uses the original deployment domains.
 - For the image-based stack, set `IMAGE_REGISTRY` in `docker/.env` to your image
-  owner and update agent image names in the private environment files.
+  owner, pin `IMAGE_TAG` to a published version, and update agent image names in
+  the private environment files. Existing configuration is never overwritten.
 - SMS and AI providers are disabled in the examples. Add their credentials only
   to private files when you configure those integrations.
 - When bind-mounting these files using the root Compose stack, ensure the
@@ -96,6 +97,11 @@ values are passed through `env_file`. The registry stack below is a deployment
 template: configure domains, image versions and migrations before using it.
 
 ## Run the configured registry stack
+
+Images are published to `ghcr.io/runtessa` by the integration repository's GitHub
+Release workflow. The first successful Release creates the packages; a source
+push only validates builds. See the [image release guide](../docs/release/container-images.md)
+for the six image names, private-registry login, version pinning and release gates.
 
 ```bash
 docker compose -f docker/docker-compose.yml --env-file docker/.env up -d
