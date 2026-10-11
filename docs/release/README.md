@@ -29,10 +29,12 @@ Scan the references intended for publication separately from private recovery re
 
 ## Previously exposed credentials
 
-History cleanup is not credential revocation. Before making the repository public,
-the installation owner must revoke/rotate the previously exposed provider keys,
-database passwords, admin/internal tokens and signing secrets. This work requires
-access to those providers/deployments and a verified recovery plan.
+The preparation runbook required installation-owner review of previously exposed
+credentials before publication. The project owner authorized public source
+publication on 2026-10-11. A clean history scan is not credential revocation;
+provider keys, database passwords, admin/internal tokens and signing secrets from
+older installations still require owner verification and rotation where applicable.
+No production/provider rotation is claimed by this publication record.
 
 For encrypted stored data: back up, restore to staging, decrypt with the old key,
 re-encrypt with the new key, validate reads and rollback, then schedule the live
@@ -51,17 +53,16 @@ After the reviewed commit is on the default branch:
 2. Enable private vulnerability reporting under **Settings → Security** when available.
 3. Require relevant CI checks in the default branch's ruleset before merging PRs.
 4. Run the Pages workflow or push a documentation change; confirm its deployment URL.
-5. Public visibility is a separate owner action after the credential gate above.
+5. Publish source only with owner authorization; verify anonymous recursive cloning.
 
 The configured project URL is `https://runtessa.github.io/platform/`. Forks can set
 `DOCS_URL` and `DOCS_BASE_URL` for their owner/project or custom domain. A private
 repository's Pages availability depends on the GitHub account plan; do not claim
 the site is live until a successful Pages deployment is confirmed.
 
-The private-repository activation was rejected on 2026-10-10 because the current
-plan does not support Pages for this repository. The workflow validates the site
-while private and deploys after it is public. If enabling a plan that supports
-private Pages, review and remove its public-repository deployment condition.
+The private-repository activation was rejected on 2026-10-10 because the account
+plan did not support private Pages. Public source publication allows the existing
+workflow to deploy the static site. Keep its pull-request deployment guard.
 
 ## Container image publication
 

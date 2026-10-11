@@ -8,7 +8,7 @@
 
 A self-hosted TypeScript platform for live tenant backend code, executable data models, and React applications.
 
-[Organization](https://github.com/Runtessa) · [Documentation](docs/README.md) · [Get started](docs/getting-started.md)
+[Organization](https://github.com/Runtessa) · [Website & documentation](https://runtessa.github.io/platform/) · [Get started](docs/getting-started.md)
 
 [![Security checks](https://github.com/Runtessa/platform/actions/workflows/secret-scan.yml/badge.svg)](https://github.com/Runtessa/platform/actions/workflows/secret-scan.yml)
 [![Documentation](https://github.com/Runtessa/platform/actions/workflows/pages.yml/badge.svg)](https://github.com/Runtessa/platform/actions/workflows/pages.yml)

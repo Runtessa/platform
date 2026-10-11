@@ -2,7 +2,8 @@
 
 `platform` is the integration workspace and the original repository transferred to
 Runtessa. Its existing commits, pull requests and branch histories remain intact.
-All repositories are private during preparation; publication is a separate decision.
+The integration repository and all nine components are public under Apache-2.0.
+Source publication was authorized by the project owner on 2026-10-11.
 
 | Repository | Workspace path | Responsibility | Imported subtree commits |
 | --- | --- | --- | --- |
@@ -62,15 +63,28 @@ storage keys. The architecture and OpenAPI URLs retain their original slugs so
 existing documentation links and tooling remain valid. These compatibility
 identifiers are not product names and must not be changed by a text replacement.
 
-## Private CI access
+## Public access and protected main branches
 
-Integration jobs use nine dedicated read-only deploy keys stored in the platform
-Actions and Dependabot secret `RUNTESSA_COMPONENT_KEYS`. No personal token is committed or copied
-into images. The checkout action resolves the pinned components; quality and
-secret scans explicitly traverse every initialized repository and fail if a
-component is missing. The history scanner also covers future component commits.
-Public clones can resolve HTTPS submodules without that secret after publication.
-GitHub Pages deployment remains gated off while the platform repository is private.
+Public clones resolve the pinned HTTPS submodules without credentials. Integration
+checks and secret scans traverse every initialized component and fail if one is
+missing. Source/history scanners do not treat private local recovery references
+as publication targets.
+
+All source repositories require pull requests for changes to `main`, including
+administrator changes. Force pushes and branch deletion are disabled; review
+conversations must be resolved. The platform additionally requires its five
+integration verification jobs and documentation build to pass on the current base.
+The minimum approving-review count is zero so a sole maintainer can merge a tested
+pull request without pushing directly to `main`. Merge commits retain history.
+
+Private vulnerability reporting, secret scanning and secret push protection are
+available on every public source repository. See [the security policy](../../SECURITY.md).
+GitHub Pages publishes the static documentation at
+[https://runtessa.github.io/platform/](https://runtessa.github.io/platform/).
+
+Before publication, private CI used nine read-only component deploy keys. Public
+CI no longer needs those credentials. Shared npm packages remain workspace-only;
+repository publication does not publish packages to npm.
 
 ## Migration validation (2026-10-11)
 
@@ -92,8 +106,8 @@ it does not claim production load or full public-release approval.
 ## Dependency ownership
 
 Dependabot npm updates target each component's own root manifest. The platform
-configuration owns documentation and GitHub Actions, because Dependabot cannot
-traverse the private component gitlinks as a workspace checkout. For every
+configuration owns documentation and GitHub Actions, because each component
+has its own authoritative manifest and dependency review. For every
 component dependency update, refresh the authoritative integration lock with
 `npm install --package-lock-only --ignore-scripts` from the assembled workspace,
 review the lock diff and commit it alongside the updated gitlink. Reconcile any
