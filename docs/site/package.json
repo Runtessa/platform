@@ -1,5 +1,5 @@
 {
-  "name": "idpcore-docs-site",
+  "name": "runtessa-docs-site",
   "private": true,
   "scripts": {
     "start": "docusaurus start --port 4010 --host 127.0.0.1",
@@ -20,7 +20,7 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AlirezaDadrass/Idp.git"
+    "url": "git+https://github.com/Runtessa/platform.git"
   },
   "engines": {
     "node": ">=22.13.0 <23"

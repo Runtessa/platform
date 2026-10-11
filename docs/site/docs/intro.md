@@ -5,9 +5,9 @@ slug: /
 
 <!-- Generated from docs/README.md; edit the source guide. -->
 
-# IdpCore documentation
+# Runtessa documentation
 
-IdpCore combines a tenant application runtime with the tools for authoring its
+Runtessa combines a tenant application runtime with the tools for authoring its
 backend, data models and React UI. Start with the platform tour, install a local
 workspace, then follow an application from draft to published execution.
 

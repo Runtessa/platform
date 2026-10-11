@@ -69,7 +69,7 @@ export const english = {
     ['Runtime design', 'Restricted processes, capabilities and host requirements.', '/docs/operations/runtime'],
     ['Database migrations', 'New installs, schema inspection and existing-install adoption.', '/docs/operations/migrations'],
   ],
-  faqTitle: 'Before you choose IdpCore.',
+  faqTitle: 'Before you choose Runtessa.',
   questions: [
     ['What is live here?', 'Tenant backend code and browser UI packages are selected at runtime. A platform source change still needs a platform build; a model/schema change still needs a deliberate migration.'],
     ['Can I bring an existing React app?', 'The IDE includes a React-app import workflow. Runtime imports, the application entry point and API calls must match the Kernel contract; it is not a universal drop-in importer.'],

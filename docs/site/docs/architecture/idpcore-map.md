@@ -1,14 +1,14 @@
 ---
-title: IdpCore Architecture Map
+title: Runtessa Architecture Map
 ---
 
-# IdpCore Architecture Map
+# Runtessa Architecture Map
 
-This document is the working map for engineers and AI agents changing IdpCore. It focuses on ownership boundaries, runtime flows, and the safe order for future refactors.
+This document is the working map for engineers and AI agents changing Runtessa. It focuses on ownership boundaries, runtime flows, and the safe order for future refactors.
 
 ## System shape
 
-IdpCore is not a single web app. It is a multi-service tenant platform made of:
+Runtessa is not a single web app. It is a multi-service tenant platform made of:
 
 - **Core runtime**: tenant resolution, runtime APIs, registry, dispatch, ACL, adapters, and sandbox execution.
 - **IDE / Studio**: authoring UI, editor, preview, publish flow, tenant/admin panels, assistant workflows.

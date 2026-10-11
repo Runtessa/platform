@@ -6,7 +6,7 @@ title: Platform tour
 
 # Platform tour
 
-IdpCore is a self-hosted application platform built around **live tenant code**.
+Runtessa is a self-hosted application platform built around **live tenant code**.
 It contains both an application runtime and its development environment: backend
 handlers, native models, React interfaces, drafts, previews and publication.
 

@@ -370,7 +370,7 @@ function renderCodeReference(filesMeta) {
     .join('\n');
 
   return page(
-    'IdpCore Full Code Reference',
+    'Runtessa Full Code Reference',
     'Project-wide source inventory and symbol-level metrics.',
     `<section>
   <h2>Global Summary</h2>
@@ -407,7 +407,7 @@ function renderApiReference(apiMeta) {
     .join('\n');
 
   return page(
-    'IdpCore API Reference',
+    'Runtessa API Reference',
     'Express runtime routes and Next.js panel APIs.',
     `<section>
   <h2>Summary</h2>
@@ -466,7 +466,7 @@ function renderEntitiesReference(entities) {
     .join('\n');
 
   return page(
-    'IdpCore Entities Reference',
+    'Runtessa Entities Reference',
     'Shared TypeORM entities used by core and IDE.',
     `<section>
   <h2>Entity Inventory</h2>

@@ -10,7 +10,7 @@ This folder contains a full image-based runtime stack for:
 - container-agent
 - codex-gateway
 - postgres (17)
-- redis (8.8; its upstream license is separate from IdpCore's Apache-2.0 license)
+- redis (8.8; its upstream license is separate from Runtessa's Apache-2.0 license)
 
 Kernel is built inside the core image (not a standalone container).
 

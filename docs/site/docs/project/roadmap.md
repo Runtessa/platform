@@ -6,7 +6,7 @@ title: Roadmap
 
 # Roadmap
 
-IdpCore is a developer preview. These are priorities, not promised delivery dates.
+Runtessa is a developer preview. These are priorities, not promised delivery dates.
 Live tenant code execution and the existing service topology remain design constraints.
 
 ## Established foundation

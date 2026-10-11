@@ -91,7 +91,7 @@ export function App() {
   }
 
   return <main>
-    <h1>My first IdpCore application</h1>
+    <h1>My first Runtessa application</h1>
     <button onClick={loadMessage} disabled={busy}>
       {busy ? 'Loading…' : 'Call the backend'}
     </button>

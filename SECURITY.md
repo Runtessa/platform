@@ -3,12 +3,12 @@
 ## Supported scope
 
 Security fixes currently target the default branch. There is no supported release
-matrix or response-time SLA yet. IdpCore is a developer preview for controlled
+matrix or response-time SLA yet. Runtessa is a developer preview for controlled
 installations; it is not a public untrusted-code hosting service.
 
 ## Report privately
 
-Use [GitHub private vulnerability reporting](https://github.com/AlirezaDadrass/Idp/security/advisories/new)
+Use [GitHub private vulnerability reporting](https://github.com/Runtessa/platform/security/advisories/new)
 when available. If that form is unavailable, contact the maintainer through the
 [GitHub profile](https://github.com/AlirezaDadrass) to request a private channel
 without posting exploit details. Do not put credentials or a working cross-tenant

@@ -56,6 +56,18 @@ If local component edits exist, save them on component branches before switching
 integration revisions. Commit a component change in its own repository first;
 update and review its platform gitlink afterward.
 
+## Branding and compatibility
+
+Public product titles, command labels, contributor notices and documentation use
+Runtessa. Component package metadata points to its owning Runtessa repository.
+Original author attribution, license terms and Git history remain intact.
+
+Existing installations retain technical identifiers: `@idp/*` workspace imports,
+VS Code extension/command/settings IDs, database names, container labels and
+storage keys. The architecture and OpenAPI URLs retain their original slugs so
+existing documentation links and tooling remain valid. These compatibility
+identifiers are not product names and must not be changed by a text replacement.
+
 ## Private CI access
 
 Integration jobs use nine dedicated read-only deploy keys stored in the platform
