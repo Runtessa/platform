@@ -26,8 +26,10 @@ publish a revision. Core selects application code when requests arrive. Kernel
 loads the UI packages in the browser. Tenant code changes do not require rebuilding
 or restarting the platform services.
 
-The repository includes the runtime, a browser development studio, identity and
-SSO, shared packages, a VS Code extension, and optional AI and infrastructure tools.
+Runtessa is developed across nine component repositories in the
+[Runtessa organization](https://github.com/Runtessa). This `platform` workspace
+assembles their pinned versions with the runtime, browser Studio, identity and
+SSO, shared packages, VS Code extension, and optional AI and infrastructure tools.
 It is intended for developers evaluating and extending a live application platform.
 Read the [validation record](docs/release/validation.md) before deploying: isolation
 has targeted tests; unrestricted public code execution, production load guarantees
@@ -295,9 +297,28 @@ installation-specific and stays outside Git.
 ## Repository map
 
 The integration workspace pins nine component repositories at tested commits.
-Clone recursively and keep the existing paths for builds and deployment.
-See [repository ownership and history](docs/project/repositories.md).
+Each component owns its source and subtree history. `platform` retains the
+original full project history, shared build tooling and deployment configuration.
+Clone recursively so the paths below resolve to the tested component revisions.
 
+| Repository | Workspace path | Responsibility |
+| --- | --- | --- |
+| [runtime](https://github.com/Runtessa/runtime) | `src/core` | Live tenant backend runtime |
+| [studio](https://github.com/Runtessa/studio) | `src/ideNew` | Browser development studio |
+| [kernel](https://github.com/Runtessa/kernel) | `src/kernel` | React application browser kernel |
+| [packages](https://github.com/Runtessa/packages) | `src/packages` | Shared entities, migrations and runtime contracts |
+| [auth](https://github.com/Runtessa/auth) | `src/auth` | Identity, OAuth and SSO |
+| [assistant-gateway](https://github.com/Runtessa/assistant-gateway) | `src/codex-gateway` | Optional Codex CLI gateway |
+| [container-agent](https://github.com/Runtessa/container-agent) | `src/container-agent` | Optional container operations agent |
+| [monitoring](https://github.com/Runtessa/monitoring) | `src/monitoring` | Optional monitoring and alerts |
+| [vscode](https://github.com/Runtessa/vscode) | `src/ide-vscode` | VS Code tenant workspace extension |
+
+For changes across repositories, commit and push the component changes first,
+then review the updated commit pins and integration lock in `platform`. The
+[repository guide](docs/project/repositories.md) documents history preservation,
+private CI access and dependency ownership.
+
+The assembled checkout has this layout:
 
 ```text
 src/
