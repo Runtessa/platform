@@ -28,6 +28,7 @@ const guides = {
   'ROADMAP.md': ['project/roadmap', 'Roadmap'],
   'docs/dependencies.md': ['project/dependencies', 'Dependency policy'],
   'docs/release/README.md': ['project/release', 'Public release preparation'],
+  'docs/release/container-images.md': ['operations/container-images', 'Container image releases'],
 };
 
 for (const [source, [id, title]] of Object.entries(guides)) {

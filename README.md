@@ -296,6 +296,12 @@ installation-specific and stays outside Git.
 
 ## Repository map
 
+Release images are distributed through [GitHub Container Registry](https://github.com/orgs/Runtessa/packages).
+The integration repository builds six service images when a tested version from
+`main` is published as a GitHub Release. Images stay private while the source is
+private. See [container image releases](docs/release/container-images.md) for tags,
+authentication and installation. Packages appear after the first successful release.
+
 The integration workspace pins nine component repositories at tested commits.
 Each component owns its source and subtree history. `platform` retains the
 original full project history, shared build tooling and deployment configuration.

@@ -27,7 +27,7 @@ completed consolidation and the remaining architecture/testing backlog.
 - [ ] Run `npm run test:container` to check the actual Core image's migration CLI,
       HTTP ingress, live execution and runtime compiler under the outer seccomp policy.
 - [ ] Preserve third-party notices; include Apache-2.0 LICENSE and project NOTICE.
-- [ ] Verify GitHub Pages links/assets at `/Idp/` on desktop and mobile.
+- [ ] Verify GitHub Pages links/assets at `/platform/` on desktop and mobile.
 
 Private original-history backups, reflogs and runtime `.env` files may still exist
 on the maintainer's machine. They must never be pushed or uploaded with a release.
@@ -59,7 +59,7 @@ After the reviewed commit is on the default branch:
 4. Run the Pages workflow or push a documentation change; confirm its deployment URL.
 5. Public visibility is a separate owner action after the credential gate above.
 
-The configured project URL is `https://alirezadadrass.github.io/Idp/`. Forks can set
+The configured project URL is `https://runtessa.github.io/platform/`. Forks can set
 `DOCS_URL` and `DOCS_BASE_URL` for their owner/project or custom domain. A private
 repository's Pages availability depends on the GitHub account plan; do not claim
 the site is live until a successful Pages deployment is confirmed.
@@ -68,6 +68,15 @@ The private-repository activation was rejected on 2026-10-10 because the current
 plan does not support Pages for this repository. The workflow validates the site
 while private and deploys after it is public. If enabling a plan that supports
 private Pages, review and remove its public-repository deployment condition.
+
+## Container image publication
+
+Publish a versioned GitHub Release from a verified `main` revision in `platform`
+to build and push the six service images to GHCR. Releases resolve the exact
+component commits pinned by that revision. Ordinary main pushes and manual build
+runs validate Docker builds without pushing images. Registry visibility stays
+private while the repository is private. See [container image releases](/docs/operations/container-images)
+for prerequisites, package names, stable/prerelease tags and recovery steps.
 
 ## Production offering gates
 
