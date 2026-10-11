@@ -1,15 +1,15 @@
 {
-  "date": "2026-10-10",
+  "date": "2026-10-11",
   "reports": [
     {
       "directory": ".",
       "counts": {
         "info": 0,
         "low": 4,
-        "moderate": 8,
+        "moderate": 6,
         "high": 6,
         "critical": 0,
-        "total": 18
+        "total": 16
       },
       "vulnerabilities": {
         "@ai-sdk/provider-utils": {
@@ -320,26 +320,6 @@
             "isSemVerMajor": true
           }
         },
-        "mssql": {
-          "name": "mssql",
-          "severity": "moderate",
-          "isDirect": true,
-          "via": [
-            "tedious"
-          ],
-          "effects": [
-            "typeorm"
-          ],
-          "range": ">=4.2.1",
-          "nodes": [
-            "node_modules/mssql"
-          ],
-          "fixAvailable": {
-            "name": "mssql",
-            "version": "4.2.0",
-            "isSemVerMajor": true
-          }
-        },
         "sprintf-js": {
           "name": "sprintf-js",
           "severity": "moderate",
@@ -373,8 +353,8 @@
           ],
           "fixAvailable": {
             "name": "tedious",
-            "version": "2.3.1",
-            "isSemVerMajor": true
+            "version": "20.3.7",
+            "isSemVerMajor": false
           }
         },
         "tailwindcss": {
@@ -404,35 +384,15 @@
           "via": [
             "sprintf-js"
           ],
-          "effects": [
-            "mssql"
-          ],
-          "range": "0.0.0-dev || >=2.4.0",
+          "effects": [],
+          "range": "0.0.0-dev || 2.4.0 - 20.3.5",
           "nodes": [
             "node_modules/tedious"
           ],
           "fixAvailable": {
             "name": "tedious",
-            "version": "2.3.1",
-            "isSemVerMajor": true
-          }
-        },
-        "typeorm": {
-          "name": "typeorm",
-          "severity": "moderate",
-          "isDirect": true,
-          "via": [
-            "mssql"
-          ],
-          "effects": [],
-          "range": ">=0.2.42-dev.2834729",
-          "nodes": [
-            "node_modules/typeorm"
-          ],
-          "fixAvailable": {
-            "name": "typeorm",
-            "version": "0.2.41",
-            "isSemVerMajor": true
+            "version": "20.3.7",
+            "isSemVerMajor": false
           }
         }
       }
@@ -442,10 +402,10 @@
       "counts": {
         "info": 0,
         "low": 0,
-        "moderate": 4,
+        "moderate": 2,
         "high": 3,
         "critical": 0,
-        "total": 7
+        "total": 5
       },
       "vulnerabilities": {
         "braces": {
@@ -521,26 +481,6 @@
             "isSemVerMajor": true
           }
         },
-        "mssql": {
-          "name": "mssql",
-          "severity": "moderate",
-          "isDirect": true,
-          "via": [
-            "tedious"
-          ],
-          "effects": [
-            "typeorm"
-          ],
-          "range": ">=4.2.1",
-          "nodes": [
-            "node_modules/mssql"
-          ],
-          "fixAvailable": {
-            "name": "mssql",
-            "version": "4.2.0",
-            "isSemVerMajor": true
-          }
-        },
         "sprintf-js": {
           "name": "sprintf-js",
           "severity": "moderate",
@@ -570,11 +510,7 @@
           "nodes": [
             "node_modules/sprintf-js"
           ],
-          "fixAvailable": {
-            "name": "mssql",
-            "version": "4.2.0",
-            "isSemVerMajor": true
-          }
+          "fixAvailable": true
         },
         "tedious": {
           "name": "tedious",
@@ -583,36 +519,12 @@
           "via": [
             "sprintf-js"
           ],
-          "effects": [
-            "mssql"
-          ],
-          "range": "0.0.0-dev || >=2.4.0",
+          "effects": [],
+          "range": "0.0.0-dev || 2.4.0 - 20.3.5",
           "nodes": [
             "node_modules/tedious"
           ],
-          "fixAvailable": {
-            "name": "mssql",
-            "version": "4.2.0",
-            "isSemVerMajor": true
-          }
-        },
-        "typeorm": {
-          "name": "typeorm",
-          "severity": "moderate",
-          "isDirect": true,
-          "via": [
-            "mssql"
-          ],
-          "effects": [],
-          "range": ">=0.2.42-dev.2834729",
-          "nodes": [
-            "node_modules/typeorm"
-          ],
-          "fixAvailable": {
-            "name": "typeorm",
-            "version": "0.2.41",
-            "isSemVerMajor": true
-          }
+          "fixAvailable": true
         }
       }
     },
@@ -949,8 +861,8 @@
           ],
           "fixAvailable": {
             "name": "tedious",
-            "version": "2.3.1",
-            "isSemVerMajor": true
+            "version": "20.3.7",
+            "isSemVerMajor": false
           }
         },
         "tailwindcss": {
@@ -981,14 +893,14 @@
             "sprintf-js"
           ],
           "effects": [],
-          "range": "0.0.0-dev || >=2.4.0",
+          "range": "0.0.0-dev || 2.4.0 - 20.3.5",
           "nodes": [
             "node_modules/tedious"
           ],
           "fixAvailable": {
             "name": "tedious",
-            "version": "2.3.1",
-            "isSemVerMajor": true
+            "version": "20.3.7",
+            "isSemVerMajor": false
           }
         }
       }
@@ -1009,11 +921,11 @@
       "directory": "src/auth",
       "counts": {
         "info": 0,
-        "low": 1,
+        "low": 0,
         "moderate": 0,
         "high": 5,
         "critical": 0,
-        "total": 6
+        "total": 5
       },
       "vulnerabilities": {
         "braces": {
@@ -1071,35 +983,6 @@
             "version": "4.3.3",
             "isSemVerMajor": true
           }
-        },
-        "esbuild": {
-          "name": "esbuild",
-          "severity": "low",
-          "isDirect": false,
-          "via": [
-            {
-              "source": 1120680,
-              "name": "esbuild",
-              "dependency": "esbuild",
-              "title": "esbuild allows arbitrary file read when running the development server on Windows",
-              "url": "https://github.com/advisories/GHSA-g7r4-m6w7-qqqr",
-              "severity": "low",
-              "cwe": [
-                "CWE-22"
-              ],
-              "cvss": {
-                "score": 2.5,
-                "vectorString": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:N/I:L/A:N"
-              },
-              "range": ">=0.27.3 <0.28.1"
-            }
-          ],
-          "effects": [],
-          "range": "0.27.3 - 0.28.0",
-          "nodes": [
-            "node_modules/esbuild"
-          ],
-          "fixAvailable": true
         },
         "fast-glob": {
           "name": "fast-glob",
@@ -1294,6 +1177,7 @@
           "via": [
             "@docusaurus/core",
             "@docusaurus/mdx-loader",
+            "@docusaurus/plugin-content-docs",
             "@docusaurus/theme-common",
             "@docusaurus/utils",
             "@docusaurus/utils-validation"
@@ -1316,7 +1200,10 @@
             "@docusaurus/utils",
             "@docusaurus/utils-validation"
           ],
-          "effects": [],
+          "effects": [
+            "@docusaurus/plugin-content-blog",
+            "@docusaurus/theme-common"
+          ],
           "range": "<=4.0.0-canary-6835",
           "nodes": [
             "node_modules/@docusaurus/plugin-content-docs"
@@ -1510,6 +1397,7 @@
           "isDirect": false,
           "via": [
             "@docusaurus/mdx-loader",
+            "@docusaurus/plugin-content-docs",
             "@docusaurus/utils"
           ],
           "effects": [

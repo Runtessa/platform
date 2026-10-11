@@ -1,16 +1,16 @@
 # Dependency advisory snapshot
 
-Generated 2026-10-10 by `npm run security:dependencies`. Includes development dependencies.
+Generated 2026-10-11 by `npm run security:dependencies`. Includes development dependencies.
 Counts across roots overlap and must not be added as unique vulnerability counts.
 This is a registry snapshot, not a claim that every advisory is exploitable.
 
 | Install root | Critical | High | Moderate | Low | Total |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| `.` | 0 | 6 | 8 | 4 | 18 |
-| `src/core` | 0 | 3 | 4 | 0 | 7 |
+| `.` | 0 | 6 | 6 | 4 | 16 |
+| `src/core` | 0 | 3 | 2 | 0 | 5 |
 | `src/ideNew` | 0 | 5 | 6 | 4 | 15 |
 | `src/ide-vscode` | 0 | 0 | 0 | 0 | 0 |
-| `src/auth` | 0 | 5 | 0 | 1 | 6 |
+| `src/auth` | 0 | 5 | 0 | 0 | 5 |
 | `src/kernel` | 0 | 0 | 0 | 0 | 0 |
 | `src/monitoring` | 0 | 0 | 0 | 0 | 0 |
 | `src/container-agent` | 0 | 0 | 0 | 0 | 0 |
@@ -22,7 +22,6 @@ This is a registry snapshot, not a claim that every advisory is exploitable.
 - **high · braces**: [braces vulnerable to stack-exhaustion denial of service through deeply nested patterns](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm). Roots: `.`, `src/core`, `src/ideNew`, `src/auth`, `docs/site`.
 - **low · dompurify**: [DOMPurify: IN_PLACE: node-removing afterSanitize hook leaves detached subtree event handlers armed, causing DOM XSS](https://github.com/advisories/GHSA-p98j-92pf-mc4p). Roots: `.`, `src/ideNew`.
 - **low · dompurify**: [DOMPurify: IN_PLACE returns a force-removed rawtext root whose text carries attacker markup — pure HTML reparse executes](https://github.com/advisories/GHSA-6688-9rhm-gjv2). Roots: `.`, `src/ideNew`.
-- **low · esbuild**: [esbuild allows arbitrary file read when running the development server on Windows](https://github.com/advisories/GHSA-g7r4-m6w7-qqqr). Roots: `src/auth`.
 - **low · katex**: [KaTeX: Existing prototype pollution can bypass trust restrictions](https://github.com/advisories/GHSA-238p-pmpm-9mq7). Roots: `docs/site`.
 - **moderate · sprintf-js**: [sprintf-js vulnerable to denial of service through unbounded precision specifiers](https://github.com/advisories/GHSA-hp3w-g68c-fv3c). Roots: `.`, `src/core`, `src/ideNew`.
 

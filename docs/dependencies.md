@@ -42,6 +42,15 @@ tests as direct upgrades. Revisit them when upstream parent packages update.
 Dependabot proposes npm and workflow updates weekly. Maintainers review them; no
 automatic merge or deployment is configured.
 
+Keep type definitions within the supported runtime/API contract: Kernel uses Node
+22 types, and VS Code API types must match the minimum advertised extension host.
+Major router upgrades must preserve a single context across Kernel's built-in
+`react-router` and `react-router-dom` aliases. Tailwind and Mermaid layout upgrades
+require compatible build plugins and visual verification, including the existing
+IDE palette. Deferred major updates are recorded in the
+[2026-10-11 PR review](release/dependency-pr-review-2026-10-11.md); compatible
+patch/minor updates remain enabled.
+
 ## Current unresolved exposure
 
 The committed snapshot has no critical findings, but still reports high and lower

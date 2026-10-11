@@ -2132,7 +2132,7 @@
   },
   {
     "name": "@discoveryjs/json-ext",
-    "version": "0.6.3",
+    "version": "1.1.0",
     "license": "MIT",
     "roots": [
       "src/kernel"
@@ -2425,28 +2425,13 @@
   },
   {
     "name": "@esbuild/aix-ppc64",
-    "version": "0.27.7",
-    "license": "MIT",
-    "roots": [
-      "src/auth"
-    ]
-  },
-  {
-    "name": "@esbuild/aix-ppc64",
     "version": "0.28.2",
     "license": "MIT",
     "roots": [
       ".",
       "src/core",
       "src/ideNew",
-      "src/ide-vscode"
-    ]
-  },
-  {
-    "name": "@esbuild/android-arm",
-    "version": "0.27.7",
-    "license": "MIT",
-    "roots": [
+      "src/ide-vscode",
       "src/auth"
     ]
   },
@@ -2458,14 +2443,7 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/ide-vscode"
-    ]
-  },
-  {
-    "name": "@esbuild/android-arm64",
-    "version": "0.27.7",
-    "license": "MIT",
-    "roots": [
+      "src/ide-vscode",
       "src/auth"
     ]
   },
@@ -2477,14 +2455,7 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/ide-vscode"
-    ]
-  },
-  {
-    "name": "@esbuild/android-x64",
-    "version": "0.27.7",
-    "license": "MIT",
-    "roots": [
+      "src/ide-vscode",
       "src/auth"
     ]
   },
@@ -2496,14 +2467,7 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/ide-vscode"
-    ]
-  },
-  {
-    "name": "@esbuild/darwin-arm64",
-    "version": "0.27.7",
-    "license": "MIT",
-    "roots": [
+      "src/ide-vscode",
       "src/auth"
     ]
   },
@@ -2515,14 +2479,7 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/ide-vscode"
-    ]
-  },
-  {
-    "name": "@esbuild/darwin-x64",
-    "version": "0.27.7",
-    "license": "MIT",
-    "roots": [
+      "src/ide-vscode",
       "src/auth"
     ]
   },
@@ -2534,14 +2491,7 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/ide-vscode"
-    ]
-  },
-  {
-    "name": "@esbuild/freebsd-arm64",
-    "version": "0.27.7",
-    "license": "MIT",
-    "roots": [
+      "src/ide-vscode",
       "src/auth"
     ]
   },
@@ -2553,14 +2503,7 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/ide-vscode"
-    ]
-  },
-  {
-    "name": "@esbuild/freebsd-x64",
-    "version": "0.27.7",
-    "license": "MIT",
-    "roots": [
+      "src/ide-vscode",
       "src/auth"
     ]
   },
@@ -2572,14 +2515,7 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/ide-vscode"
-    ]
-  },
-  {
-    "name": "@esbuild/linux-arm",
-    "version": "0.27.7",
-    "license": "MIT",
-    "roots": [
+      "src/ide-vscode",
       "src/auth"
     ]
   },
@@ -2591,14 +2527,7 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/ide-vscode"
-    ]
-  },
-  {
-    "name": "@esbuild/linux-arm64",
-    "version": "0.27.7",
-    "license": "MIT",
-    "roots": [
+      "src/ide-vscode",
       "src/auth"
     ]
   },
@@ -2610,14 +2539,7 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/ide-vscode"
-    ]
-  },
-  {
-    "name": "@esbuild/linux-ia32",
-    "version": "0.27.7",
-    "license": "MIT",
-    "roots": [
+      "src/ide-vscode",
       "src/auth"
     ]
   },
@@ -2629,14 +2551,7 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/ide-vscode"
-    ]
-  },
-  {
-    "name": "@esbuild/linux-loong64",
-    "version": "0.27.7",
-    "license": "MIT",
-    "roots": [
+      "src/ide-vscode",
       "src/auth"
     ]
   },
@@ -2648,14 +2563,7 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/ide-vscode"
-    ]
-  },
-  {
-    "name": "@esbuild/linux-mips64el",
-    "version": "0.27.7",
-    "license": "MIT",
-    "roots": [
+      "src/ide-vscode",
       "src/auth"
     ]
   },
@@ -2667,14 +2575,7 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/ide-vscode"
-    ]
-  },
-  {
-    "name": "@esbuild/linux-ppc64",
-    "version": "0.27.7",
-    "license": "MIT",
-    "roots": [
+      "src/ide-vscode",
       "src/auth"
     ]
   },
@@ -2686,14 +2587,7 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/ide-vscode"
-    ]
-  },
-  {
-    "name": "@esbuild/linux-riscv64",
-    "version": "0.27.7",
-    "license": "MIT",
-    "roots": [
+      "src/ide-vscode",
       "src/auth"
     ]
   },
@@ -2705,14 +2599,7 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/ide-vscode"
-    ]
-  },
-  {
-    "name": "@esbuild/linux-s390x",
-    "version": "0.27.7",
-    "license": "MIT",
-    "roots": [
+      "src/ide-vscode",
       "src/auth"
     ]
   },
@@ -2724,14 +2611,7 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/ide-vscode"
-    ]
-  },
-  {
-    "name": "@esbuild/linux-x64",
-    "version": "0.27.7",
-    "license": "MIT",
-    "roots": [
+      "src/ide-vscode",
       "src/auth"
     ]
   },
@@ -2743,14 +2623,7 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/ide-vscode"
-    ]
-  },
-  {
-    "name": "@esbuild/netbsd-arm64",
-    "version": "0.27.7",
-    "license": "MIT",
-    "roots": [
+      "src/ide-vscode",
       "src/auth"
     ]
   },
@@ -2762,14 +2635,7 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/ide-vscode"
-    ]
-  },
-  {
-    "name": "@esbuild/netbsd-x64",
-    "version": "0.27.7",
-    "license": "MIT",
-    "roots": [
+      "src/ide-vscode",
       "src/auth"
     ]
   },
@@ -2781,14 +2647,7 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/ide-vscode"
-    ]
-  },
-  {
-    "name": "@esbuild/openbsd-arm64",
-    "version": "0.27.7",
-    "license": "MIT",
-    "roots": [
+      "src/ide-vscode",
       "src/auth"
     ]
   },
@@ -2800,14 +2659,7 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/ide-vscode"
-    ]
-  },
-  {
-    "name": "@esbuild/openbsd-x64",
-    "version": "0.27.7",
-    "license": "MIT",
-    "roots": [
+      "src/ide-vscode",
       "src/auth"
     ]
   },
@@ -2819,14 +2671,7 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/ide-vscode"
-    ]
-  },
-  {
-    "name": "@esbuild/openharmony-arm64",
-    "version": "0.27.7",
-    "license": "MIT",
-    "roots": [
+      "src/ide-vscode",
       "src/auth"
     ]
   },
@@ -2838,14 +2683,7 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/ide-vscode"
-    ]
-  },
-  {
-    "name": "@esbuild/sunos-x64",
-    "version": "0.27.7",
-    "license": "MIT",
-    "roots": [
+      "src/ide-vscode",
       "src/auth"
     ]
   },
@@ -2857,14 +2695,7 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/ide-vscode"
-    ]
-  },
-  {
-    "name": "@esbuild/win32-arm64",
-    "version": "0.27.7",
-    "license": "MIT",
-    "roots": [
+      "src/ide-vscode",
       "src/auth"
     ]
   },
@@ -2876,14 +2707,7 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/ide-vscode"
-    ]
-  },
-  {
-    "name": "@esbuild/win32-ia32",
-    "version": "0.27.7",
-    "license": "MIT",
-    "roots": [
+      "src/ide-vscode",
       "src/auth"
     ]
   },
@@ -2895,14 +2719,7 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/ide-vscode"
-    ]
-  },
-  {
-    "name": "@esbuild/win32-x64",
-    "version": "0.27.7",
-    "license": "MIT",
-    "roots": [
+      "src/ide-vscode",
       "src/auth"
     ]
   },
@@ -2914,7 +2731,8 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/ide-vscode"
+      "src/ide-vscode",
+      "src/auth"
     ]
   },
   {
@@ -3273,18 +3091,18 @@
   },
   {
     "name": "@ioredis/commands",
-    "version": "1.5.0",
+    "version": "1.5.1",
     "license": "MIT",
     "roots": [
-      "src/monitoring"
+      "src/auth"
     ]
   },
   {
     "name": "@ioredis/commands",
-    "version": "1.5.1",
+    "version": "2.0.0",
     "license": "MIT",
     "roots": [
-      "src/auth",
+      "src/monitoring",
       "src/container-agent"
     ]
   },
@@ -3295,8 +3113,7 @@
     "roots": [
       ".",
       "src/core",
-      "src/ideNew",
-      "src/auth"
+      "src/ideNew"
     ]
   },
   {
@@ -4087,8 +3904,7 @@
     "roots": [
       ".",
       "src/core",
-      "src/ideNew",
-      "src/auth"
+      "src/ideNew"
     ]
   },
   {
@@ -5075,22 +4891,6 @@
     ]
   },
   {
-    "name": "@types/eslint",
-    "version": "9.6.1",
-    "license": "MIT",
-    "roots": [
-      "src/kernel"
-    ]
-  },
-  {
-    "name": "@types/eslint-scope",
-    "version": "3.7.7",
-    "license": "MIT",
-    "roots": [
-      "src/kernel"
-    ]
-  },
-  {
     "name": "@types/estree",
     "version": "1.0.9",
     "license": "MIT",
@@ -5316,14 +5116,7 @@
     "version": "22.19.11",
     "license": "MIT",
     "roots": [
-      "src/auth"
-    ]
-  },
-  {
-    "name": "@types/node",
-    "version": "24.10.1",
-    "license": "MIT",
-    "roots": [
+      "src/auth",
       "src/kernel"
     ]
   },
@@ -5391,20 +5184,11 @@
   },
   {
     "name": "@types/react",
-    "version": "19.2.14",
-    "license": "MIT",
-    "roots": [
-      "src/auth"
-    ]
-  },
-  {
-    "name": "@types/react",
     "version": "19.2.7",
     "license": "MIT",
     "roots": [
       ".",
-      "src/ideNew",
-      "src/kernel"
+      "src/ideNew"
     ]
   },
   {
@@ -5412,6 +5196,8 @@
     "version": "19.3.0",
     "license": "MIT",
     "roots": [
+      "src/auth",
+      "src/kernel",
       "docs/site"
     ]
   },
@@ -5421,7 +5207,14 @@
     "license": "MIT",
     "roots": [
       ".",
-      "src/ideNew",
+      "src/ideNew"
+    ]
+  },
+  {
+    "name": "@types/react-dom",
+    "version": "19.3.0",
+    "license": "MIT",
+    "roots": [
       "src/auth",
       "src/kernel"
     ]
@@ -5575,10 +5368,17 @@
   },
   {
     "name": "@types/vscode",
-    "version": "1.120.0",
+    "version": "1.140.0",
     "license": "MIT",
     "roots": [
-      ".",
+      "."
+    ]
+  },
+  {
+    "name": "@types/vscode",
+    "version": "1.90.0",
+    "license": "MIT",
+    "roots": [
       "src/ide-vscode"
     ]
   },
@@ -5603,6 +5403,226 @@
     "version": "21.0.3",
     "license": "MIT",
     "roots": [
+      "docs/site"
+    ]
+  },
+  {
+    "name": "@typescript/typescript-aix-ppc64",
+    "version": "7.0.2",
+    "license": "Apache-2.0",
+    "roots": [
+      ".",
+      "src/ide-vscode",
+      "src/kernel",
+      "docs/site"
+    ]
+  },
+  {
+    "name": "@typescript/typescript-darwin-arm64",
+    "version": "7.0.2",
+    "license": "Apache-2.0",
+    "roots": [
+      ".",
+      "src/ide-vscode",
+      "src/kernel",
+      "docs/site"
+    ]
+  },
+  {
+    "name": "@typescript/typescript-darwin-x64",
+    "version": "7.0.2",
+    "license": "Apache-2.0",
+    "roots": [
+      ".",
+      "src/ide-vscode",
+      "src/kernel",
+      "docs/site"
+    ]
+  },
+  {
+    "name": "@typescript/typescript-freebsd-arm64",
+    "version": "7.0.2",
+    "license": "Apache-2.0",
+    "roots": [
+      ".",
+      "src/ide-vscode",
+      "src/kernel",
+      "docs/site"
+    ]
+  },
+  {
+    "name": "@typescript/typescript-freebsd-x64",
+    "version": "7.0.2",
+    "license": "Apache-2.0",
+    "roots": [
+      ".",
+      "src/ide-vscode",
+      "src/kernel",
+      "docs/site"
+    ]
+  },
+  {
+    "name": "@typescript/typescript-linux-arm",
+    "version": "7.0.2",
+    "license": "Apache-2.0",
+    "roots": [
+      ".",
+      "src/ide-vscode",
+      "src/kernel",
+      "docs/site"
+    ]
+  },
+  {
+    "name": "@typescript/typescript-linux-arm64",
+    "version": "7.0.2",
+    "license": "Apache-2.0",
+    "roots": [
+      ".",
+      "src/ide-vscode",
+      "src/kernel",
+      "docs/site"
+    ]
+  },
+  {
+    "name": "@typescript/typescript-linux-loong64",
+    "version": "7.0.2",
+    "license": "Apache-2.0",
+    "roots": [
+      ".",
+      "src/ide-vscode",
+      "src/kernel",
+      "docs/site"
+    ]
+  },
+  {
+    "name": "@typescript/typescript-linux-mips64el",
+    "version": "7.0.2",
+    "license": "Apache-2.0",
+    "roots": [
+      ".",
+      "src/ide-vscode",
+      "src/kernel",
+      "docs/site"
+    ]
+  },
+  {
+    "name": "@typescript/typescript-linux-ppc64",
+    "version": "7.0.2",
+    "license": "Apache-2.0",
+    "roots": [
+      ".",
+      "src/ide-vscode",
+      "src/kernel",
+      "docs/site"
+    ]
+  },
+  {
+    "name": "@typescript/typescript-linux-riscv64",
+    "version": "7.0.2",
+    "license": "Apache-2.0",
+    "roots": [
+      ".",
+      "src/ide-vscode",
+      "src/kernel",
+      "docs/site"
+    ]
+  },
+  {
+    "name": "@typescript/typescript-linux-s390x",
+    "version": "7.0.2",
+    "license": "Apache-2.0",
+    "roots": [
+      ".",
+      "src/ide-vscode",
+      "src/kernel",
+      "docs/site"
+    ]
+  },
+  {
+    "name": "@typescript/typescript-linux-x64",
+    "version": "7.0.2",
+    "license": "Apache-2.0",
+    "roots": [
+      ".",
+      "src/ide-vscode",
+      "src/kernel",
+      "docs/site"
+    ]
+  },
+  {
+    "name": "@typescript/typescript-netbsd-arm64",
+    "version": "7.0.2",
+    "license": "Apache-2.0",
+    "roots": [
+      ".",
+      "src/ide-vscode",
+      "src/kernel",
+      "docs/site"
+    ]
+  },
+  {
+    "name": "@typescript/typescript-netbsd-x64",
+    "version": "7.0.2",
+    "license": "Apache-2.0",
+    "roots": [
+      ".",
+      "src/ide-vscode",
+      "src/kernel",
+      "docs/site"
+    ]
+  },
+  {
+    "name": "@typescript/typescript-openbsd-arm64",
+    "version": "7.0.2",
+    "license": "Apache-2.0",
+    "roots": [
+      ".",
+      "src/ide-vscode",
+      "src/kernel",
+      "docs/site"
+    ]
+  },
+  {
+    "name": "@typescript/typescript-openbsd-x64",
+    "version": "7.0.2",
+    "license": "Apache-2.0",
+    "roots": [
+      ".",
+      "src/ide-vscode",
+      "src/kernel",
+      "docs/site"
+    ]
+  },
+  {
+    "name": "@typescript/typescript-sunos-x64",
+    "version": "7.0.2",
+    "license": "Apache-2.0",
+    "roots": [
+      ".",
+      "src/ide-vscode",
+      "src/kernel",
+      "docs/site"
+    ]
+  },
+  {
+    "name": "@typescript/typescript-win32-arm64",
+    "version": "7.0.2",
+    "license": "Apache-2.0",
+    "roots": [
+      ".",
+      "src/ide-vscode",
+      "src/kernel",
+      "docs/site"
+    ]
+  },
+  {
+    "name": "@typescript/typescript-win32-x64",
+    "version": "7.0.2",
+    "license": "Apache-2.0",
+    "roots": [
+      ".",
+      "src/ide-vscode",
+      "src/kernel",
       "docs/site"
     ]
   },
@@ -5635,7 +5655,7 @@
   },
   {
     "name": "@vscode/test-electron",
-    "version": "2.5.2",
+    "version": "3.1.0",
     "license": "MIT",
     "roots": [
       ".",
@@ -5877,30 +5897,6 @@
     ]
   },
   {
-    "name": "@webpack-cli/configtest",
-    "version": "3.0.1",
-    "license": "MIT",
-    "roots": [
-      "src/kernel"
-    ]
-  },
-  {
-    "name": "@webpack-cli/info",
-    "version": "3.0.1",
-    "license": "MIT",
-    "roots": [
-      "src/kernel"
-    ]
-  },
-  {
-    "name": "@webpack-cli/serve",
-    "version": "3.0.1",
-    "license": "MIT",
-    "roots": [
-      "src/kernel"
-    ]
-  },
-  {
     "name": "@xtuc/ieee754",
     "version": "1.2.0",
     "license": "BSD-3-Clause",
@@ -5947,8 +5943,6 @@
       "src/ideNew",
       "src/auth",
       "src/kernel",
-      "src/monitoring",
-      "src/container-agent",
       "docs/site"
     ]
   },
@@ -5958,7 +5952,9 @@
     "license": "MIT",
     "roots": [
       ".",
-      "src/ideNew"
+      "src/ideNew",
+      "src/monitoring",
+      "src/container-agent"
     ]
   },
   {
@@ -5970,14 +5966,6 @@
       "src/core",
       "src/kernel",
       "docs/site"
-    ]
-  },
-  {
-    "name": "acorn-import-phases",
-    "version": "1.0.4",
-    "license": "MIT",
-    "roots": [
-      "src/kernel"
     ]
   },
   {
@@ -6203,8 +6191,7 @@
     "roots": [
       ".",
       "src/core",
-      "src/ideNew",
-      "src/auth"
+      "src/ideNew"
     ]
   },
   {
@@ -6256,8 +6243,6 @@
       "src/ideNew",
       "src/auth",
       "src/kernel",
-      "src/monitoring",
-      "src/container-agent",
       "docs/site"
     ]
   },
@@ -6296,22 +6281,6 @@
     ]
   },
   {
-    "name": "async",
-    "version": "3.2.6",
-    "license": "MIT",
-    "roots": [
-      "src/auth"
-    ]
-  },
-  {
-    "name": "autoprefixer",
-    "version": "10.4.20",
-    "license": "MIT",
-    "roots": [
-      "src/auth"
-    ]
-  },
-  {
     "name": "autoprefixer",
     "version": "10.4.24",
     "license": "MIT",
@@ -6325,6 +6294,7 @@
     "version": "10.6.1",
     "license": "MIT",
     "roots": [
+      "src/auth",
       "docs/site"
     ]
   },
@@ -6335,8 +6305,7 @@
     "roots": [
       ".",
       "src/core",
-      "src/ideNew",
-      "src/auth"
+      "src/ideNew"
     ]
   },
   {
@@ -6428,7 +6397,6 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/auth",
       "docs/site"
     ]
   },
@@ -6449,7 +6417,6 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/auth",
       "src/container-agent"
     ]
   },
@@ -6559,8 +6526,6 @@
       "src/ideNew",
       "src/auth",
       "src/kernel",
-      "src/monitoring",
-      "src/container-agent",
       "docs/site"
     ]
   },
@@ -6570,7 +6535,9 @@
     "license": "MIT",
     "roots": [
       ".",
-      "src/ideNew"
+      "src/ideNew",
+      "src/monitoring",
+      "src/container-agent"
     ]
   },
   {
@@ -6641,8 +6608,7 @@
     "roots": [
       ".",
       "src/core",
-      "src/ideNew",
-      "src/auth"
+      "src/ideNew"
     ]
   },
   {
@@ -6704,8 +6670,7 @@
     "roots": [
       ".",
       "src/core",
-      "src/ideNew",
-      "src/auth"
+      "src/ideNew"
     ]
   },
   {
@@ -6816,7 +6781,6 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/auth",
       "docs/site"
     ]
   },
@@ -7151,8 +7115,15 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/auth",
       "src/container-agent"
+    ]
+  },
+  {
+    "name": "cliui",
+    "version": "9.0.1",
+    "license": "ISC",
+    "roots": [
+      "src/auth"
     ]
   },
   {
@@ -7174,15 +7145,22 @@
   },
   {
     "name": "cluster-key-slot",
+    "version": "1.1.1",
+    "license": "Apache-2.0",
+    "roots": [
+      "src/monitoring",
+      "src/container-agent"
+    ]
+  },
+  {
+    "name": "cluster-key-slot",
     "version": "1.1.2",
     "license": "Apache-2.0",
     "roots": [
       ".",
       "src/core",
       "src/ideNew",
-      "src/auth",
-      "src/monitoring",
-      "src/container-agent"
+      "src/auth"
     ]
   },
   {
@@ -7241,7 +7219,6 @@
     "version": "2.0.20",
     "license": "MIT",
     "roots": [
-      "src/kernel",
       "docs/site"
     ]
   },
@@ -7285,7 +7262,14 @@
     "license": "MIT",
     "roots": [
       ".",
-      "src/ide-vscode",
+      "src/ide-vscode"
+    ]
+  },
+  {
+    "name": "commander",
+    "version": "14.0.3",
+    "license": "MIT",
+    "roots": [
       "src/kernel"
     ]
   },
@@ -7424,9 +7408,16 @@
       "src/ideNew",
       "src/auth",
       "src/kernel",
-      "src/monitoring",
-      "src/container-agent",
       "docs/site"
+    ]
+  },
+  {
+    "name": "content-disposition",
+    "version": "1.1.0",
+    "license": "MIT",
+    "roots": [
+      "src/monitoring",
+      "src/container-agent"
     ]
   },
   {
@@ -7459,7 +7450,9 @@
     "license": "MIT",
     "roots": [
       ".",
-      "src/ideNew"
+      "src/ideNew",
+      "src/monitoring",
+      "src/container-agent"
     ]
   },
   {
@@ -7520,8 +7513,6 @@
       "src/core",
       "src/ideNew",
       "src/kernel",
-      "src/monitoring",
-      "src/container-agent",
       "docs/site"
     ]
   },
@@ -7531,7 +7522,9 @@
     "license": "MIT",
     "roots": [
       ".",
-      "src/ideNew"
+      "src/ideNew",
+      "src/monitoring",
+      "src/container-agent"
     ]
   },
   {
@@ -7654,7 +7647,6 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/auth",
       "src/kernel",
       "docs/site"
     ]
@@ -8239,8 +8231,6 @@
       "src/ideNew",
       "src/auth",
       "src/kernel",
-      "src/monitoring",
-      "src/container-agent",
       "docs/site"
     ]
   },
@@ -8354,7 +8344,6 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/auth",
       "docs/site"
     ]
   },
@@ -8448,8 +8437,6 @@
       "src/ideNew",
       "src/auth",
       "src/kernel",
-      "src/monitoring",
-      "src/container-agent",
       "docs/site"
     ]
   },
@@ -8683,8 +8670,7 @@
     "roots": [
       ".",
       "src/core",
-      "src/ideNew",
-      "src/auth"
+      "src/ideNew"
     ]
   },
   {
@@ -8694,6 +8680,14 @@
     "roots": [
       ".",
       "src/ideNew"
+    ]
+  },
+  {
+    "name": "dotenv",
+    "version": "18.0.6",
+    "license": "BSD-2-Clause",
+    "roots": [
+      "src/auth"
     ]
   },
   {
@@ -8728,7 +8722,6 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/auth",
       "docs/site"
     ]
   },
@@ -8769,7 +8762,7 @@
   },
   {
     "name": "ejs",
-    "version": "3.1.10",
+    "version": "7.0.1",
     "license": "Apache-2.0",
     "roots": [
       "src/auth"
@@ -8801,7 +8794,8 @@
     "license": "MIT",
     "roots": [
       ".",
-      "src/ide-vscode"
+      "src/ide-vscode",
+      "src/auth"
     ]
   },
   {
@@ -8825,7 +8819,6 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/auth",
       "docs/site"
     ]
   },
@@ -9033,21 +9026,14 @@
   },
   {
     "name": "esbuild",
-    "version": "0.27.7",
-    "license": "MIT",
-    "roots": [
-      "src/auth"
-    ]
-  },
-  {
-    "name": "esbuild",
     "version": "0.28.2",
     "license": "MIT",
     "roots": [
       ".",
       "src/core",
       "src/ideNew",
-      "src/ide-vscode"
+      "src/ide-vscode",
+      "src/auth"
     ]
   },
   {
@@ -9106,44 +9092,12 @@
     ]
   },
   {
-    "name": "eslint-scope",
-    "version": "5.1.1",
-    "license": "BSD-2-Clause",
-    "roots": [
-      "src/kernel"
-    ]
-  },
-  {
     "name": "esprima",
     "version": "4.0.1",
     "license": "BSD-2-Clause",
     "roots": [
       ".",
       "src/ideNew"
-    ]
-  },
-  {
-    "name": "esrecurse",
-    "version": "4.3.0",
-    "license": "BSD-2-Clause",
-    "roots": [
-      "src/kernel"
-    ]
-  },
-  {
-    "name": "estraverse",
-    "version": "4.3.0",
-    "license": "BSD-2-Clause",
-    "roots": [
-      "src/kernel"
-    ]
-  },
-  {
-    "name": "estraverse",
-    "version": "5.3.0",
-    "license": "BSD-2-Clause",
-    "roots": [
-      "src/kernel"
     ]
   },
   {
@@ -9334,9 +9288,7 @@
     "roots": [
       ".",
       "src/core",
-      "src/auth",
-      "src/monitoring",
-      "src/container-agent"
+      "src/auth"
     ]
   },
   {
@@ -9347,6 +9299,15 @@
       "src/ideNew",
       "src/kernel",
       "docs/site"
+    ]
+  },
+  {
+    "name": "express",
+    "version": "5.2.1",
+    "license": "MIT",
+    "roots": [
+      "src/monitoring",
+      "src/container-agent"
     ]
   },
   {
@@ -9443,14 +9404,6 @@
     ]
   },
   {
-    "name": "fastest-levenshtein",
-    "version": "1.0.16",
-    "license": "MIT",
-    "roots": [
-      "src/kernel"
-    ]
-  },
-  {
     "name": "fastq",
     "version": "1.20.3",
     "license": "ISC",
@@ -9514,14 +9467,6 @@
     ]
   },
   {
-    "name": "filelist",
-    "version": "1.0.6",
-    "license": "Apache-2.0",
-    "roots": [
-      "src/auth"
-    ]
-  },
-  {
     "name": "fill-range",
     "version": "7.1.1",
     "license": "MIT",
@@ -9543,8 +9488,6 @@
       "src/ideNew",
       "src/auth",
       "src/kernel",
-      "src/monitoring",
-      "src/container-agent",
       "docs/site"
     ]
   },
@@ -9554,7 +9497,9 @@
     "license": "MIT",
     "roots": [
       ".",
-      "src/ideNew"
+      "src/ideNew",
+      "src/monitoring",
+      "src/container-agent"
     ]
   },
   {
@@ -9617,8 +9562,7 @@
     "roots": [
       ".",
       "src/core",
-      "src/ideNew",
-      "src/auth"
+      "src/ideNew"
     ]
   },
   {
@@ -9628,8 +9572,7 @@
     "roots": [
       ".",
       "src/core",
-      "src/ideNew",
-      "src/auth"
+      "src/ideNew"
     ]
   },
   {
@@ -9665,19 +9608,12 @@
   },
   {
     "name": "fraction.js",
-    "version": "4.3.7",
-    "license": "MIT",
-    "roots": [
-      "src/auth"
-    ]
-  },
-  {
-    "name": "fraction.js",
     "version": "5.3.4",
     "license": "MIT",
     "roots": [
       ".",
       "src/ideNew",
+      "src/auth",
       "docs/site"
     ]
   },
@@ -9691,8 +9627,6 @@
       "src/ideNew",
       "src/auth",
       "src/kernel",
-      "src/monitoring",
-      "src/container-agent",
       "docs/site"
     ]
   },
@@ -9702,7 +9636,9 @@
     "license": "MIT",
     "roots": [
       ".",
-      "src/ideNew"
+      "src/ideNew",
+      "src/monitoring",
+      "src/container-agent"
     ]
   },
   {
@@ -9788,7 +9724,8 @@
     "license": "MIT",
     "roots": [
       ".",
-      "src/ide-vscode"
+      "src/ide-vscode",
+      "src/auth"
     ]
   },
   {
@@ -9840,14 +9777,6 @@
     ]
   },
   {
-    "name": "get-tsconfig",
-    "version": "4.14.3",
-    "license": "MIT",
-    "roots": [
-      "src/auth"
-    ]
-  },
-  {
     "name": "github-from-package",
     "version": "0.0.0",
     "license": "MIT",
@@ -9871,8 +9800,7 @@
     "roots": [
       ".",
       "src/core",
-      "src/ideNew",
-      "src/auth"
+      "src/ideNew"
     ]
   },
   {
@@ -9912,14 +9840,6 @@
     "license": "Apache-2.0",
     "roots": [
       "docs/site"
-    ]
-  },
-  {
-    "name": "glob-to-regexp",
-    "version": "0.4.1",
-    "license": "BSD-2-Clause",
-    "roots": [
-      "src/kernel"
     ]
   },
   {
@@ -10043,7 +9963,6 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/auth",
       "docs/site"
     ]
   },
@@ -10070,8 +9989,7 @@
     "roots": [
       ".",
       "src/core",
-      "src/ideNew",
-      "src/auth"
+      "src/ideNew"
     ]
   },
   {
@@ -10173,7 +10091,7 @@
   },
   {
     "name": "helmet",
-    "version": "8.1.0",
+    "version": "8.3.0",
     "license": "MIT",
     "roots": [
       "src/auth"
@@ -10273,17 +10191,10 @@
   },
   {
     "name": "html-webpack-plugin",
-    "version": "5.6.6",
-    "license": "MIT",
-    "roots": [
-      "src/kernel"
-    ]
-  },
-  {
-    "name": "html-webpack-plugin",
     "version": "5.6.8",
     "license": "MIT",
     "roots": [
+      "src/kernel",
       "docs/site"
     ]
   },
@@ -10434,8 +10345,6 @@
       "src/ideNew",
       "src/auth",
       "src/kernel",
-      "src/monitoring",
-      "src/container-agent",
       "docs/site"
     ]
   },
@@ -10454,7 +10363,9 @@
     "roots": [
       ".",
       "src/core",
-      "src/ideNew"
+      "src/ideNew",
+      "src/monitoring",
+      "src/container-agent"
     ]
   },
   {
@@ -10473,7 +10384,6 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/auth",
       "src/container-agent"
     ]
   },
@@ -10637,8 +10547,7 @@
     "version": "5.10.1",
     "license": "MIT",
     "roots": [
-      "src/auth",
-      "src/container-agent"
+      "src/auth"
     ]
   },
   {
@@ -10653,10 +10562,11 @@
   },
   {
     "name": "ioredis",
-    "version": "5.9.3",
+    "version": "6.0.0",
     "license": "MIT",
     "roots": [
-      "src/monitoring"
+      "src/monitoring",
+      "src/container-agent"
     ]
   },
   {
@@ -10733,8 +10643,7 @@
     "roots": [
       ".",
       "src/core",
-      "src/ideNew",
-      "src/auth"
+      "src/ideNew"
     ]
   },
   {
@@ -10972,7 +10881,9 @@
     "license": "MIT",
     "roots": [
       ".",
-      "src/ideNew"
+      "src/ideNew",
+      "src/monitoring",
+      "src/container-agent"
     ]
   },
   {
@@ -11008,8 +10919,7 @@
     "roots": [
       ".",
       "src/core",
-      "src/ideNew",
-      "src/auth"
+      "src/ideNew"
     ]
   },
   {
@@ -11100,8 +11010,7 @@
     "roots": [
       ".",
       "src/core",
-      "src/ideNew",
-      "src/auth"
+      "src/ideNew"
     ]
   },
   {
@@ -11112,7 +11021,6 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/auth",
       "src/kernel",
       "docs/site"
     ]
@@ -11151,16 +11059,7 @@
     "roots": [
       ".",
       "src/core",
-      "src/ideNew",
-      "src/auth"
-    ]
-  },
-  {
-    "name": "jake",
-    "version": "10.9.4",
-    "license": "Apache-2.0",
-    "roots": [
-      "src/auth"
+      "src/ideNew"
     ]
   },
   {
@@ -11303,7 +11202,6 @@
     "version": "2.3.1",
     "license": "MIT",
     "roots": [
-      "src/kernel",
       "docs/site"
     ]
   },
@@ -11762,14 +11660,6 @@
     ]
   },
   {
-    "name": "loader-runner",
-    "version": "4.3.2",
-    "license": "MIT",
-    "roots": [
-      "src/kernel"
-    ]
-  },
-  {
     "name": "loader-utils",
     "version": "2.0.4",
     "license": "MIT",
@@ -11839,9 +11729,7 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/auth",
-      "src/monitoring",
-      "src/container-agent"
+      "src/auth"
     ]
   },
   {
@@ -11863,9 +11751,7 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/auth",
-      "src/monitoring",
-      "src/container-agent"
+      "src/auth"
     ]
   },
   {
@@ -12014,8 +11900,7 @@
     "roots": [
       ".",
       "src/core",
-      "src/ideNew",
-      "src/auth"
+      "src/ideNew"
     ]
   },
   {
@@ -12314,8 +12199,6 @@
       "src/ideNew",
       "src/auth",
       "src/kernel",
-      "src/monitoring",
-      "src/container-agent",
       "docs/site"
     ]
   },
@@ -12325,7 +12208,9 @@
     "license": "MIT",
     "roots": [
       ".",
-      "src/ideNew"
+      "src/ideNew",
+      "src/monitoring",
+      "src/container-agent"
     ]
   },
   {
@@ -12346,8 +12231,6 @@
       "src/ideNew",
       "src/auth",
       "src/kernel",
-      "src/monitoring",
-      "src/container-agent",
       "docs/site"
     ]
   },
@@ -12357,7 +12240,9 @@
     "license": "MIT",
     "roots": [
       ".",
-      "src/ideNew"
+      "src/ideNew",
+      "src/monitoring",
+      "src/container-agent"
     ]
   },
   {
@@ -12398,8 +12283,6 @@
       "src/ideNew",
       "src/auth",
       "src/kernel",
-      "src/monitoring",
-      "src/container-agent",
       "docs/site"
     ]
   },
@@ -12762,8 +12645,6 @@
       "src/ide-vscode",
       "src/auth",
       "src/kernel",
-      "src/monitoring",
-      "src/container-agent",
       "docs/site"
     ]
   },
@@ -12785,8 +12666,6 @@
       "src/ideNew",
       "src/auth",
       "src/kernel",
-      "src/monitoring",
-      "src/container-agent",
       "docs/site"
     ]
   },
@@ -12797,6 +12676,9 @@
     "roots": [
       ".",
       "src/ideNew",
+      "src/kernel",
+      "src/monitoring",
+      "src/container-agent",
       "docs/site"
     ]
   },
@@ -12818,8 +12700,6 @@
       "src/ideNew",
       "src/auth",
       "src/kernel",
-      "src/monitoring",
-      "src/container-agent",
       "docs/site"
     ]
   },
@@ -12830,6 +12710,8 @@
     "roots": [
       ".",
       "src/ideNew",
+      "src/monitoring",
+      "src/container-agent",
       "docs/site"
     ]
   },
@@ -12903,21 +12785,12 @@
   },
   {
     "name": "minimatch",
-    "version": "5.1.9",
-    "license": "ISC",
-    "roots": [
-      "src/auth"
-    ]
-  },
-  {
-    "name": "minimatch",
     "version": "9.0.9",
     "license": "ISC",
     "roots": [
       ".",
       "src/core",
-      "src/ideNew",
-      "src/auth"
+      "src/ideNew"
     ]
   },
   {
@@ -12935,6 +12808,7 @@
     "version": "5.13.0",
     "license": "MIT",
     "roots": [
+      "src/kernel",
       "docs/site"
     ]
   },
@@ -12946,8 +12820,7 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/ide-vscode",
-      "src/auth"
+      "src/ide-vscode"
     ]
   },
   {
@@ -13005,8 +12878,6 @@
       "src/ideNew",
       "src/auth",
       "src/kernel",
-      "src/monitoring",
-      "src/container-agent",
       "docs/site"
     ]
   },
@@ -13130,8 +13001,6 @@
       "src/ideNew",
       "src/auth",
       "src/kernel",
-      "src/monitoring",
-      "src/container-agent",
       "docs/site"
     ]
   },
@@ -13149,15 +13018,9 @@
     "license": "MIT",
     "roots": [
       ".",
-      "src/ideNew"
-    ]
-  },
-  {
-    "name": "neo-async",
-    "version": "2.6.2",
-    "license": "MIT",
-    "roots": [
-      "src/kernel"
+      "src/ideNew",
+      "src/monitoring",
+      "src/container-agent"
     ]
   },
   {
@@ -13244,14 +13107,6 @@
       "src/ideNew",
       "src/auth",
       "docs/site"
-    ]
-  },
-  {
-    "name": "normalize-range",
-    "version": "0.1.2",
-    "license": "MIT",
-    "roots": [
-      "src/auth"
     ]
   },
   {
@@ -13389,6 +13244,7 @@
     "roots": [
       ".",
       "src/ideNew",
+      "src/monitoring",
       "src/container-agent"
     ]
   },
@@ -13579,8 +13435,7 @@
     "roots": [
       ".",
       "src/core",
-      "src/ideNew",
-      "src/auth"
+      "src/ideNew"
     ]
   },
   {
@@ -13731,7 +13586,6 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/auth",
       "src/kernel",
       "docs/site"
     ]
@@ -13755,8 +13609,7 @@
     "roots": [
       ".",
       "src/core",
-      "src/ideNew",
-      "src/auth"
+      "src/ideNew"
     ]
   },
   {
@@ -13778,8 +13631,6 @@
       "src/ideNew",
       "src/auth",
       "src/kernel",
-      "src/monitoring",
-      "src/container-agent",
       "docs/site"
     ]
   },
@@ -13805,7 +13656,9 @@
     "license": "MIT",
     "roots": [
       ".",
-      "src/ideNew"
+      "src/ideNew",
+      "src/monitoring",
+      "src/container-agent"
     ]
   },
   {
@@ -13837,7 +13690,7 @@
   },
   {
     "name": "pg",
-    "version": "8.18.0",
+    "version": "8.23.1",
     "license": "MIT",
     "roots": [
       "src/auth"
@@ -14032,8 +13885,7 @@
     "roots": [
       ".",
       "src/core",
-      "src/ideNew",
-      "src/auth"
+      "src/ideNew"
     ]
   },
   {
@@ -15160,8 +15012,6 @@
       "src/ideNew",
       "src/auth",
       "src/kernel",
-      "src/monitoring",
-      "src/container-agent",
       "docs/site"
     ]
   },
@@ -15170,6 +15020,8 @@
     "version": "1.3.0",
     "license": "MIT",
     "roots": [
+      "src/monitoring",
+      "src/container-agent",
       "docs/site"
     ]
   },
@@ -15183,8 +15035,6 @@
       "src/ideNew",
       "src/auth",
       "src/kernel",
-      "src/monitoring",
-      "src/container-agent",
       "docs/site"
     ]
   },
@@ -15194,7 +15044,9 @@
     "license": "MIT",
     "roots": [
       ".",
-      "src/ideNew"
+      "src/ideNew",
+      "src/monitoring",
+      "src/container-agent"
     ]
   },
   {
@@ -15214,16 +15066,7 @@
     "roots": [
       ".",
       "src/core",
-      "src/ideNew",
-      "src/auth"
-    ]
-  },
-  {
-    "name": "react",
-    "version": "19.2.7",
-    "license": "MIT",
-    "roots": [
-      "src/kernel"
+      "src/ideNew"
     ]
   },
   {
@@ -15231,6 +15074,8 @@
     "version": "19.3.0",
     "license": "MIT",
     "roots": [
+      "src/auth",
+      "src/kernel",
       "docs/site"
     ]
   },
@@ -15249,16 +15094,7 @@
     "license": "MIT",
     "roots": [
       ".",
-      "src/ideNew",
-      "src/auth"
-    ]
-  },
-  {
-    "name": "react-dom",
-    "version": "19.2.7",
-    "license": "MIT",
-    "roots": [
-      "src/kernel"
+      "src/ideNew"
     ]
   },
   {
@@ -15266,6 +15102,8 @@
     "version": "19.3.0",
     "license": "MIT",
     "roots": [
+      "src/auth",
+      "src/kernel",
       "docs/site"
     ]
   },
@@ -15283,7 +15121,14 @@
     "license": "MIT",
     "roots": [
       ".",
-      "src/ideNew",
+      "src/ideNew"
+    ]
+  },
+  {
+    "name": "react-icons",
+    "version": "5.7.0",
+    "license": "MIT",
+    "roots": [
       "src/auth",
       "src/kernel"
     ]
@@ -15483,9 +15328,7 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/auth",
-      "src/monitoring",
-      "src/container-agent"
+      "src/auth"
     ]
   },
   {
@@ -15778,14 +15621,6 @@
     ]
   },
   {
-    "name": "resolve-pkg-maps",
-    "version": "1.0.0",
-    "license": "MIT",
-    "roots": [
-      "src/auth"
-    ]
-  },
-  {
     "name": "responselike",
     "version": "3.0.0",
     "license": "MIT",
@@ -15852,7 +15687,9 @@
     "license": "MIT",
     "roots": [
       ".",
-      "src/ideNew"
+      "src/ideNew",
+      "src/monitoring",
+      "src/container-agent"
     ]
   },
   {
@@ -15924,7 +15761,6 @@
       "src/ide-vscode",
       "src/auth",
       "src/kernel",
-      "src/monitoring",
       "src/container-agent",
       "docs/site"
     ]
@@ -15961,9 +15797,7 @@
     "license": "MIT",
     "roots": [
       ".",
-      "src/ideNew",
-      "src/auth",
-      "src/kernel"
+      "src/ideNew"
     ]
   },
   {
@@ -15971,6 +15805,8 @@
     "version": "0.28.0",
     "license": "MIT",
     "roots": [
+      "src/auth",
+      "src/kernel",
       "docs/site"
     ]
   },
@@ -16085,8 +15921,6 @@
       "src/ideNew",
       "src/auth",
       "src/kernel",
-      "src/monitoring",
-      "src/container-agent",
       "docs/site"
     ]
   },
@@ -16096,7 +15930,9 @@
     "license": "MIT",
     "roots": [
       ".",
-      "src/ideNew"
+      "src/ideNew",
+      "src/monitoring",
+      "src/container-agent"
     ]
   },
   {
@@ -16135,8 +15971,6 @@
       "src/ideNew",
       "src/auth",
       "src/kernel",
-      "src/monitoring",
-      "src/container-agent",
       "docs/site"
     ]
   },
@@ -16146,7 +15980,9 @@
     "license": "MIT",
     "roots": [
       ".",
-      "src/ideNew"
+      "src/ideNew",
+      "src/monitoring",
+      "src/container-agent"
     ]
   },
   {
@@ -16173,7 +16009,6 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/auth",
       "docs/site"
     ]
   },
@@ -16208,8 +16043,7 @@
     "roots": [
       ".",
       "src/core",
-      "src/ideNew",
-      "src/auth"
+      "src/ideNew"
     ]
   },
   {
@@ -16247,7 +16081,6 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/auth",
       "src/kernel",
       "docs/site"
     ]
@@ -16260,7 +16093,6 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/auth",
       "src/kernel",
       "docs/site"
     ]
@@ -16357,8 +16189,7 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/ide-vscode",
-      "src/auth"
+      "src/ide-vscode"
     ]
   },
   {
@@ -16722,7 +16553,6 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/auth",
       "docs/site"
     ]
   },
@@ -16732,7 +16562,16 @@
     "license": "MIT",
     "roots": [
       ".",
-      "src/ide-vscode"
+      "src/ide-vscode",
+      "src/auth"
+    ]
+  },
+  {
+    "name": "string-width",
+    "version": "8.3.0",
+    "license": "MIT",
+    "roots": [
+      "src/auth"
     ]
   },
   {
@@ -17044,7 +16883,6 @@
     "version": "5.6.1",
     "license": "MIT",
     "roots": [
-      "src/kernel",
       "docs/site"
     ]
   },
@@ -17143,8 +16981,7 @@
     "roots": [
       ".",
       "src/core",
-      "src/ideNew",
-      "src/auth"
+      "src/ideNew"
     ]
   },
   {
@@ -17270,7 +17107,7 @@
   },
   {
     "name": "tsx",
-    "version": "4.21.0",
+    "version": "4.23.15",
     "license": "MIT",
     "roots": [
       "src/auth"
@@ -17338,8 +17175,6 @@
       "src/ideNew",
       "src/auth",
       "src/kernel",
-      "src/monitoring",
-      "src/container-agent",
       "docs/site"
     ]
   },
@@ -17349,7 +17184,9 @@
     "license": "MIT",
     "roots": [
       ".",
-      "src/ideNew"
+      "src/ideNew",
+      "src/monitoring",
+      "src/container-agent"
     ]
   },
   {
@@ -17359,8 +17196,7 @@
     "roots": [
       ".",
       "src/core",
-      "src/ideNew",
-      "src/auth"
+      "src/ideNew"
     ]
   },
   {
@@ -17387,7 +17223,14 @@
     "roots": [
       ".",
       "src/core",
-      "src/ideNew",
+      "src/ideNew"
+    ]
+  },
+  {
+    "name": "typeorm",
+    "version": "1.1.2",
+    "license": "MIT",
+    "roots": [
       "src/auth"
     ]
   },
@@ -17399,8 +17242,16 @@
       ".",
       "src/core",
       "src/ideNew",
+      "src/auth"
+    ]
+  },
+  {
+    "name": "typescript",
+    "version": "7.0.2",
+    "license": "Apache-2.0",
+    "roots": [
+      ".",
       "src/ide-vscode",
-      "src/auth",
       "src/kernel",
       "docs/site"
     ]
@@ -17432,14 +17283,7 @@
       "src/core",
       "src/ideNew",
       "src/ide-vscode",
-      "src/auth"
-    ]
-  },
-  {
-    "name": "undici-types",
-    "version": "7.16.0",
-    "license": "MIT",
-    "roots": [
+      "src/auth",
       "src/kernel"
     ]
   },
@@ -17675,8 +17519,6 @@
       "src/ideNew",
       "src/auth",
       "src/kernel",
-      "src/monitoring",
-      "src/container-agent",
       "docs/site"
     ]
   },
@@ -17688,7 +17530,6 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/auth",
       "docs/site"
     ]
   },
@@ -17784,17 +17625,10 @@
   },
   {
     "name": "webpack",
-    "version": "5.104.1",
-    "license": "MIT",
-    "roots": [
-      "src/kernel"
-    ]
-  },
-  {
-    "name": "webpack",
     "version": "5.111.1",
     "license": "MIT",
     "roots": [
+      "src/kernel",
       "docs/site"
     ]
   },
@@ -17808,7 +17642,7 @@
   },
   {
     "name": "webpack-cli",
-    "version": "6.0.1",
+    "version": "7.2.3",
     "license": "MIT",
     "roots": [
       "src/kernel"
@@ -17888,7 +17722,6 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/auth",
       "src/kernel",
       "docs/site"
     ]
@@ -17917,8 +17750,7 @@
     "roots": [
       ".",
       "src/core",
-      "src/ideNew",
-      "src/auth"
+      "src/ideNew"
     ]
   },
   {
@@ -17963,7 +17795,6 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/auth",
       "src/container-agent"
     ]
   },
@@ -17975,8 +17806,15 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/auth",
       "docs/site"
+    ]
+  },
+  {
+    "name": "wrap-ansi",
+    "version": "9.0.2",
+    "license": "MIT",
+    "roots": [
+      "src/auth"
     ]
   },
   {
@@ -17986,6 +17824,7 @@
     "roots": [
       ".",
       "src/ideNew",
+      "src/monitoring",
       "src/container-agent"
     ]
   },
@@ -18143,8 +17982,15 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/auth",
       "src/container-agent"
+    ]
+  },
+  {
+    "name": "yargs",
+    "version": "18.2.0",
+    "license": "MIT",
+    "roots": [
+      "src/auth"
     ]
   },
   {
@@ -18163,8 +18009,15 @@
       ".",
       "src/core",
       "src/ideNew",
-      "src/auth",
       "src/container-agent"
+    ]
+  },
+  {
+    "name": "yargs-parser",
+    "version": "22.0.0",
+    "license": "ISC",
+    "roots": [
+      "src/auth"
     ]
   },
   {
