@@ -57,3 +57,11 @@ Runtime identifiers and package names remain compatible.
 exactly 1,000,000 bytes. Its pixels are identical to `github-avatar.png`; only PNG
 encoding and metadata differ. The provenance sidecar records the source digest.
 The organization profile uses the approved concept board while private.
+
+## Transparent editor mark
+
+`signal-transparent.png` is the Signal symbol with transparent outer background
+and inner negative space. Studio uses this cutout for the empty editor watermark,
+keeping its existing grayscale, brightness and opacity styling. The GitHub avatar
+remains a separate, exactly 1,000,000-byte asset. Provenance is recorded in
+`signal-transparent.provenance.json`.

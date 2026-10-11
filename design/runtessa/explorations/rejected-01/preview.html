@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Runtessa — visual identity study</title>
+<style>
+@font-face{font-family:Inter;src:url(fonts/Inter-Regular.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:Inter;src:url(fonts/Inter-SemiBold.woff2) format('woff2');font-weight:600;font-display:swap}
+*{box-sizing:border-box}body{margin:0;background:#F4F3EC;color:#172820;font:16px/1.6 Inter,system-ui,sans-serif}
+main{max-width:1560px;margin:auto;padding:24px}h1{font-size:24px;letter-spacing:-.6px;margin:0}
+.intro{display:flex;justify-content:space-between;gap:20px;align-items:center;margin:12px 0 32px}
+.intro p{margin:4px 0 0;color:#65746B;font-size:14px}a{color:#2D674A;text-underline-offset:4px}
+.board{display:block;width:100%;height:auto}section{margin-top:32px;padding-top:24px;border-top:1px solid #D8DED3}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}button{font:inherit;padding:8px 18px;border:1px solid #65746B;border-radius:4px;background:transparent;color:inherit;cursor:pointer}
+button[aria-pressed=true]{background:#172820;color:#F4F3EC;border-color:#172820}button:focus-visible,a:focus-visible{outline:3px solid #2D674A;outline-offset:4px}
+.stage{padding:40px;min-height:175px;display:flex;align-items:center;background:#FFFFFF;border-radius:6px}.stage img{width:420px;max-width:100%;height:auto}
+.downloads{display:flex;flex-wrap:wrap;gap:16px;margin-top:16px}.foot{margin:30px 0;font-size:13px;color:#65746B}
+@media(max-width:650px){main{padding:12px}.intro{display:block}.stage{padding:24px}.board{min-width:0}.intro a{display:inline-block;margin-top:12px}}
+</style>
+<main>
+  <header class="intro"><div><h1>Runtessa / identity study</h1><p>Logo, palette, typography and application studies.</p></div><a href="brand-board.svg" download>Download the vector board</a></header>
+  <img class="board" src="brand-board.svg" width="1560" height="1270" alt="Runtessa visual identity: a geometric R, paper and ink surfaces, green accents, Inter typography, and a website study">
+  <section aria-labelledby="logo-heading">
+    <h2 id="logo-heading">Logo variants</h2>
+    <div class="controls" role="group" aria-label="Logo treatment">
+      <button type="button" data-variant="light" aria-pressed="true">Light</button>
+      <button type="button" data-variant="dark" aria-pressed="false">Dark</button>
+      <button type="button" data-variant="mono" aria-pressed="false">Monochrome</button>
+    </div>
+    <div class="stage"><img id="lockup" src="logo-wordmark.svg" width="420" height="96" alt="Runtessa logo"></div>
+    <div class="downloads"><a href="logo.svg" download>Symbol SVG</a><a href="logo-wordmark.svg" download>Wordmark SVG</a><a href="logo-dark-wordmark.svg" download>Reverse SVG</a><a href="logo-mono-wordmark.svg" download>Monochrome SVG</a><a href="github-social.png" download>GitHub social image</a><a href="brand-tokens.json" download>Design tokens</a></div>
+  </section>
+  <p class="foot">Custom vector artwork follows the repository license. Inter is distributed under the SIL Open Font License; see <a href="fonts/LICENSE.txt">font license</a>. Website panels are design studies.</p>
+</main>
+<script>
+const variants={light:{src:'logo-wordmark.svg',background:'#FFFFFF'},dark:{src:'logo-dark-wordmark.svg',background:'#172820'},mono:{src:'logo-mono-wordmark.svg',background:'#C3F26B'}};
+const stage=document.querySelector('.stage');
+const lockup=document.querySelector('#lockup');
+document.querySelectorAll('[data-variant]').forEach(button=>button.addEventListener('click',()=>{
+  const variant=variants[button.dataset.variant];
+  lockup.src=variant.src;stage.style.background=variant.background;
+  document.querySelectorAll('[data-variant]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));
+}));
+</script>
+</html>

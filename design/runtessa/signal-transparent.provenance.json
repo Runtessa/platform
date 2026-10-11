@@ -1,0 +1,12 @@
+{
+  "source": "github-avatar-1mb.png",
+  "sourceSha256": "5518784796ea76b405156d38d3da1a2727353e8db5d911182dc508a82755c6b7",
+  "output": "signal-transparent.png",
+  "outputSha256": "f12422a822321f0d191cb1b9995df35828e74d8a8a19c9520dad4053df59ddfb",
+  "operation": "ImageGen background extraction with transparent alpha; approved Signal mark reference preserved",
+  "dimensions": [
+    1254,
+    1254
+  ],
+  "usage": "IDE empty editor watermark; existing grayscale, brightness and opacity retained"
+}
