@@ -140,8 +140,8 @@
             "node_modules/braces"
           ],
           "fixAvailable": {
-            "name": "tailwindcss",
-            "version": "4.3.3",
+            "name": "http-proxy-middleware",
+            "version": "0.2.0",
             "isSemVerMajor": true
           }
         },
@@ -333,8 +333,8 @@
             "node_modules/micromatch"
           ],
           "fixAvailable": {
-            "name": "tailwindcss",
-            "version": "4.3.3",
+            "name": "http-proxy-middleware",
+            "version": "0.2.0",
             "isSemVerMajor": true
           }
         },

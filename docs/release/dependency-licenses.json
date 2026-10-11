@@ -3081,20 +3081,20 @@
   },
   {
     "name": "@ioredis/commands",
+    "version": "1.10.0",
+    "license": "MIT",
+    "roots": [
+      "src/auth"
+    ]
+  },
+  {
+    "name": "@ioredis/commands",
     "version": "1.4.0",
     "license": "MIT",
     "roots": [
       ".",
       "src/core",
       "src/ideNew"
-    ]
-  },
-  {
-    "name": "@ioredis/commands",
-    "version": "1.5.1",
-    "license": "MIT",
-    "roots": [
-      "src/auth"
     ]
   },
   {
@@ -7166,6 +7166,7 @@
     "version": "1.1.1",
     "license": "Apache-2.0",
     "roots": [
+      "src/auth",
       "src/monitoring",
       "src/container-agent"
     ]
@@ -7177,8 +7178,7 @@
     "roots": [
       ".",
       "src/core",
-      "src/ideNew",
-      "src/auth"
+      "src/ideNew"
     ]
   },
   {
@@ -9330,8 +9330,7 @@
     "license": "MIT",
     "roots": [
       ".",
-      "src/core",
-      "src/auth"
+      "src/core"
     ]
   },
   {
@@ -9340,6 +9339,7 @@
     "license": "MIT",
     "roots": [
       "src/ideNew",
+      "src/auth",
       "docs/site"
     ]
   },
@@ -10585,7 +10585,7 @@
   },
   {
     "name": "ioredis",
-    "version": "5.10.1",
+    "version": "5.11.1",
     "license": "MIT",
     "roots": [
       "src/auth"
@@ -11777,8 +11777,7 @@
     "roots": [
       ".",
       "src/core",
-      "src/ideNew",
-      "src/auth"
+      "src/ideNew"
     ]
   },
   {
@@ -11799,8 +11798,7 @@
     "roots": [
       ".",
       "src/core",
-      "src/ideNew",
-      "src/auth"
+      "src/ideNew"
     ]
   },
   {

@@ -86,13 +86,14 @@ An undeclared entry needs package inspection before binary redistribution.
 | [ejs](https://www.npmjs.com/package/ejs/v/7.0.1) | 7.0.1 | Apache-2.0 |
 | [esbuild](https://www.npmjs.com/package/esbuild/v/0.28.2) | 0.28.2 | MIT |
 | [express](https://www.npmjs.com/package/express/v/4.22.1) | 4.22.1 | MIT |
+| [express](https://www.npmjs.com/package/express/v/4.22.3) | 4.22.3 | MIT |
 | [express](https://www.npmjs.com/package/express/v/5.2.1) | 5.2.1 | MIT |
 | [express-rate-limit](https://www.npmjs.com/package/express-rate-limit/v/7.5.1) | 7.5.1 | MIT |
 | [helmet](https://www.npmjs.com/package/helmet/v/8.3.0) | 8.3.0 | MIT |
 | [html-webpack-plugin](https://www.npmjs.com/package/html-webpack-plugin/v/5.6.8) | 5.6.8 | MIT |
 | [http-proxy-middleware](https://www.npmjs.com/package/http-proxy-middleware/v/3.0.7) | 3.0.7 | MIT |
 | [ioredis](https://www.npmjs.com/package/ioredis/v/5.8.2) | 5.8.2 | MIT |
-| [ioredis](https://www.npmjs.com/package/ioredis/v/5.10.1) | 5.10.1 | MIT |
+| [ioredis](https://www.npmjs.com/package/ioredis/v/5.11.1) | 5.11.1 | MIT |
 | [ioredis](https://www.npmjs.com/package/ioredis/v/6.0.0) | 6.0.0 | MIT |
 | [kafkajs](https://www.npmjs.com/package/kafkajs/v/2.2.4) | 2.2.4 | MIT |
 | [lightningcss](https://www.npmjs.com/package/lightningcss/v/1.31.1) | 1.31.1 | MPL-2.0 |
