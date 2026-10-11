@@ -6,7 +6,7 @@
 
 A self-hosted TypeScript platform for live tenant backend code, executable data models, and React applications.
 
-[Website](https://alirezadadrass.github.io/Idp/) · [Documentation](docs/README.md) · [Get started](docs/getting-started.md) · [راهنمای فارسی](README.fa.md)
+[Website](https://alirezadadrass.github.io/Idp/) · [Documentation](docs/README.md) · [Get started](docs/getting-started.md)
 
 [![Security checks](https://github.com/AlirezaDadrass/Idp/actions/workflows/secret-scan.yml/badge.svg)](https://github.com/AlirezaDadrass/Idp/actions/workflows/secret-scan.yml)
 [![Documentation](https://github.com/AlirezaDadrass/Idp/actions/workflows/pages.yml/badge.svg)](https://github.com/AlirezaDadrass/Idp/actions/workflows/pages.yml)
@@ -355,8 +355,7 @@ npm run docs:serve
 ```
 
 The build synchronizes canonical guides and generates route/service inventory.
-Edit the source guide rather than its generated copy. The site has English and
-Persian landing pages; the technical documentation is currently English.
+Edit the source guide rather than its generated copy. The website and technical documentation are English-only.
 
 ## Deployment boundaries
 

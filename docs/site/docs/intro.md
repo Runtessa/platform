@@ -58,5 +58,5 @@ migration and installation checks. Read the [validation record](/docs/project/va
 [dependency policy](/docs/project/dependencies), [security policy](/docs/security) and
 [roadmap](/docs/project/roadmap) for the current limits.
 
-The website's landing page is available in English and Persian. Technical guides
-are currently English. The source Markdown remains usable directly on GitHub.
+The website and technical guides are English-only. The source Markdown remains
+usable directly on GitHub.

@@ -48,7 +48,6 @@ const config: Config = {
         { to: '/docs/getting-started', label: 'Get started', position: 'left' },
         { to: '/docs/', label: 'Documentation', position: 'left' },
         { to: '/docs/platform/overview', label: 'Platform', position: 'left' },
-        { to: '/fa/', label: 'فارسی', position: 'right' },
         { href: 'https://github.com/AlirezaDadrass/Idp', label: 'GitHub', position: 'right' },
         { to: '/docs/security', label: 'Security', position: 'left' },
       ],

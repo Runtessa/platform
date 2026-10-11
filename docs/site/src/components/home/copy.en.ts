@@ -1,5 +1,4 @@
 export const english = {
-  language: 'en', alternate: 'فارسی', alternatePath: '/fa/',
   title: 'A platform for applications that evolve',
   description: 'Write backend modules, native data models and React interfaces. Preview and publish tenant applications on a running TypeScript platform.',
   eyebrow: 'SELF-HOSTED APPLICATION PLATFORM',

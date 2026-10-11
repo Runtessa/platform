@@ -2,7 +2,6 @@ import React from 'react';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import CodeBlock from '@theme/CodeBlock';
-import Head from '@docusaurus/Head';
 import Heading from '@theme/Heading';
 import type { english } from './copy.en';
 import StudioExample from './StudioExample';
@@ -19,14 +18,11 @@ function SectionHeading({ eyebrow, title, children, id }: { eyebrow: string; tit
 }
 
 export default function Landing({ copy }: { copy: typeof english }) {
-  const rtl = copy.language === 'fa';
   return (
     <Layout title={copy.title} description={copy.description}>
-      <Head><link rel="alternate" hrefLang={rtl ? 'en' : 'fa'} href={`https://alirezadadrass.github.io/Idp${copy.alternatePath}`} /></Head>
-      <main className="platform-home" dir={rtl ? 'rtl' : 'ltr'} lang={copy.language}>
+      <main className="platform-home" dir="ltr" lang="en">
         <section className="platform-hero" aria-labelledby="platform-title">
           <div className="container">
-            <div className="platform-language"><Link to={copy.alternatePath} lang={rtl ? 'en' : 'fa'}>{copy.alternate} <span aria-hidden="true">↗</span></Link></div>
             <div className="platform-hero-grid">
               <div className="platform-intro">
                 <p className="platform-eyebrow">{copy.eyebrow}</p>
@@ -42,7 +38,7 @@ export default function Landing({ copy }: { copy: typeof english }) {
             </div>
           </div>
         </section>
-        <nav className="platform-section-nav" aria-label={rtl ? 'بخش‌های معرفی' : 'On this page'}>
+        <nav className="platform-section-nav" aria-label="On this page">
           <div className="container">{copy.sectionNav.map(([label, to]) => <Link key={to} to={to}>{label}</Link>)}</div>
         </nav>
         <section className="platform-section container">
