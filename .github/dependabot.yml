@@ -1,13 +1,9 @@
 version: 2
 updates:
+  # npm cannot traverse private gitlinks. Component npm manifests are maintained
+  # in their own repositories; refresh the integration lock with each gitlink PR.
   - package-ecosystem: npm
-    directories:
-      - /
-      - /src/auth
-      - /src/kernel
-      - /src/monitoring
-      - /src/container-agent
-      - /docs/site
+    directory: /docs/site
     schedule:
       interval: weekly
     open-pull-requests-limit: 5

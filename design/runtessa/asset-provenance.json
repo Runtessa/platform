@@ -1,0 +1,9 @@
+{
+  "mode": "image-generation",
+  "tool": "image_gen.imagegen",
+  "reference": "selected-signal.png",
+  "extractionPrompt": "Use case: background-extraction. Asset type: GitHub organization avatar for Runtessa. Input image 1 is the exact approved brand board and edit target. Extract ONLY the large folded purple ribbon symbol above the main Runtessa wordmark in the upper-left portion of the board. Preserve that symbol's exact silhouette, proportions, open counter, ribbon folds, plum/violet/lilac colors and shading. Do not redesign, rotate, reinterpret or add any stroke, glow, shadow, text, border, rounded-square tile, gradients outside the existing symbol, or secondary object. Remove everything else including the brandboard, wordmark, swatches, smaller logos and website. Output a single clean centered symbol on genuine transparent background, square canvas, with generous 18% margin on each side for circular avatar cropping. Crisp smooth edges. This is asset extraction, not a new design.",
+  "repairPrompt": "Use case: background-extraction. Edit target: the attached Runtessa purple ribbon icon. Keep the exact purple ribbon silhouette, geometry, folds, colors, shading, position and scale unchanged. Fix ONLY the extraction artifacts: remove every stray tiny colored pixel or speck, especially the magenta and white debris in the open counter and along the lower edge. Place this exact clean icon on a solid warm ivory background (#FBF8FC), including the entire open counter; the background must be completely uniform. Square canvas, same centered symbol, generous safe margins. No transparency, no text, no border, no square tile within the square image, no new shapes, no shadows. Crisp antialiased edges. Do not redesign the approved mark.",
+  "avatar": "github-avatar.png",
+  "uploadAvatar": "github-avatar-1mb.png"
+}

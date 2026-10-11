@@ -53,7 +53,7 @@ update and review its platform gitlink afterward.
 ## Private CI access
 
 Integration jobs use nine dedicated read-only deploy keys stored in the platform
-Actions secret `RUNTESSA_COMPONENT_KEYS`. No personal token is committed or copied
+Actions and Dependabot secret `RUNTESSA_COMPONENT_KEYS`. No personal token is committed or copied
 into images. The checkout action resolves the pinned components; quality and
 secret scans explicitly traverse every initialized repository and fail if a
 component is missing. The history scanner also covers future component commits.
@@ -76,3 +76,22 @@ Recursive file/history scanning passed with Gitleaks 8.30.1 and fully redacted
 output. The source audit covered 803 JavaScript/TypeScript files without syntax
 errors or reintroduced duplicate groups. This record verifies the migration;
 it does not claim production load or full public-release approval.
+
+## Dependency ownership
+
+Dependabot npm updates target each component's own root manifest. The platform
+configuration owns documentation and GitHub Actions, because Dependabot cannot
+traverse the private component gitlinks as a workspace checkout. For every
+component dependency update, refresh the authoritative integration lock with
+`npm install --package-lock-only --ignore-scripts` from the assembled workspace,
+review the lock diff and commit it alongside the updated gitlink. Reconcile any
+standalone packaging lock as described in the dependency policy. Run locked
+installation, component checks and the integration pipeline before merging.
+Shared packages remain private workspace dependencies; this migration does not
+publish npm packages.
+
+The complete five-job GitHub integration run passed for the migration commit,
+including the actual production container test on Ubuntu, and a fresh recursive
+GitHub clone installed its locked workspace successfully. On this Fedora host,
+the default disposable container fixture failed at HTTP startup; its separate
+SELinux diagnostic is not a deployment fallback.
