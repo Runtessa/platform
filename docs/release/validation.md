@@ -60,8 +60,14 @@ upstream findings, with no critical findings reported. The audit command deliber
 returns a failing status while high findings remain; see the scoped
 [exposure assessment](../dependencies.md). No advisory allowlist hides them.
 
-GitHub rejected Pages activation for the private repository with HTTP 422 because
-the current account plan does not support it. The site is built locally; deployment
-is not confirmed. Previously exposed credential revocation is also not established
-by a source scan. Keep the repository private until the installation owner clears
-that gate, then follow the [release runbook](README.md).
+During private preparation, GitHub rejected Pages activation with HTTP 422 because
+the account plan did not support private Pages. The owner subsequently authorized
+public source publication on 2026-10-11. The original functional validation above
+and its host/dependency limitations remain applicable.
+
+The publication check scans fresh mirrors of all GitHub-hosted references,
+including branches, tags and pull-request references, with Gitleaks 8.30.1 and
+fully redacted output. It also scans publishable files from the assembled workspace.
+Source publication and a clean scan do not establish revocation of previously
+exposed credentials. That remains an installation-owner responsibility; no provider
+or production credential rotation is claimed here. See the [release runbook](README.md).
