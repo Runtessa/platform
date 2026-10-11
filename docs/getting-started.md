@@ -17,8 +17,8 @@ host; compatibility still depends on its namespace/container policy.
 ## 2. Install and generate configuration
 
 ```sh
-git clone https://github.com/AlirezaDadrass/Idp.git
-cd Idp
+git clone --recurse-submodules https://github.com/Runtessa/platform.git
+cd platform
 npm ci
 npm --prefix src/auth ci
 npm --prefix src/kernel ci

@@ -30,7 +30,7 @@ connection command, then sign in through its IDE browser flow. The main commands
 
 Use `npm run vscode:host` from the repository root to open the local extension
 Development Host. This is a source development workflow, not a claim of marketplace
-publication. See the [extension README](https://github.com/AlirezaDadrass/Idp/blob/main/src/ide-vscode/README.md) for settings.
+publication. See the [extension README](https://github.com/Runtessa/vscode/blob/main/README.md) for settings.
 
 ## Assistant and Codex
 

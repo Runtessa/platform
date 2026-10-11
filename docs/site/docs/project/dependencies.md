@@ -23,7 +23,7 @@ npm run security:dependencies
 ```
 
 This queries npm's advisory service for every independent install root and writes a
-dated [report](https://github.com/AlirezaDadrass/Idp/blob/main/docs/release/dependency-audit.md) plus structured data. It includes development
+dated [report](https://github.com/Runtessa/platform/blob/main/docs/release/dependency-audit.md) plus structured data. It includes development
 dependencies because build tools and documentation generators execute on maintainer
 machines and CI. A registry/network failure is an error, not a clean security result.
 The report is a point-in-time snapshot; it is not proof that software is vulnerability-free.

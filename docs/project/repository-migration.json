@@ -1,0 +1,101 @@
+[
+  {
+    "name": "runtime",
+    "path": "src/core",
+    "description": "Live tenant backend runtime",
+    "sourceCommit": "c25521a53a10b9f255bbfa5c05607fbde1330d69",
+    "sourceTree": "0cafe93809ca7363de3467f0ed4074f8141eb060",
+    "historyHead": "11c0eee5ecdb8d6469964fdf85d26c663e90b2a1",
+    "historyCommits": 60,
+    "head": "57ba1df6210b5ee91e620897f4d6227a11a65838",
+    "url": "https://github.com/Runtessa/runtime.git"
+  },
+  {
+    "name": "studio",
+    "path": "src/ideNew",
+    "description": "Browser development studio",
+    "sourceCommit": "c25521a53a10b9f255bbfa5c05607fbde1330d69",
+    "sourceTree": "2efda7231cca96d0d1f597eb8d26ab099b2177e9",
+    "historyHead": "a97d3d1e0e55092dff06d1738667c9cf22d6e46e",
+    "historyCommits": 72,
+    "head": "b0d0a3733cfed8b4d481eab5d3e7d6b612a063b8",
+    "url": "https://github.com/Runtessa/studio.git"
+  },
+  {
+    "name": "kernel",
+    "path": "src/kernel",
+    "description": "React application browser kernel",
+    "sourceCommit": "c25521a53a10b9f255bbfa5c05607fbde1330d69",
+    "sourceTree": "819af90a0fa23352c799f7dda97180bb4217d95e",
+    "historyHead": "95a3698c861378cbe4adfbcddd304fcb5e93b56f",
+    "historyCommits": 17,
+    "head": "f97eee423034d4d23ca4d360fda070177fa06aa9",
+    "url": "https://github.com/Runtessa/kernel.git"
+  },
+  {
+    "name": "packages",
+    "path": "src/packages",
+    "description": "Shared entities, migrations and runtime contracts",
+    "sourceCommit": "c25521a53a10b9f255bbfa5c05607fbde1330d69",
+    "sourceTree": "323f742c31e56d657c2a05d0ee96b9f3dda53170",
+    "historyHead": "416763f77538150a310a44f68c29ae10dac366f5",
+    "historyCommits": 136,
+    "head": "e3c7c949022e8bc53082da6bc4f7c60b9e9c40bc",
+    "url": "https://github.com/Runtessa/packages.git"
+  },
+  {
+    "name": "auth",
+    "path": "src/auth",
+    "description": "Identity, OAuth and SSO",
+    "sourceCommit": "c25521a53a10b9f255bbfa5c05607fbde1330d69",
+    "sourceTree": "2f1a8102a752db6713e1eb5819700f24a6fc5384",
+    "historyHead": "841f532031425a2a312406783bf54dd1680c328b",
+    "historyCommits": 33,
+    "head": "639b1191ae3a5c9bbdaebb4b9c9a0e3b1138fd97",
+    "url": "https://github.com/Runtessa/auth.git"
+  },
+  {
+    "name": "assistant-gateway",
+    "path": "src/codex-gateway",
+    "description": "Optional Codex CLI gateway",
+    "sourceCommit": "c25521a53a10b9f255bbfa5c05607fbde1330d69",
+    "sourceTree": "3f165d22a1479042817ce283e6ff4a2ae8be6e92",
+    "historyHead": "7f189d68fd60b7f47ff5a22b3d37dc1cb72b1227",
+    "historyCommits": 11,
+    "head": "b457e7771127c888eafaf418291352fa624af42d",
+    "url": "https://github.com/Runtessa/assistant-gateway.git"
+  },
+  {
+    "name": "container-agent",
+    "path": "src/container-agent",
+    "description": "Optional container operations agent",
+    "sourceCommit": "c25521a53a10b9f255bbfa5c05607fbde1330d69",
+    "sourceTree": "3453d438453ef8ad8ecac0c5f8eaf083b0b6e9cf",
+    "historyHead": "be09b010ef79b22b8dd7865456399efebb719208",
+    "historyCommits": 12,
+    "head": "caa58ffc76b4359fcfec7c98c1de05cbb7066bf8",
+    "url": "https://github.com/Runtessa/container-agent.git"
+  },
+  {
+    "name": "monitoring",
+    "path": "src/monitoring",
+    "description": "Optional monitoring and alerts",
+    "sourceCommit": "c25521a53a10b9f255bbfa5c05607fbde1330d69",
+    "sourceTree": "69a2bbf3cc5a67fe902935d71b3086203a47c77c",
+    "historyHead": "4179cc5bf480cc08bac8d2f68a9d74bd52cfd5fb",
+    "historyCommits": 9,
+    "head": "ed0751d2013cf3dd40ad1cb22734510f8b1646ec",
+    "url": "https://github.com/Runtessa/monitoring.git"
+  },
+  {
+    "name": "vscode",
+    "path": "src/ide-vscode",
+    "description": "VS Code tenant workspace extension",
+    "sourceCommit": "c25521a53a10b9f255bbfa5c05607fbde1330d69",
+    "sourceTree": "dd3762ad002ac455177a2819c215467355cdb961",
+    "historyHead": "03dd2b5fd1725075359b9a7a898af2600e5ee7a1",
+    "historyCommits": 4,
+    "head": "e044b4edd576c4d3862cf51c3bb586aedfbbf8e6",
+    "url": "https://github.com/Runtessa/vscode.git"
+  }
+]

@@ -15,11 +15,11 @@ workspace, then follow an application from draft to published execution.
 
 | Goal | Reading path |
 | --- | --- |
-| Evaluate the platform | [Platform tour](/docs/platform/overview) → [Architecture map](https://github.com/AlirezaDadrass/Idp/blob/main/docs/site/docs/architecture/idpcore-map.md) → [Validation](/docs/project/validation) |
+| Evaluate the platform | [Platform tour](/docs/platform/overview) → [Architecture map](https://github.com/Runtessa/platform/blob/main/docs/site/docs/architecture/idpcore-map.md) → [Validation](/docs/project/validation) |
 | Build a tenant application | [Installation](/docs/getting-started) → [First application](/docs/tutorials/first-application) → [Cookbook](/docs/cookbook/overview) |
 | Understand publication | [Authoring lifecycle](/docs/platform/authoring) → [Backend](/docs/cookbook/backend) → [UI](/docs/cookbook/ui) |
-| Develop outside the browser | [Tooling](/docs/platform/tooling) → [VS Code extension](https://github.com/AlirezaDadrass/Idp/blob/main/src/ide-vscode/README.md) |
-| Operate an installation | [Runtime requirements](/docs/operations/runtime) → [Migrations](/docs/operations/migrations) → [Docker](https://github.com/AlirezaDadrass/Idp/blob/main/docker/README.md) |
+| Develop outside the browser | [Tooling](/docs/platform/tooling) → [VS Code extension](https://github.com/Runtessa/vscode/blob/main/README.md) |
+| Operate an installation | [Runtime requirements](/docs/operations/runtime) → [Migrations](/docs/operations/migrations) → [Docker](https://github.com/Runtessa/platform/blob/main/docker/README.md) |
 | Contribute to the platform | [Developer guide](/docs/platform/developer-guide) → [Contributing](/docs/contributing) |
 
 ## Concepts to understand first
@@ -38,14 +38,14 @@ workspace, then follow an application from draft to published execution.
 
 The platform guides and cookbook explain how to work with the system. The
 [developer guide](/docs/platform/developer-guide) and
-[architecture map](https://github.com/AlirezaDadrass/Idp/blob/main/docs/site/docs/architecture/idpcore-map.md) explain where that
+[architecture map](https://github.com/Runtessa/platform/blob/main/docs/site/docs/architecture/idpcore-map.md) explain where that
 behavior belongs in the source.
 The [dependency graph](/docs/architecture/dependency-graph) distinguishes browser
 requests, direct database access and optional infrastructure connections.
 
-The [route inventory](https://github.com/AlirezaDadrass/Idp/blob/main/docs/site/docs/reference/routes.md),
-[service inventory](https://github.com/AlirezaDadrass/Idp/blob/main/docs/site/docs/reference/services.md) and
-[OpenAPI inventory](https://github.com/AlirezaDadrass/Idp/blob/main/docs/site/docs/reference/openapi-spec.md) are generated from source.
+The [route inventory](https://github.com/Runtessa/platform/blob/main/docs/site/docs/reference/routes.md),
+[service inventory](https://github.com/Runtessa/platform/blob/main/docs/site/docs/reference/services.md) and
+[OpenAPI inventory](https://github.com/Runtessa/platform/blob/main/docs/site/docs/reference/openapi-spec.md) are generated from source.
 They help locate endpoints, but do not certify request/response contracts or
 end-to-end behavior. Mounted route prefixes and dynamic routes may need a direct
 source read.

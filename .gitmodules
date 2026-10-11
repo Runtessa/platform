@@ -1,0 +1,27 @@
+[submodule "runtime"]
+	path = src/core
+	url = https://github.com/Runtessa/runtime.git
+[submodule "studio"]
+	path = src/ideNew
+	url = https://github.com/Runtessa/studio.git
+[submodule "kernel"]
+	path = src/kernel
+	url = https://github.com/Runtessa/kernel.git
+[submodule "packages"]
+	path = src/packages
+	url = https://github.com/Runtessa/packages.git
+[submodule "auth"]
+	path = src/auth
+	url = https://github.com/Runtessa/auth.git
+[submodule "assistant-gateway"]
+	path = src/codex-gateway
+	url = https://github.com/Runtessa/assistant-gateway.git
+[submodule "container-agent"]
+	path = src/container-agent
+	url = https://github.com/Runtessa/container-agent.git
+[submodule "monitoring"]
+	path = src/monitoring
+	url = https://github.com/Runtessa/monitoring.git
+[submodule "vscode"]
+	path = src/ide-vscode
+	url = https://github.com/Runtessa/vscode.git

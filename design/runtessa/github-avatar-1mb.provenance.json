@@ -1,0 +1,8 @@
+{
+  "source": "github-avatar.png",
+  "sourceSha256": "137b5c8829fc883733bec22a5a3ca77c711fe6e91823d21baacb8315c3d52868",
+  "output": "github-avatar-1mb.png",
+  "bytes": 1000000,
+  "pixelIdentical": true,
+  "operation": "Lossless IDAT recompression, source provenance recorded separately, PNG metadata padding to exact decimal 1 MB"
+}

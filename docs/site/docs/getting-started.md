@@ -23,8 +23,8 @@ host; compatibility still depends on its namespace/container policy.
 ## 2. Install and generate configuration
 
 ```sh
-git clone https://github.com/AlirezaDadrass/Idp.git
-cd Idp
+git clone --recurse-submodules https://github.com/Runtessa/platform.git
+cd platform
 npm ci
 npm --prefix src/auth ci
 npm --prefix src/kernel ci
@@ -120,7 +120,7 @@ docker compose down
 
 This stops containers and retains volumes. Back up databases and private configuration
 before upgrades. Do not use `down -v` on data you need. Container engine/AI profiles
-and the image-registry stack are covered in [docker/README.md](https://github.com/AlirezaDadrass/Idp/blob/main/docker/README.md).
+and the image-registry stack are covered in [docker/README.md](https://github.com/Runtessa/platform/blob/main/docker/README.md).
 
 If live execution reports an isolation-startup error, inspect host namespace policy
 and the [runtime requirements](/docs/operations/runtime). Do not enable privileged

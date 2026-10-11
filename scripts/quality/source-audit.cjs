@@ -2,13 +2,12 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
-const { execFileSync } = require('node:child_process');
+const { publishableFiles } = require('./git-files.cjs');
 const ts = require('typescript');
 const root = path.resolve(__dirname, '../..');
 const reviewed = new Map(require('./duplicate-review.json')
   .flatMap((item) => [item.hash, ...(item.previousHashes || [])].map((hash) => [hash, item])));
-const files = [...new Set(execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard', '-z', '--', 'src', 'scripts'],
-  { cwd: root }).toString().split('\0'))]
+const files = publishableFiles(root).filter((file) => /^(src|scripts)\//.test(file))
   .filter((file) => /\.(?:[cm]?js|[jt]sx?)$/.test(file) && fs.existsSync(path.join(root, file)))
   .filter((file) => !/\/public\/(?:babel|lib|monaco)\//.test(file)).sort();
 const bodies = new Map();

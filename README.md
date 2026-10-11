@@ -1,24 +1,26 @@
 <div align="center">
 
-# IdpCore
+# Runtessa
+
+<img src="design/runtessa/github-avatar-1mb.png" alt="Runtessa Signal logo" width="120" />
 
 ### Build the application. Keep the platform running.
 
 A self-hosted TypeScript platform for live tenant backend code, executable data models, and React applications.
 
-[Website](https://alirezadadrass.github.io/Idp/) · [Documentation](docs/README.md) · [Get started](docs/getting-started.md)
+[Organization](https://github.com/Runtessa) · [Documentation](docs/README.md) · [Get started](docs/getting-started.md)
 
-[![Security checks](https://github.com/AlirezaDadrass/Idp/actions/workflows/secret-scan.yml/badge.svg)](https://github.com/AlirezaDadrass/Idp/actions/workflows/secret-scan.yml)
-[![Documentation](https://github.com/AlirezaDadrass/Idp/actions/workflows/pages.yml/badge.svg)](https://github.com/AlirezaDadrass/Idp/actions/workflows/pages.yml)
-[![Container builds](https://github.com/AlirezaDadrass/Idp/actions/workflows/docker-images.yml/badge.svg)](https://github.com/AlirezaDadrass/Idp/actions/workflows/docker-images.yml)
+[![Security checks](https://github.com/Runtessa/platform/actions/workflows/secret-scan.yml/badge.svg)](https://github.com/Runtessa/platform/actions/workflows/secret-scan.yml)
+[![Documentation](https://github.com/Runtessa/platform/actions/workflows/pages.yml/badge.svg)](https://github.com/Runtessa/platform/actions/workflows/pages.yml)
+[![Container builds](https://github.com/Runtessa/platform/actions/workflows/docker-images.yml/badge.svg)](https://github.com/Runtessa/platform/actions/workflows/docker-images.yml)
 
 </div>
 
-![IdpCore application lifecycle: author, preview, publish, execute](docs/site/static/img/platform-map.svg)
+![Runtessa application lifecycle: author, preview, publish, execute](docs/site/static/img/platform-map.svg)
 
 **Developer preview · Apache 2.0 · Bring your own infrastructure**
 
-IdpCore gives a tenant application a complete development path: write its backend,
+Runtessa gives a tenant application a complete development path: write its backend,
 model its data, build its React interface, define access, preview a draft, and
 publish a revision. Core selects application code when requests arrive. Kernel
 loads the UI packages in the browser. Tenant code changes do not require rebuilding
@@ -33,7 +35,7 @@ and full OIDC conformance are not claimed.
 
 ## Contents
 
-- [Why IdpCore](#why-idpcore)
+- [Why Runtessa](#why-runtessa)
 - [Platform capabilities](#platform-capabilities)
 - [From an edit to a running application](#from-an-edit-to-a-running-application)
 - [An application in three layers](#an-application-in-three-layers)
@@ -45,10 +47,10 @@ and full OIDC conformance are not claimed.
 - [Deployment boundaries](#deployment-boundaries)
 - [Documentation, contribution and license](#documentation-contribution-and-license)
 
-## Why IdpCore
+## Why Runtessa
 
 When several applications share a platform, application logic and platform releases
-need different lifecycles. IdpCore stores tenant modules and UI packages as
+need different lifecycles. Runtessa stores tenant modules and UI packages as
 application artifacts, with separate draft and published state. A developer can
 change one tenant's application without shipping a new build of Core or the IDE.
 
@@ -260,8 +262,8 @@ Windows/macOS native live execution is not supported; a compatible Linux VM is a
 The following is the initial dependency/configuration phase, **not the full install**:
 
 ```sh
-git clone https://github.com/AlirezaDadrass/Idp.git
-cd Idp
+git clone --recurse-submodules https://github.com/Runtessa/platform.git
+cd platform
 npm ci
 npm --prefix src/auth ci
 npm --prefix src/kernel ci
@@ -291,6 +293,11 @@ its own checksummed SQL migration stream. Generated private configuration is
 installation-specific and stays outside Git.
 
 ## Repository map
+
+The integration workspace pins nine component repositories at tested commits.
+Clone recursively and keep the existing paths for builds and deployment.
+See [repository ownership and history](docs/project/repositories.md).
+
 
 ```text
 src/
@@ -386,14 +393,14 @@ Cleaning Git history does not revoke previously exposed credentials at their pro
 | Work on the platform itself | [Developer guide](docs/developer-guide.md) → [Architecture map](docs/site/docs/architecture/idpcore-map.md) |
 | Operate or upgrade a deployment | [Docker guide](docker/README.md) → [Migrations](scripts/database/README.md) → [Security](SECURITY.md) |
 | Review APIs | [Generated route inventory](docs/site/docs/reference/routes.md); an inventory, not a tested API specification |
-| Contribute | [CONTRIBUTING.md](CONTRIBUTING.md), [Code of Conduct](CODE_OF_CONDUCT.md), [Issues](https://github.com/AlirezaDadrass/Idp/issues) |
+| Contribute | [CONTRIBUTING.md](CONTRIBUTING.md), [Code of Conduct](CODE_OF_CONDUCT.md), [Issues](https://github.com/Runtessa/platform/issues) |
 
 Contributions can improve runtime behavior, authoring tools, examples, accessibility,
 tests or documentation. Keep changes focused and include evidence appropriate to
 the behavior. Report sensitive security findings privately as described in
 [SECURITY.md](SECURITY.md).
 
-Original IdpCore code and documentation use [Apache 2.0](LICENSE), with
+Original Runtessa code and documentation use [Apache 2.0](LICENSE), with
 [NOTICE](NOTICE). Third-party code and dependencies keep their own licenses;
 see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). The license allows commercial
 use subject to its conditions and does not grant trademark rights.

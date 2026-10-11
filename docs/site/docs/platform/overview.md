@@ -140,7 +140,7 @@ See [development and operations tools](/docs/platform/tooling).
 | Shared | `src/packages/shared` | Entities, contracts, restricted-process helpers and migrations |
 
 There is no separate tenant execution service. Restricted backend/model processes
-belong to Core and IDE. The [architecture map](https://github.com/AlirezaDadrass/Idp/blob/main/docs/site/docs/architecture/idpcore-map.md)
+belong to Core and IDE. The [architecture map](https://github.com/Runtessa/platform/blob/main/docs/site/docs/architecture/idpcore-map.md)
 connects those domains to entry points, API routes and runtime flows.
 
 ## Next steps

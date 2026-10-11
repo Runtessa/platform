@@ -6,9 +6,9 @@ import Heading from '@theme/Heading';
 import type { english } from './copy.en';
 import StudioExample from './StudioExample';
 
-const repository = 'https://github.com/AlirezaDadrass/Idp';
-const checkout = `git clone https://github.com/AlirezaDadrass/Idp.git
-cd Idp
+const repository = 'https://github.com/Runtessa/platform';
+const checkout = `git clone --recurse-submodules https://github.com/Runtessa/platform.git
+cd platform
 npm ci
 npm run docker:init-env
 # Continue with the installation guide. This is not a full install.`;

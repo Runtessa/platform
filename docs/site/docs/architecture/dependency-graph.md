@@ -98,20 +98,20 @@ container lifecycle management, not a prerequisite for Core to execute tenant co
 
 | Connection | Implementation |
 | --- | --- |
-| Kernel → Core | [Registry loading and API client](https://github.com/AlirezaDadrass/Idp/blob/main/src/kernel/src/index.ts) |
-| IDE → Core database | [Core datasource](https://github.com/AlirezaDadrass/Idp/blob/main/src/ideNew/src/lib/core-db.ts), [module authoring](https://github.com/AlirezaDadrass/Idp/blob/main/src/ideNew/src/pages/api/modules/index.ts), [revision publication](https://github.com/AlirezaDadrass/Idp/blob/main/src/ideNew/src/pages/api/modules/%5Bid%5D.ts) |
-| IDE → IDE database | [IDE datasource](https://github.com/AlirezaDadrass/Idp/blob/main/src/ideNew/src/lib/db.ts) |
-| Core → Auth | [SSO callback: token exchange and userinfo](https://github.com/AlirezaDadrass/Idp/blob/main/src/core/app/routes/authSsoCallback.ts) |
-| IDE → Auth | [Internal tenant SSO registration](https://github.com/AlirezaDadrass/Idp/blob/main/src/ideNew/src/pages/api/admin/tenants/%5Bid%5D.ts) |
-| Auth storage and optional integrations | [Auth datasource](https://github.com/AlirezaDadrass/Idp/blob/main/src/auth/lib/typeorm/data-source.ts), [Redis session cache](https://github.com/AlirezaDadrass/Idp/blob/main/src/auth/lib/session-cache.ts), [remote tenant policy](https://github.com/AlirezaDadrass/Idp/blob/main/src/auth/lib/oauth.ts) |
-| Core → Redis monitoring channel | [Monitoring publisher](https://github.com/AlirezaDadrass/Idp/blob/main/src/core/core/monitoring/MonitoringService.ts) |
-| Monitoring → Redis | [Ingest subscription](https://github.com/AlirezaDadrass/Idp/blob/main/src/monitoring/lib/pubsubIngest.js), [metric storage](https://github.com/AlirezaDadrass/Idp/blob/main/src/monitoring/lib/redisStore.js) |
-| IDE → Monitoring | [Monitoring HTTP client](https://github.com/AlirezaDadrass/Idp/blob/main/src/ideNew/src/lib/monitoring-server-client.ts) |
-| IDE → Gateway → CLI | [Gateway execution request](https://github.com/AlirezaDadrass/Idp/blob/main/src/ideNew/src/lib/assistant/respond-runtime/codex-client.ts), [CLI runner](https://github.com/AlirezaDadrass/Idp/blob/main/src/codex-gateway/lib/codexRunner.js) |
-| IDE / Agent → Redis orchestration | [IDE request/reply client](https://github.com/AlirezaDadrass/Idp/blob/main/src/ideNew/src/lib/container-orchestrator-client.ts), [agent worker](https://github.com/AlirezaDadrass/Idp/blob/main/src/container-agent/lib/redis-orchestrator-worker.js) |
-| IDE → Agent HTTP | [Direct manager client](https://github.com/AlirezaDadrass/Idp/blob/main/src/ideNew/src/lib/container-manager-client.ts), [assistant manager client](https://github.com/AlirezaDadrass/Idp/blob/main/src/ideNew/src/lib/assistant/gateway-runtime/container-agent-client.ts) |
-| Agent → engine and managed services | [Engine connection](https://github.com/AlirezaDadrass/Idp/blob/main/src/container-agent/index.js), [managed service definitions](https://github.com/AlirezaDadrass/Idp/blob/main/src/container-agent/lib/managedServiceDefinitions.js) |
-| Local service deployment | [Compose services and profiles](https://github.com/AlirezaDadrass/Idp/blob/main/docker-compose.yml) |
+| Kernel → Core | [Registry loading and API client](https://github.com/Runtessa/kernel/blob/main/src/index.ts) |
+| IDE → Core database | [Core datasource](https://github.com/Runtessa/studio/blob/main/src/lib/core-db.ts), [module authoring](https://github.com/Runtessa/studio/blob/main/src/pages/api/modules/index.ts), [revision publication](https://github.com/Runtessa/studio/blob/main/src/pages/api/modules/%5Bid%5D.ts) |
+| IDE → IDE database | [IDE datasource](https://github.com/Runtessa/studio/blob/main/src/lib/db.ts) |
+| Core → Auth | [SSO callback: token exchange and userinfo](https://github.com/Runtessa/runtime/blob/main/app/routes/authSsoCallback.ts) |
+| IDE → Auth | [Internal tenant SSO registration](https://github.com/Runtessa/studio/blob/main/src/pages/api/admin/tenants/%5Bid%5D.ts) |
+| Auth storage and optional integrations | [Auth datasource](https://github.com/Runtessa/auth/blob/main/lib/typeorm/data-source.ts), [Redis session cache](https://github.com/Runtessa/auth/blob/main/lib/session-cache.ts), [remote tenant policy](https://github.com/Runtessa/auth/blob/main/lib/oauth.ts) |
+| Core → Redis monitoring channel | [Monitoring publisher](https://github.com/Runtessa/runtime/blob/main/core/monitoring/MonitoringService.ts) |
+| Monitoring → Redis | [Ingest subscription](https://github.com/Runtessa/monitoring/blob/main/lib/pubsubIngest.js), [metric storage](https://github.com/Runtessa/monitoring/blob/main/lib/redisStore.js) |
+| IDE → Monitoring | [Monitoring HTTP client](https://github.com/Runtessa/studio/blob/main/src/lib/monitoring-server-client.ts) |
+| IDE → Gateway → CLI | [Gateway execution request](https://github.com/Runtessa/studio/blob/main/src/lib/assistant/respond-runtime/codex-client.ts), [CLI runner](https://github.com/Runtessa/assistant-gateway/blob/main/lib/codexRunner.js) |
+| IDE / Agent → Redis orchestration | [IDE request/reply client](https://github.com/Runtessa/studio/blob/main/src/lib/container-orchestrator-client.ts), [agent worker](https://github.com/Runtessa/container-agent/blob/main/lib/redis-orchestrator-worker.js) |
+| IDE → Agent HTTP | [Direct manager client](https://github.com/Runtessa/studio/blob/main/src/lib/container-manager-client.ts), [assistant manager client](https://github.com/Runtessa/studio/blob/main/src/lib/assistant/gateway-runtime/container-agent-client.ts) |
+| Agent → engine and managed services | [Engine connection](https://github.com/Runtessa/container-agent/blob/main/index.js), [managed service definitions](https://github.com/Runtessa/container-agent/blob/main/lib/managedServiceDefinitions.js) |
+| Local service deployment | [Compose services and profiles](https://github.com/Runtessa/platform/blob/main/docker-compose.yml) |
 
 The diagrams cover these platform paths. Optional SMS, model-provider, tenant
 adapter and webhook integrations depend on installation/application settings.

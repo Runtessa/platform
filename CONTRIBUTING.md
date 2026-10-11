@@ -1,4 +1,4 @@
-# Contributing to IdpCore
+# Contributing to Runtessa
 
 Thank you for helping improve the live application platform. The repository is a
 developer preview; a small change with clear evidence is easier to review than a
@@ -14,6 +14,13 @@ The root npm workspace owns Core, IDE, VS Code and shared packages. Auth, Kernel
 monitoring, container-agent and documentation have separate lockfiles. Install those
 from their own directories. Do not run independent workspace installs concurrently
 against the same dependency tree.
+
+## Component changes
+
+Clone `platform` with `--recurse-submodules`. Work on a branch in the owning
+component repository, commit and push there, then commit the updated gitlink in
+`platform`. Do not squash the imported histories. Run integration checks from the
+workspace root. Existing IDE themes, editor colors and status colors are preserved.
 
 ## Before implementing
 
@@ -54,7 +61,7 @@ Run `npm run vscode:test` for an actual isolated extension host; headless Linux 
 uses `xvfb-run --auto-servernum npm run vscode:test`.
 
 For UI changes, also build the affected web application and inspect desktop/mobile
-layouts. For documentation, run `npm run docs:build` and check the public `/Idp/`
+layouts. For documentation, run `npm run docs:build` and check the configured `/platform/`
 base path. Use `npm run security:secrets` and `npm run security:history` with
 Gitleaks 8.30.1 before submitting; scanners redact findings. Run
 `npm run test:secret-scope` after installing Gitleaks to verify publication-ref coverage.

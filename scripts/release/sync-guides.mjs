@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const guides = {
+  'docs/project/repositories.md': ['project/repositories', 'Repository ownership and history'],
   'docs/README.md': ['intro', 'Documentation'],
   'docs/platform/overview.md': ['platform/overview', 'Platform tour'],
   'docs/platform/authoring.md': ['platform/authoring', 'Authoring and publication'],
@@ -36,9 +37,12 @@ for (const [source, [id, title]] of Object.entries(guides)) {
     const [relative, anchor = ''] = href.split('#');
     const target = path.posix.normalize(path.posix.join(path.posix.dirname(source), relative));
     const mapped = guides[target];
+    const components = { 'src/core': 'runtime', 'src/ideNew': 'studio', 'src/kernel': 'kernel', 'src/packages': 'packages', 'src/auth': 'auth', 'src/codex-gateway': 'assistant-gateway', 'src/container-agent': 'container-agent', 'src/monitoring': 'monitoring', 'src/ide-vscode': 'vscode' };
+    const component = Object.keys(components).find(prefix => target.startsWith(prefix + '/'));
+    const sourceUrl = component ? `https://github.com/Runtessa/${components[component]}/blob/main/${target.slice(component.length + 1)}` : `https://github.com/Runtessa/platform/blob/main/${target}`;
     const url = mapped
       ? `/docs/${mapped[0]}${anchor ? `#${anchor}` : ''}`
-      : `https://github.com/AlirezaDadrass/Idp/blob/main/${target}${anchor ? `#${anchor}` : ''}`;
+      : `${sourceUrl}${anchor ? `#${anchor}` : ''}`;
     return `](${url})`;
   });
   const output = path.join(root, 'docs/site/docs', `${id}.md`);

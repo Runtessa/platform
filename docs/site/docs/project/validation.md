@@ -61,7 +61,7 @@ configuration. It does not perform an interactive IDE → Auth SSO walkthrough o
 prove the entire Compose deployment. IDE/Auth production images, upgrade/restore
 rehearsals, arm64 and latency/load measurements remain separate validation work.
 
-The [dependency snapshot](https://github.com/AlirezaDadrass/Idp/blob/main/docs/release/dependency-audit.md) still contains high and lower-severity
+The [dependency snapshot](https://github.com/Runtessa/platform/blob/main/docs/release/dependency-audit.md) still contains high and lower-severity
 upstream findings, with no critical findings reported. The audit command deliberately
 returns a failing status while high findings remain; see the scoped
 [exposure assessment](/docs/project/dependencies). No advisory allowlist hides them.

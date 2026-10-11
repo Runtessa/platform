@@ -4,7 +4,7 @@ title: Contributing
 
 <!-- Generated from CONTRIBUTING.md; edit the source guide. -->
 
-# Contributing to IdpCore
+# Contributing to Runtessa
 
 Thank you for helping improve the live application platform. The repository is a
 developer preview; a small change with clear evidence is easier to review than a
@@ -21,13 +21,20 @@ monitoring, container-agent and documentation have separate lockfiles. Install t
 from their own directories. Do not run independent workspace installs concurrently
 against the same dependency tree.
 
+## Component changes
+
+Clone `platform` with `--recurse-submodules`. Work on a branch in the owning
+component repository, commit and push there, then commit the updated gitlink in
+`platform`. Do not squash the imported histories. Run integration checks from the
+workspace root. Existing IDE themes, editor colors and status colors are preserved.
+
 ## Before implementing
 
 Describe the problem, expected behavior and proposed scope in an issue for substantial
 changes. Keep platform code changes distinct from dynamically authored tenant code.
 Preserve live edits, tenant/revision boundaries and compatibility of public APIs.
 Read `AGENTS.md` and the relevant source; architecture changes should also follow
-the [architecture map](https://github.com/AlirezaDadrass/Idp/blob/main/docs/site/docs/architecture/idpcore-map.md).
+the [architecture map](https://github.com/Runtessa/platform/blob/main/docs/site/docs/architecture/idpcore-map.md).
 
 ## Code and database changes
 
@@ -44,7 +51,7 @@ the [architecture map](https://github.com/AlirezaDadrass/Idp/blob/main/docs/site
 
 ## Checks
 
-Use the [README verification commands](https://github.com/AlirezaDadrass/Idp/blob/main/README.md#development-and-verification) relevant to your
+Use the [README verification commands](https://github.com/Runtessa/platform/blob/main/README.md#development-and-verification) relevant to your
 change. For cross-service or security changes, run the full listed checks. Database
 tests need Docker/Podman; runtime tests need Linux, bubblewrap and namespaces.
 
@@ -60,7 +67,7 @@ Run `npm run vscode:test` for an actual isolated extension host; headless Linux 
 uses `xvfb-run --auto-servernum npm run vscode:test`.
 
 For UI changes, also build the affected web application and inspect desktop/mobile
-layouts. For documentation, run `npm run docs:build` and check the public `/Idp/`
+layouts. For documentation, run `npm run docs:build` and check the configured `/platform/`
 base path. Use `npm run security:secrets` and `npm run security:history` with
 Gitleaks 8.30.1 before submitting; scanners redact findings. Run
 `npm run test:secret-scope` after installing Gitleaks to verify publication-ref coverage.
@@ -86,4 +93,4 @@ third-party licenses and retain their notices.
 
 Be respectful and specific. Discuss the code and evidence rather than the person.
 Harassment, discrimination, threats and publication of private information are
-not welcome. Follow [CODE_OF_CONDUCT.md](https://github.com/AlirezaDadrass/Idp/blob/main/CODE_OF_CONDUCT.md).
+not welcome. Follow [CODE_OF_CONDUCT.md](https://github.com/Runtessa/platform/blob/main/CODE_OF_CONDUCT.md).

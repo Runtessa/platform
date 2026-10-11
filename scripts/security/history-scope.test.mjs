@@ -29,6 +29,8 @@ test('History scanner covers publication refs and detached HEAD, without private
     git('branch', '-D', 'main'); git('branch', '-M', 'main');
     mkdirSync(path.join(directory, 'scripts/security'), { recursive: true });
     copyFileSync(fileURLToPath(new URL('./scan-history.mjs', import.meta.url)), path.join(directory, 'scripts/security/scan-history.mjs'));
+    mkdirSync(path.join(directory, 'scripts/quality'), { recursive: true });
+    copyFileSync(fileURLToPath(new URL('../quality/git-files.cjs', import.meta.url)), path.join(directory, 'scripts/quality/git-files.cjs'));
     assert.equal(scan().status, 0, 'Private recovery refs should not be mistaken for publication history');
     for (const ref of ['refs/heads/disclosure', 'refs/remotes/origin/disclosure', 'refs/tags/disclosure']) {
       git('update-ref', ref, dirty);

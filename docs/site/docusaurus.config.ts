@@ -2,13 +2,13 @@ import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'IdpCore',
+  title: 'Runtessa',
   tagline: 'Author, publish and run live tenant applications',
-  favicon: 'img/favicon.svg',
-  url: process.env.DOCS_URL || 'https://alirezadadrass.github.io',
-  baseUrl: process.env.DOCS_BASE_URL || '/Idp/',
-  organizationName: 'AlirezaDadrass',
-  projectName: 'Idp',
+  favicon: 'img/runtessa-avatar.png',
+  url: process.env.DOCS_URL || 'https://runtessa.github.io',
+  baseUrl: process.env.DOCS_BASE_URL || '/platform/',
+  organizationName: 'Runtessa',
+  projectName: 'platform',
   trailingSlash: true,
   onBrokenLinks: 'throw',
   onBrokenAnchors: 'throw',
@@ -42,13 +42,13 @@ const config: Config = {
   themeConfig: {
     image: 'img/social-card.svg',
     navbar: {
-      title: 'IdpCore',
-      logo: { alt: 'IdpCore', src: 'img/favicon.svg' },
+      title: 'Runtessa',
+      logo: { alt: 'Runtessa', src: 'img/runtessa-avatar.png' },
       items: [
         { to: '/docs/getting-started', label: 'Get started', position: 'left' },
         { to: '/docs/', label: 'Documentation', position: 'left' },
         { to: '/docs/platform/overview', label: 'Platform', position: 'left' },
-        { href: 'https://github.com/AlirezaDadrass/Idp', label: 'GitHub', position: 'right' },
+        { href: 'https://github.com/Runtessa/platform', label: 'GitHub', position: 'right' },
         { to: '/docs/security', label: 'Security', position: 'left' },
       ],
     },
@@ -74,7 +74,7 @@ const config: Config = {
         {
           title: 'Project',
           items: [
-            { label: 'GitHub', href: 'https://github.com/AlirezaDadrass/Idp' },
+            { label: 'GitHub', href: 'https://github.com/Runtessa/platform' },
             { label: 'Contributing', to: '/docs/contributing' },
             { label: 'Roadmap', to: '/docs/project/roadmap' },
             { label: 'Security & validation', to: '/docs/project/validation' },

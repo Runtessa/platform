@@ -1,0 +1,23 @@
+name: Checkout Runtessa components
+description: Resolve pinned components, using scoped read-only keys while repositories are private.
+inputs:
+  ssh-private-key:
+    description: Read-only component deploy keys (empty for public clones)
+    required: false
+    default: ''
+runs:
+  using: composite
+  steps:
+    - name: Load scoped component keys
+      if: inputs.ssh-private-key != ''
+      uses: webfactory/ssh-agent@a6f90b1f127823b31d4d4a8d96047790581349bd # v0.9.1
+      with:
+        ssh-private-key: ${{ inputs.ssh-private-key }}
+        log-public-key: false
+    - name: Trust GitHub and resolve pinned component commits
+      shell: bash
+      run: |
+        mkdir -p "$HOME/.ssh"
+        cat .github/github-known-hosts >> "$HOME/.ssh/known_hosts"
+        git submodule sync --recursive
+        git submodule update --init --recursive

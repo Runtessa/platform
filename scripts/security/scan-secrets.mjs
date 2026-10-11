@@ -1,17 +1,13 @@
 #!/usr/bin/env node
-import { cpSync, existsSync, mkdirSync, mkdtempSync, rmSync } from 'node:fs';
+import { cpSync, mkdirSync, mkdtempSync, rmSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import gitFiles from '../quality/git-files.cjs';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
-const list = spawnSync('git', ['ls-files', '--cached', '--others', '--exclude-standard', '-z'], {
-  cwd: root, encoding: 'utf8', maxBuffer: 10 * 1024 * 1024,
-});
-if (list.status !== 0) throw new Error('Unable to enumerate publishable files.');
-const files = [...new Set(list.stdout.split('\0').filter(Boolean))]
-  .filter((file) => existsSync(path.join(root, file)));
+const files = gitFiles.publishableFiles(root);
 const privateFiles = files.filter((file) => {
   const name = path.basename(file);
   return /\.env(?:\.|$)/.test(name) && !name.endsWith('.example');
