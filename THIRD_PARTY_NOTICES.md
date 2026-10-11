@@ -59,6 +59,7 @@ An undeclared entry needs package inspection before binary redistribution.
 | [@types/mssql](https://www.npmjs.com/package/@types/mssql/v/9.1.8) | 9.1.8 | MIT |
 | [@types/node](https://www.npmjs.com/package/@types/node/v/20.19.27) | 20.19.27 | MIT |
 | [@types/node](https://www.npmjs.com/package/@types/node/v/22.19.11) | 22.19.11 | MIT |
+| [@types/node](https://www.npmjs.com/package/@types/node/v/22.20.5) | 22.20.5 | MIT |
 | [@types/pg](https://www.npmjs.com/package/@types/pg/v/8.16.0) | 8.16.0 | MIT |
 | [@types/qrcode](https://www.npmjs.com/package/@types/qrcode/v/1.5.6) | 1.5.6 | MIT |
 | [@types/react](https://www.npmjs.com/package/@types/react/v/19.2.7) | 19.2.7 | MIT |
@@ -85,7 +86,6 @@ An undeclared entry needs package inspection before binary redistribution.
 | [ejs](https://www.npmjs.com/package/ejs/v/7.0.1) | 7.0.1 | Apache-2.0 |
 | [esbuild](https://www.npmjs.com/package/esbuild/v/0.28.2) | 0.28.2 | MIT |
 | [express](https://www.npmjs.com/package/express/v/4.22.1) | 4.22.1 | MIT |
-| [express](https://www.npmjs.com/package/express/v/4.22.3) | 4.22.3 | MIT |
 | [express](https://www.npmjs.com/package/express/v/5.2.1) | 5.2.1 | MIT |
 | [express-rate-limit](https://www.npmjs.com/package/express-rate-limit/v/7.5.1) | 7.5.1 | MIT |
 | [helmet](https://www.npmjs.com/package/helmet/v/8.3.0) | 8.3.0 | MIT |
@@ -96,7 +96,7 @@ An undeclared entry needs package inspection before binary redistribution.
 | [ioredis](https://www.npmjs.com/package/ioredis/v/6.0.0) | 6.0.0 | MIT |
 | [kafkajs](https://www.npmjs.com/package/kafkajs/v/2.2.4) | 2.2.4 | MIT |
 | [lightningcss](https://www.npmjs.com/package/lightningcss/v/1.31.1) | 1.31.1 | MPL-2.0 |
-| [mocha](https://www.npmjs.com/package/mocha/v/12.0.3) | 12.0.3 | MIT |
+| [mocha](https://www.npmjs.com/package/mocha/v/11.8.0) | 11.8.0 | MIT |
 | [monaco-editor](https://www.npmjs.com/package/monaco-editor/v/0.57.0) | 0.57.0 | MIT |
 | [mssql](https://www.npmjs.com/package/mssql/v/12.7.4) | 12.7.4 | MIT |
 | [mysql2](https://www.npmjs.com/package/mysql2/v/3.24.5) | 3.24.5 | MIT |

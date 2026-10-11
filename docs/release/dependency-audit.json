@@ -5,11 +5,11 @@
       "directory": ".",
       "counts": {
         "info": 0,
-        "low": 4,
-        "moderate": 6,
-        "high": 6,
+        "low": 5,
+        "moderate": 7,
+        "high": 7,
         "critical": 0,
-        "total": 16
+        "total": 19
       },
       "vulnerabilities": {
         "@ai-sdk/provider-utils": {
@@ -140,8 +140,8 @@
             "node_modules/braces"
           ],
           "fixAvailable": {
-            "name": "http-proxy-middleware",
-            "version": "0.2.0",
+            "name": "tailwindcss",
+            "version": "4.3.3",
             "isSemVerMajor": true
           }
         },
@@ -162,6 +162,42 @@
           "fixAvailable": {
             "name": "tailwindcss",
             "version": "4.3.3",
+            "isSemVerMajor": true
+          }
+        },
+        "diff": {
+          "name": "diff",
+          "severity": "low",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1112706,
+              "name": "diff",
+              "dependency": "diff",
+              "title": "jsdiff has a Denial of Service vulnerability in parsePatch and applyPatch",
+              "url": "https://github.com/advisories/GHSA-73rr-hh4g-fpgx",
+              "severity": "low",
+              "cwe": [
+                "CWE-400",
+                "CWE-1333"
+              ],
+              "cvss": {
+                "score": 0,
+                "vectorString": null
+              },
+              "range": ">=6.0.0 <8.0.3"
+            }
+          ],
+          "effects": [
+            "mocha"
+          ],
+          "range": "6.0.0 - 8.0.2",
+          "nodes": [
+            "src/ide-vscode/node_modules/diff"
+          ],
+          "fixAvailable": {
+            "name": "mocha",
+            "version": "12.0.3",
             "isSemVerMajor": true
           }
         },
@@ -297,8 +333,27 @@
             "node_modules/micromatch"
           ],
           "fixAvailable": {
-            "name": "http-proxy-middleware",
-            "version": "0.2.0",
+            "name": "tailwindcss",
+            "version": "4.3.3",
+            "isSemVerMajor": true
+          }
+        },
+        "mocha": {
+          "name": "mocha",
+          "severity": "moderate",
+          "isDirect": true,
+          "via": [
+            "diff",
+            "serialize-javascript"
+          ],
+          "effects": [],
+          "range": "8.2.0 - 12.0.0-beta-3",
+          "nodes": [
+            "src/ide-vscode/node_modules/mocha"
+          ],
+          "fixAvailable": {
+            "name": "mocha",
+            "version": "12.0.3",
             "isSemVerMajor": true
           }
         },
@@ -317,6 +372,58 @@
           "fixAvailable": {
             "name": "monaco-editor",
             "version": "0.56.0",
+            "isSemVerMajor": true
+          }
+        },
+        "serialize-javascript": {
+          "name": "serialize-javascript",
+          "severity": "high",
+          "isDirect": false,
+          "via": [
+            {
+              "source": 1113686,
+              "name": "serialize-javascript",
+              "dependency": "serialize-javascript",
+              "title": "Serialize JavaScript is Vulnerable to RCE via RegExp.flags and Date.prototype.toISOString()",
+              "url": "https://github.com/advisories/GHSA-5c6j-r48x-rmvq",
+              "severity": "high",
+              "cwe": [
+                "CWE-96"
+              ],
+              "cvss": {
+                "score": 8.1,
+                "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H"
+              },
+              "range": "<=7.0.2"
+            },
+            {
+              "source": 1119440,
+              "name": "serialize-javascript",
+              "dependency": "serialize-javascript",
+              "title": "Serialize JavaScript has CPU Exhaustion Denial of Service via crafted array-like objects",
+              "url": "https://github.com/advisories/GHSA-qj8w-gfj5-8c6v",
+              "severity": "moderate",
+              "cwe": [
+                "CWE-400",
+                "CWE-834"
+              ],
+              "cvss": {
+                "score": 5.9,
+                "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+              },
+              "range": ">=5.0.0 <7.0.5"
+            }
+          ],
+          "effects": [
+            "mocha"
+          ],
+          "range": "<=7.0.4",
+          "nodes": [
+            "src/ide-vscode/node_modules/serialize-javascript"
+          ],
+          "fixAvailable": {
+            "name": "mocha",
+            "version": "12.0.3",
             "isSemVerMajor": true
           }
         },
