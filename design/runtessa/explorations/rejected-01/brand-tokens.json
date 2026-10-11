@@ -1,0 +1,30 @@
+{
+  "name": "Runtessa",
+  "status": "Visual identity study; repository naming unchanged",
+  "colors": {
+    "paper": "#F4F3EC",
+    "ink": "#172820",
+    "live": "#C3F26B",
+    "forest": "#2D674A",
+    "muted": "#65746B"
+  },
+  "type": {
+    "body": "Inter Regular",
+    "heading": "Inter SemiBold",
+    "code": "ui-monospace, Consolas, monospace"
+  },
+  "mark": {
+    "minimumPixels": 24,
+    "clearSpace": "At least one stem width",
+    "smallSizes": "Use favicon, never the wordmark"
+  },
+  "usage": {
+    "primary": "Ink and Forest on Paper",
+    "reverse": "Paper and Live on Ink",
+    "mono": "One color; no gradient"
+  },
+  "license": {
+    "originalArtwork": "Apache-2.0, following the repository license",
+    "Inter": "SIL Open Font License 1.1; see fonts/LICENSE.txt"
+  }
+}
