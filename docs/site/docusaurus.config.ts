@@ -81,7 +81,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: 'Copyright 2026 Alireza Dadrass and IdpCore contributors. Apache-2.0.',
+      copyright: 'Copyright 2026 Alireza Dadrass and Runtessa contributors. Apache-2.0.',
     },
     prism: {
       additionalLanguages: ['bash', 'json', 'yaml'],

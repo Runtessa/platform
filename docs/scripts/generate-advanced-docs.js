@@ -178,7 +178,7 @@ function buildOpenApi(expressRoutes, nextRoutes) {
   return {
     openapi: '3.0.3',
     info: {
-      title: 'IdpCore API',
+      title: 'Runtessa API',
       version: '0.1.0',
       description: 'Source-derived route inventory; request schemas, authorization and response contracts require handler-source review.',
     },

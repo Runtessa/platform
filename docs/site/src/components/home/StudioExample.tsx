@@ -9,7 +9,7 @@ export default function StudioExample({ copy }: { copy: typeof english }) {
   const example = examples[selected];
   return (
     <div className="studio-example">
-      <div className="studio-heading"><span>IdpCore / Studio</span><span>{copy.exampleLabel}</span></div>
+      <div className="studio-heading"><span>Runtessa / Studio</span><span>{copy.exampleLabel}</span></div>
       <div className="studio-tabs" role="group" aria-label={copy.exampleTitle}>
         {copy.exampleButtons.map((label, index) => (
           <button key={label} type="button" aria-pressed={selected === index}

@@ -2,7 +2,7 @@
 title: Overview
 ---
 
-IdpCore is a multi-service platform with these primary domains:
+Runtessa is a multi-service platform with these primary domains:
 
 - **Core runtime**: tenant dispatch, module/UI execution, ACL enforcement, shared adapters.
 - **IDE**: editing, publishing, revisioning, assistant workflows.

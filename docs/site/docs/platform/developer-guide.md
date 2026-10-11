@@ -4,13 +4,13 @@ title: Platform developer guide
 
 <!-- Generated from docs/developer-guide.md; edit the source guide. -->
 
-# IdpCore Developer Guide
+# Runtessa Developer Guide
 
-This guide is for developers onboarding to the IdpCore platform and building tenant-facing functionality through `core`, `ideNew`, and `kernel`.
+This guide is for developers onboarding to the Runtessa platform and building tenant-facing functionality through `core`, `ideNew`, and `kernel`.
 
 ## 1. What This System Is
 
-IdpCore is a multi-service tenant platform with:
+Runtessa is a multi-service tenant platform with:
 
 - `core`: runtime + tenant APIs + registry + publish/draft execution
 - `ideNew`: tenant IDE (editor, save/publish flow, preview, staging, assistant)

@@ -1,6 +1,6 @@
 # Community conduct
 
-IdpCore welcomes contributors regardless of background or experience. Be respectful,
+Runtessa welcomes contributors regardless of background or experience. Be respectful,
 give actionable feedback, and distinguish technical disagreement from personal criticism.
 
 Harassment, discriminatory language, sexualized attention, threats, impersonation
