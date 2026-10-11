@@ -9,7 +9,7 @@ updates:
     open-pull-requests-limit: 5
     ignore:
       - dependency-name: "@mermaid-js/layout-elk"
-        versions: [">0.1.9"]
+        versions: [">=0.2.0"]
     groups:
       patch-and-minor:
         update-types: [patch, minor]
