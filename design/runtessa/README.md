@@ -2,7 +2,7 @@
 
 **Selected direction: C — Signal.**
 
-![Selected Signal identity](selected-signal.png)
+[Selected Signal reference](selected-signal.png)
 
 The selected identity uses a flowing folded ribbon, an open counter, and a
 plum, violet, and lilac palette. Keep its proportions, negative space, and
