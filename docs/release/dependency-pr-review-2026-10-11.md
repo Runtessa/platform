@@ -1,8 +1,8 @@
 # Dependency pull request review — 2026-10-11
 
 The review covers the 26 dependency pull requests open across Runtessa at the start
-of this maintenance batch, plus seven proposals opened automatically after earlier
-proposals merged. Of these 33 proposals, 22 are integrated and 11 are deferred.
+of this maintenance batch, plus twelve proposals opened automatically after earlier
+proposals merged. Of these 38 proposals, 26 are integrated and 12 are deferred.
 Changes are assembled and tested together before merge.
 Original proposal commits are retained through merge commits, including when
 overlapping lockfile edits require npm to regenerate a consistent lock.
@@ -11,8 +11,8 @@ overlapping lockfile edits require npm to regenerate a consistent lock.
 
 | Repository | Proposals | Compatibility work |
 | --- | --- | --- |
-| platform | #3, #4, #5, #6, #7, #8, #15 | SHA-pinned workflow actions; Node 22 remains the application runtime; docs TypeScript 7. |
-| auth | #1, #2, #3, #4 | Production web/server build and PostgreSQL OAuth checks; Tailwind 3 retained. |
+| platform | #3, #4, #5, #6, #7, #8, #15, #20, #21, #23 | SHA-pinned workflow actions; Node 22 remains the application runtime; docs TypeScript 7. |
+| auth | #1, #2, #3, #4, #15 | Production web/server build and PostgreSQL OAuth checks; Tailwind 3 retained. |
 | monitoring | #1, #2 | Express 5, ioredis 6; explicit RESP2 keeps the previous Redis wire protocol. |
 | container-agent | #1, #2 | Express 5, ioredis 6; explicit RESP2; real Redis request/reply and heartbeat regression test. |
 | kernel | #1, #2, #4, #8, #9 | TypeScript 7 uses bundler resolution; browser bundle builds; Node types aligned to Node 22; follow-up Express 5 and Node 22 type patch verified. |
@@ -30,6 +30,7 @@ remain available. Dependabot still proposes compatible patch/minor updates.
 | Proposal | Evidence and reason | Requirement before reconsidering |
 | --- | --- | --- |
 | [platform #14](https://github.com/Runtessa/platform/pull/14) | Docusaurus theme-mermaid 3.10.2 declares optional peer `@mermaid-js/layout-elk: ^0.1.9`; proposed 1.0.1 is outside that contract. The original docs check failed. | A compatible Docusaurus release and diagram rendering checks, including layout changes. |
+| [platform #22](https://github.com/Runtessa/platform/pull/22) | The same Docusaurus optional peer `^0.1.9` also excludes proposed 0.2.3; zero-major minor updates can break compatibility. | A compatible Docusaurus release and diagram rendering checks; Dependabot is limited to the supported ELK version range. |
 | [auth #5](https://github.com/Runtessa/auth/pull/5) | Production build fails: Tailwind 4 cannot be used directly as the existing PostCSS plugin. | A coordinated PostCSS/CSS migration and visual checks that preserve the current UI palette and behavior. |
 | [kernel #5](https://github.com/Runtessa/kernel/pull/5) | Upgrading only react-router to 8.4.0 leaves react-router-dom 7.18.4 loading its own v7 router. The two `UNSAFE_NavigationContext` objects differ; Kernel exposes both packages. | A coordinated router migration preserving built-in package aliases and a single context for tenant components. |
 | [kernel #3](https://github.com/Runtessa/kernel/pull/3) | Node 26 types exceed the supported Node 22 runtime. Types are instead aligned to the existing Node 22 contract. | An explicit runtime support change and runtime verification. |
@@ -46,6 +47,8 @@ remain available. Dependabot still proposes compatible patch/minor updates.
 - Auth production web/server builds, type checking, and real OAuth flow against
   disposable PostgreSQL: tenant/organization/scope boundaries, PKCE, token revocation,
   signed sessions, and concurrent one-use authorization-code consumption.
+  Actual Redis session-cache checks also cover identity round trips, idle TTL,
+  and invalidation by both token hash and session ID.
 - Kernel TypeScript and production Webpack builds. The incompatible mixed router
   proposal was inspected before retaining the coordinated v7 packages.
 - VS Code compilation against the advertised API floor and 12 tests on both the

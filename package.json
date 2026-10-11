@@ -67,7 +67,7 @@
     "test:container": "npm run docker:prepare -- core && node scripts/release/container-smoke.cjs",
     "quality:source": "node scripts/quality/source-audit.cjs",
     "test:contracts": "node --test scripts/security/npm-specifier.test.cjs scripts/security/gateway-contracts.test.cjs scripts/security/container-agent-contracts.test.cjs",
-    "test:auth": "npm --prefix src/auth run build:server && node --test scripts/security/auth-oauth.test.cjs",
+    "test:auth": "npm --prefix src/auth run build:server && node --test scripts/security/auth-oauth.test.cjs scripts/security/auth-session-cache.test.cjs",
     "test:monitoring": "node --test scripts/security/monitoring-contracts.test.cjs",
     "test:secret-scope": "node --test scripts/security/history-scope.test.mjs",
     "test:container-agent:redis": "node --test scripts/security/container-agent-redis.test.cjs"
