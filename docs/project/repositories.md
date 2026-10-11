@@ -25,7 +25,9 @@ license and contribution metadata. Authors, dates and relevant commit messages
 remain in component history; subtree extraction gives commits new IDs.
 The original commit IDs and complete cross-component history remain in `platform`.
 The [migration manifest](repository-migration.json) records both histories and
-source tree IDs. Original remote branch and tag refs were compared after transfer.
+source tree IDs. Original remote branch and tag refs were compared after transfer. Dependabot
+subsequently rebased its patch/minor branch automatically; the pre-transfer head
+is retained under `migration/pre-runtessa/dependabot-patch-and-minor-aa91ca859c`.
 Private recovery refs and backups stay outside the published repositories.
 
 ## Reproduce the tested workspace
@@ -68,7 +70,8 @@ The assembled workspace passed root/Core builds, IDE type checking, all six Core
 regression suites, contract/IDE authorization/logging checks, 17 schema migration
 tests, 16 restricted execution tests, live PostgreSQL ORM/SQL checks and a fresh
 installation with actual HTTP live edits. Auth OAuth/PKCE, Redis Monitoring and
-TLS contracts passed. Kernel and documentation production builds passed.
+TLS contracts passed. Kernel and documentation production builds passed. All 12 VS Code extension
+tests passed in an isolated actual host.
 Recursive file/history scanning passed with Gitleaks 8.30.1 and fully redacted
 output. The source audit covered 803 JavaScript/TypeScript files without syntax
 errors or reintroduced duplicate groups. This record verifies the migration;
