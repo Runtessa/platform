@@ -5109,16 +5109,16 @@
     "roots": [
       ".",
       "src/core",
-      "src/ideNew",
-      "src/ide-vscode"
+      "src/ideNew"
     ]
   },
   {
     "name": "@types/node",
-    "version": "22.19.11",
+    "version": "20.19.43",
     "license": "MIT",
     "roots": [
-      "src/auth"
+      ".",
+      "src/ide-vscode"
     ]
   },
   {
@@ -5126,6 +5126,7 @@
     "version": "22.20.5",
     "license": "MIT",
     "roots": [
+      "src/auth",
       "src/kernel"
     ]
   },

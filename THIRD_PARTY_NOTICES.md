@@ -58,7 +58,7 @@ An undeclared entry needs package inspection before binary redistribution.
 | [@types/mocha](https://www.npmjs.com/package/@types/mocha/v/10.0.10) | 10.0.10 | MIT |
 | [@types/mssql](https://www.npmjs.com/package/@types/mssql/v/9.1.8) | 9.1.8 | MIT |
 | [@types/node](https://www.npmjs.com/package/@types/node/v/20.19.27) | 20.19.27 | MIT |
-| [@types/node](https://www.npmjs.com/package/@types/node/v/22.19.11) | 22.19.11 | MIT |
+| [@types/node](https://www.npmjs.com/package/@types/node/v/20.19.43) | 20.19.43 | MIT |
 | [@types/node](https://www.npmjs.com/package/@types/node/v/22.20.5) | 22.20.5 | MIT |
 | [@types/pg](https://www.npmjs.com/package/@types/pg/v/8.16.0) | 8.16.0 | MIT |
 | [@types/qrcode](https://www.npmjs.com/package/@types/qrcode/v/1.5.6) | 1.5.6 | MIT |
