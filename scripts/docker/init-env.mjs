@@ -23,7 +23,7 @@ export function initializeDockerEnv(targetDir = defaultDockerDir, templateDir = 
     'postgres_password', 'encryption_key', 'token_secret', 'admin_token',
     'ide_admin_password', 'auth_admin_password', 'auth_session_secret',
     'internal_api_token', 'bootstrap_client_secret', 'bootstrap_tenant_sso_token',
-    'container_manager_token', 'monitoring_ingest_token', 'monitoring_server_token',
+    'container_manager_token', 'monitoring_ingest_token', 'monitoring_server_token', 'studio_preview_token',
   ];
   const secrets = new Map(names.map((name) => [`replace_with_${name}`, randomBytes(32).toString('hex')]));
   const files = environmentFiles.map((file) => {
