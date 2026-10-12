@@ -34,6 +34,10 @@ test('fresh setup produces coordinated credentials and leaves paid providers dis
   assert.equal(core.ENCRYPTION_KEY, ide.ENCRYPTION_KEY);
   assert.equal(Buffer.from(core.ENCRYPTION_KEY, 'hex').length, 32);
   assert.notEqual(core.ENCRYPTION_KEY, core.TOKEN_SECRET);
+  assert.equal(core.CORE_STUDIO_PREVIEW_TOKEN, ide.CORE_STUDIO_PREVIEW_TOKEN);
+  assert.match(core.CORE_STUDIO_PREVIEW_TOKEN, /^[a-f0-9]{64}$/);
+  assert.notEqual(core.CORE_STUDIO_PREVIEW_TOKEN, core.CORE_ADMIN_TOKEN);
+  assert.equal(ide.CORE_PREVIEW_INTERNAL_URL, 'http://core:3005');
   assert.equal(auth.AUTH_INTERNAL_API_TOKEN, ide.IDE_AUTH_SERVICE_TOKEN);
   assert.equal(core.AGENT_CONTAINER_MANAGER_TOKEN, agent.CONTAINER_MANAGER_TOKEN);
   assert.equal(ide.AGENT_CONTAINER_MANAGER_TOKEN, agent.CONTAINER_MANAGER_TOKEN);

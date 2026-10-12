@@ -31,6 +31,8 @@
   <body>
     <div id="root"></div>
     <div id="status">Preparing preview...</div>
+    <script src="/preview-auth.js"></script>
+    <script src="/preview-capture.js"></script>
     <script>
       (function () {
         var statusEl = document.getElementById("status");
@@ -318,21 +320,18 @@
           return;
         }
 
+        var previewAuth = window.RuntessaPreviewAuth.connect(window, {
+          editorOrigin: params.get("editorOrigin") || "",
+          previewSession: previewSession,
+          tenantHost: tenantHost,
+          stage: previewStage,
+        });
+
         if (window.fetch) {
           var originalFetch = window.fetch.bind(window);
           window.fetch = function (input, init) {
             var nextInit = init || {};
-            var headers = new Headers(nextInit.headers || {});
-            if (tenantHost) {
-              headers.set("X-Tenant-Host", tenantHost);
-            }
-            if (previewStage === "draft") {
-              headers.set("X-Dev-Preview", "1");
-              headers.set("X-Dev-Source", "1");
-            } else {
-              headers.set("X-Dev-Preview", "0");
-              headers.set("X-Dev-Source", "0");
-            }
+            var headers = new Headers(nextInit.headers || (input && input.headers) || {});
             nextInit.headers = headers;
             var requestUrl = "";
             try {
@@ -449,7 +448,7 @@
         }
 
         statusEl.textContent = "Loading preview...";
-        loadKernelRuntime()
+        previewAuth.ready.then(loadKernelRuntime)
           .then(function () {
             if (!window.Kernel) {
               throw new Error("Kernel runtime failed to load.");

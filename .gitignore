@@ -50,5 +50,7 @@ src/ideNew/public/monaco/
 src/public/bundle.js
 src/public/bundle.js.map
 src/public/bundle.js.LICENSE.txt
+src/public/preview-capture-renderer.js
+src/public/preview-capture-renderer.js.LICENSE.txt
 src/public/index.html
 .release-preview/
