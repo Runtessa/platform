@@ -8,8 +8,9 @@ Use separate databases, roles and file roots for each installation.
 
 ## Host requirements
 
-Install Node 22.13+, bubblewrap, PostgreSQL client utilities and tar. The kernel
+Install Node 22.13+, bubblewrap 0.12+, PostgreSQL client utilities and tar. The kernel
 must support unprivileged user, PID and network namespaces, seccomp and cgroup v2.
+Bubblewrap 0.12 includes the required [sandbox path resolution security fix](https://github.com/containers/bubblewrap/releases/tag/v0.12.0); older hosts fail closed.
 The service user needs delegated cpu, memory and pids controllers. The runtime
 fails closed with 503 if delegation or isolation is unavailable.
 

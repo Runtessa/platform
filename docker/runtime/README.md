@@ -16,7 +16,7 @@ by the platform process.
 
 ## Native Linux requirements
 
-Use Node 22.13+, bubblewrap, unprivileged user/PID/network namespaces, seccomp
+Use Node 22.13+, bubblewrap 0.12+, unprivileged user/PID/network namespaces, seccomp
 and delegated cgroup v2 CPU/memory/pids controllers. Local development and testing
 use host processes and the existing PostgreSQL/Redis services. Unsupported hosts
 fail closed; never disable isolation or fall back to in-process execution.

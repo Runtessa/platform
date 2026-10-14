@@ -50,6 +50,7 @@ test('Gateway HTTP supports JSON and SSE execution through the CLI adapter', asy
   await new Promise((resolve) => probe.close(resolve));
   const child = spawn(process.execPath, ['src/codex-gateway/index.js'], {
     env: { PATH: process.env.PATH, HOST: '127.0.0.1', ASSISTANT_GATEWAY_SECRET: secret,
+      RUNTIME_CGROUP_ROOT: process.env.RUNTIME_CGROUP_ROOT,
       CODEX_GATEWAY_WORKSPACE_ACCESS_MODE: 'repo', PORT: String(port), WORKSPACE_ROOT: root, CODEX_BIN: fixture,
       CODEX_GATEWAY_PROFILES_DIR: path.join(directory, 'profiles'),
       CODEX_GATEWAY_WORKSPACES_DIR: path.join(directory, 'sessions'),
