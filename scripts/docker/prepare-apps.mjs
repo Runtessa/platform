@@ -78,12 +78,15 @@ function prepareAuth() {
 }
 
 function prepareCodexGateway() {
+  runOnce('shared-build', () => run('npm', ['run', 'build:shared']));
   const stageDir = '.docker-build/codex-gateway';
   resetDir(stageDir);
 
   copyIntoStage('src/codex-gateway/package.json', `${stageDir}/package.json`);
   copyIntoStage('src/codex-gateway/index.js', `${stageDir}/dist/index.js`);
   copyIntoStage('src/codex-gateway/lib', `${stageDir}/dist/lib`);
+  for (const filename of ['process-budget.js', 'budget-launcher.js'])
+    copyIntoStage(`src/packages/shared/dist/runtime/${filename}`, `${stageDir}/dist/lib/runtime-budget/${filename}`);
 }
 
 function prepareContainerAgent() {

@@ -9,6 +9,15 @@ serveRestrictedProcess(async (input, call) => {
   if (input.operation === 'hold') return new Promise((resolve) => setTimeout(() => resolve(true), 5000));
   if (input.operation === 'read') return require('node:fs').readFileSync(input.path, 'utf8');
   if (input.operation === 'spawn') return require('node:child_process').execFileSync('/usr/bin/true');
+  if (input.operation === 'native-memory') { const buffers = []; while (true) buffers.push(Buffer.alloc(16 * 1024 * 1024, 1)); }
+  if (input.operation === 'temporary-files') {
+    const fd = require('node:fs').openSync('/tmp/budget', 'w');
+    while (true) require('node:fs').writeSync(fd, Buffer.alloc(1024 * 1024, 1));
+  }
+  if (input.operation === 'http') return (await fetch(input.url)).text();
+  if (input.operation === 'raw-http') return new Promise((resolve, reject) => {
+    require('node:http').get(input.url, (res) => { let text = ''; res.on('data', c => text += c); res.on('end', () => resolve(text)); }).on('error', reject);
+  });
   if (input.operation === 'models') {
     const { entities, entityMap } = loadDynamicOrmEntities(input.models);
     const source = new DataSource({ type: 'postgres', entities, synchronize: false });

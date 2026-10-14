@@ -7,14 +7,14 @@ const { coreEntities, ideEntities, catalogEntities } = require('@idp/shared/dist
 const { platformMigrations } = require('@idp/shared/dist/database/migration-registry');
 const { runPlatformMigrations } = require('@idp/shared/dist/database/migrate');
 const { assertPlatformSchema, initializePlatformDataSource } = require('@idp/shared/dist/database/schema-readiness');
-const { disposablePostgres } = require('./disposable-postgres.cjs');
+const { nativePostgres } = require('./native-postgres.cjs');
 
-let database, admin, sequence = 0;
+const fixtures = new Map();
 const sources = new Set();
 const fresh = async (entities = coreEntities) => {
-  const name = `schema_case_${++sequence}`;
-  await admin.query(`CREATE DATABASE "${name}"`);
-  const source = new DataSource({ ...database.config, schema: 'public', database: name, entities });
+  const database = await nativePostgres();
+  const source = new DataSource({ ...database.config, schema: 'public', entities });
+  fixtures.set(source, database);
   sources.add(source); await source.initialize(); return source;
 };
 const view = async (source, entities) => {
@@ -22,18 +22,13 @@ const view = async (source, entities) => {
   sources.add(connection); await connection.initialize(); return connection;
 };
 const rawBaseline = async (source, schema) => {
-  for (const migration of platformMigrations(schema)) for (const sql of migration.sql) await source.query(sql);
+  for (const migration of platformMigrations(schema).filter(item => item.kind === 'baseline')) for (const sql of migration.sql) await source.query(sql);
 };
 const hasLedger = async (source) => (await source.query("SELECT to_regclass('public.idp_schema_migrations') AS name"))[0].name !== null;
 const assertNoDiff = async (source) => assert.deepEqual((await source.driver.createSchemaBuilder().log()).upQueries, []);
-before(async () => {
-  database = await disposablePostgres();
-  admin = new DataSource({ ...database.config, entities: [] }); await admin.initialize();
-});
 after(async () => {
   for (const source of sources) if (source.isInitialized) await source.destroy().catch(() => {});
-  if (admin?.isInitialized) await admin.destroy().catch(() => {});
-  if (database) await database.stop();
+  for (const database of fixtures.values()) await database.stop();
 });
 
 test('startup checks pending migrations without creating tables or UUID extensions', async () => {
@@ -143,17 +138,16 @@ test('concurrent installers serialize, and catalog-first installation can later 
   await runPlatformMigrations(source, 'catalog'); await assertNoDiff(source);
   const first = await view(source, coreEntities), second = await view(source, coreEntities);
   const outcomes = await Promise.all([runPlatformMigrations(first, 'core'), runPlatformMigrations(second, 'core')]);
-  assert.deepEqual(outcomes.map((applied) => applied.length).sort(), [0, 2]);
+  assert.deepEqual(outcomes.map((applied) => applied.length).sort(), [0, 3]);
   await assertNoDiff(first); await assertPlatformSchema(first, 'core');
 });
 
 test('ordinary service connections can check readiness without permission to alter schema', async () => {
   const source = await fresh(); await runPlatformMigrations(source, 'core');
-  const password = randomBytes(24).toString('hex');
-  await source.query(`CREATE ROLE schema_reader LOGIN PASSWORD '${password}'`);
-  await source.query('GRANT USAGE ON SCHEMA public TO schema_reader');
-  await source.query('GRANT SELECT ON public.idp_schema_migrations TO schema_reader');
-  const reader = new DataSource({ ...source.options, username: 'schema_reader', password }); sources.add(reader);
+  const {username, password} = await fixtures.get(source).createReader();
+  await source.query('GRANT USAGE ON SCHEMA public TO ' + username);
+  await source.query('GRANT SELECT ON public.idp_schema_migrations TO ' + username);
+  const reader = new DataSource({ ...source.options, username, password }); sources.add(reader);
   await initializePlatformDataSource(reader, 'core');
   await assert.rejects(reader.query('CREATE TABLE forbidden_table (id integer)'), /permission denied/);
 });

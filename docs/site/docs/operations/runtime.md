@@ -20,56 +20,42 @@ Native TypeORM classes execute entirely in the child, including constructors,
 decorators, methods and model imports. No entity function is deserialized or run
 by the platform process.
 
-## Runtime requirements
+## Native Linux requirements
 
-- Linux on x86-64 or arm64, Node 22.13+ and bubblewrap. Local development must
-  install bubblewrap; the existing Core and IDE images install it themselves.
-- Unprivileged user namespaces must be supported by the kernel and host policy.
-  The existing Compose files select `seccomp.json`, run without capabilities and
-  prevent privilege escalation. Run Compose from the repository root so its
-  `./docker/runtime/seccomp.json` path resolves correctly.
-- The outer syscall allowlist supports Node, database clients and bubblewrap
-  namespace setup. The child adds its own syscall filter: no extra processes,
-  process inspection, namespace changes or mounts after setup. Node permissions
-  additionally block workers, child process APIs and native addons.
-- Core now runs as the existing `node` image user. IDE already uses that user.
-  Do not enable privileged containers or turn off seccomp to work around a host
-  that disables user namespaces. Unsupported startup fails closed.
-- SELinux/container policy can also deny nested devpts mounts used by bubblewrap.
-  The maintainer's Fedora Podman host rejected this mount under its default container
-  label. Validate the target host's policy; the project does not automatically
-  disable SELinux or add a permissive Compose setting.
-- Development starts build the platform runtime once. Editing a tenant module or
-  model still takes effect on the next invocation, without rebuilding the platform
-  or restarting a service.
+Use Node 22.13+, bubblewrap 0.12+, unprivileged user/PID/network namespaces, seccomp
+and delegated cgroup v2 CPU/memory/pids controllers. Local development and testing
+use host processes and the existing PostgreSQL/Redis services. Unsupported hosts
+fail closed; never disable isolation or fall back to in-process execution.
 
-Only the Node executable, system runtime libraries/certificates, compiled runtime
-code and dependency directories are mounted read-only. Service working directories,
-`.env`, host home directories, `/proc` and container engine sockets are absent.
-`/tmp` and `/dev` are private. Platform environment variables and `NODE_OPTIONS`
-are not inherited. Tenant console output is not forwarded to platform logs.
+Only the Node executable, system libraries/certificates, compiled runtime and
+explicit dependency directories are mounted read-only. Service `.env`, host homes,
+platform database credentials, process inspection and engine sockets are absent.
+`/tmp` is a private 64 MiB filesystem. Tenant console output stays out of host logs.
 
-## Limits and remaining boundaries
+## Resource and network policy
 
-The parent kills a child on its deadline, including a synchronous loop in a handler,
-model or shared package. Default module limits are 5 seconds and a 512 MiB V8 heap,
-capped at 30 seconds and 2048 MiB. Nonpositive/invalid tenant limits select bounded
-defaults, never in-process execution. IDE migration has a 30-second deadline.
-There are at most eight concurrent execution processes per service process; excess
-invocations receive 503. IPC frames are limited to 8 MiB and concurrent capability
-calls to 64. Successful and failed invocations both terminate their child.
+Each invocation has a one-core budget, bounded V8 heap plus 128 MiB native overhead,
+48 tasks and no swap. A dedicated cgroup also caps aggregate use at 4 GiB, two cores
+and 512 tasks. The default root is below the delegated systemd user service;
+`RUNTIME_CGROUP_ROOT` can select a dedicated delegated `runtessa-*` directory.
+Parent deadlines include startup and stop synchronous loops/background work.
+At most eight runtime processes run per service process; excess work receives 503.
+IPC frames are limited to 8 MiB and concurrent capability calls to 64.
 
-The memory setting limits the V8 heap, not total RSS, native buffers or temporary
-files. Apply container/cgroup memory and CPU budgets for the installation. Network
-access is retained for authorized database/HTTP/S3/etc. integrations; this change
-does not enforce an egress allowlist or prevent SSRF. Adapter database roles must
-also restrict which databases/schemas their credentials can access. Those are
-separate release requirements, not guarantees of this execution boundary.
+The private network namespace reaches only a bounded parent relay. Public HTTP/HTTPS
+may reach public addresses. Other integrations must be explicitly configured with
+`RUNTIME_EGRESS_ALLOW=hostname:port,...`; private addresses are otherwise denied,
+and metadata addresses remain denied even when listed. DNS is pinned. Redis on
+6379 is available only through the scoped adapter; its credentials stay in the
+parent and keys/channels receive a tenant prefix. PostgreSQL role privileges are
+checked before disclosure. An allowed integration must itself use narrow
+credentials and cannot serve as an unrestricted proxy into private infrastructure.
 
-Fresh processes currently pay Node/dependency startup on every invocation. Measure
-latency on the target host before sizing an installation. Any future process reuse
-must preserve tenant/stage isolation, hot code changes, revocation and cleanup of
-background work; it must not share a runtime across tenants.
+Full setup, activation, encrypted backup, key rotation and recovery instructions
+are in [the native production runbook](/docs/operations/production).
+Fresh processes pay dependency startup per request; measure the target host before
+claiming throughput or latency guarantees. Other OS/database profiles remain outside
+this rehearsal's acceptance scope.
 
 ## Verification
 
@@ -77,7 +63,7 @@ From the repository root:
 
 ```sh
 npm run test:runtime
-npm run test:runtime:integration
+npm run test:production
 ```
 
 The first builds the platform/runtime and checks actual OS isolation, hot code

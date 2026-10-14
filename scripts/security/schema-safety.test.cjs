@@ -6,6 +6,7 @@ const { nativePostgres } = require('../database/native-postgres.cjs');
 const { runRestrictedProcess, runtimeDependencyRoots } = require('@idp/shared/dist/runtime/restricted-process');
 const { isAdditiveSchemaQuery } = require('@idp/shared/dist/runtime/orm-migration-policy');
 let database, source;
+process.env.RUNTIME_EGRESS_ALLOW = '127.0.0.1:5432';
 const model = (table, columns = { text: { type: 'text' } }) => [{ path: `${table}.js`, code: `
   const { Entity, PrimaryGeneratedColumn, Column } = require('typeorm');
   class Note {} Entity(${JSON.stringify(table)})(Note); PrimaryGeneratedColumn()(Note.prototype, 'id');

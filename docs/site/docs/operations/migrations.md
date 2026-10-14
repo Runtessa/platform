@@ -142,5 +142,5 @@ existing service. No passwords are printed.
 The scenarios cover publication rollback, concurrent decisions, CSS/source
 snapshots, Redis cleanup failure, revision caches, read-only schema plans,
 additive changes, blocked destructive changes, stale plans and transactional DDL
-failure. The older full platform migration suite (`npm run test:database`) still
-uses a container fixture and must be adapted before running it on this workstation.
+failure. The platform migration suite (`npm run test:database`) uses the same native fixture
+and covers baseline adoption, subsequent upgrades, readiness, rollback and CLI commands.

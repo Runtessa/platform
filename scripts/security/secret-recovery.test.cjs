@@ -1,0 +1,50 @@
+require('reflect-metadata');
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const crypto = require('node:crypto');
+const { DataSource } = require('typeorm');
+const { Tenant, Secret } = require('@idp/shared');
+const { coreEntities } = require('@idp/shared/dist/database/entities');
+const { runPlatformMigrations } = require('@idp/shared/dist/database/migrate');
+const { encryptSecretPayload, decryptSecretPayload } = require('@idp/shared/dist/security/secret-crypto');
+const { rotateDatabaseSecrets } = require('@idp/shared/dist/security/secret-rotation');
+const { sealRecoveryBundle, openRecoveryBundle } = require('@idp/shared/dist/security/recovery-bundle');
+const { nativePostgres } = require('../database/native-postgres.cjs');
+
+test('versioned secrets authenticate key identity, retain old-key readability and reject damaged recovery material', () => {
+  const old = crypto.randomBytes(32), next = crypto.randomBytes(32), iv = crypto.randomBytes(12);
+  const cipher = crypto.createCipheriv('aes-256-gcm', old, iv);
+  const legacy = { iv: iv.toString('hex'), encryptedValue: Buffer.concat([cipher.update('legacy-value'), cipher.final()]).toString('hex'), authTag: cipher.getAuthTag().toString('hex') };
+  assert.equal(decryptSecretPayload(legacy, [next, old]), 'legacy-value');
+  const versioned = encryptSecretPayload('current-value', next);
+  assert.equal(decryptSecretPayload(versioned, [old, next]), 'current-value');
+  assert.throws(() => decryptSecretPayload({ ...versioned, encryptedValue: versioned.encryptedValue.replace(/^v2\.[a-f0-9]+/, 'v2.' + '0'.repeat(24)) }, [next]));
+  const passphrase = crypto.randomBytes(32).toString('hex');
+  const sealed = sealRecoveryBundle(Buffer.from(JSON.stringify({ key: old.toString('hex') })), passphrase);
+  assert.equal(sealed.includes(old.toString('hex')), false);
+  assert.equal(JSON.parse(openRecoveryBundle(sealed, passphrase)).key, old.toString('hex'));
+  assert.throws(() => openRecoveryBundle(sealed, crypto.randomBytes(32).toString('hex')));
+});
+
+test('database rotation preflights every ciphertext and atomically includes nested adapter passwords', async (t) => {
+  const database = await nativePostgres();
+  const source = new DataSource({ ...database.config, entities: coreEntities });
+  t.after(async () => { await source.destroy(); await database.stop(); });
+  await source.initialize(); await runPlatformMigrations(source, 'core');
+  const old = crypto.randomBytes(32), next = crypto.randomBytes(32);
+  const nested = encryptSecretPayload('database-password', old);
+  const marker = `enc:${nested.iv}:${nested.authTag}:${nested.encryptedValue}`;
+  const tenant = await source.getRepository(Tenant).save({ hostname: 'key-recovery.test', adapterConfig: { database: { password: marker } } });
+  const a = await source.getRepository(Secret).save({ tenant, keyName: 'adapter', ...encryptSecretPayload(JSON.stringify({ password: marker }), old) });
+  const b = await source.getRepository(Secret).save({ tenant, keyName: 'bad-key', ...encryptSecretPayload('other-key', next) });
+  await assert.rejects(rotateDatabaseSecrets(source, [old], next), /cannot be recovered/);
+  assert.equal((await source.getRepository(Secret).findOneBy({ id: a.id })).encryptedValue, a.encryptedValue);
+  await rotateDatabaseSecrets(source, [old, next], next);
+  const rows = await source.getRepository(Secret).find({ relations: ['tenant'] });
+  for (const row of rows) assert.doesNotThrow(() => decryptSecretPayload(row, [next]));
+  const config = JSON.parse(decryptSecretPayload(rows.find(row => row.id === a.id), [next]));
+  const decryptMarker = (value) => { const [, iv, authTag, encryptedValue] = value.split(':'); return decryptSecretPayload({ iv, authTag, encryptedValue }, [next]); };
+  assert.equal(decryptMarker(config.password), 'database-password');
+  assert.equal(decryptMarker((await source.getRepository(Tenant).findOneBy({ id: tenant.id })).adapterConfig.database.password), 'database-password');
+  assert.equal(decryptSecretPayload(rows.find(row => row.id === b.id), [next]), 'other-key');
+});

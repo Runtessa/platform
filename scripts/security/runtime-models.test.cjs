@@ -1,8 +1,11 @@
-const { test } = require('node:test');
+const { test, before, after } = require('node:test');
 const assert = require('node:assert/strict');
 const { fixture, run } = require('./runtime-harness.cjs');
 const { load } = require('./logging-harness.cjs');
 
+let database;
+before(async () => {database = await require('../database/native-postgres.cjs').nativePostgres(); process.env.RUNTIME_EGRESS_ALLOW = '127.0.0.1:5432';});
+after(async () => {if (database) await database.stop();});
 const models = [
   { path: 'Owner.ts', code: `const {Entity, PrimaryGeneratedColumn, Column} = require('typeorm');
     class Owner {} Entity('runtime_owners')(Owner); PrimaryGeneratedColumn()(Owner.prototype, 'id');
@@ -36,7 +39,7 @@ test('IDE migration evaluates invalid model code only in the restricted child an
   const { migrateOrmModels } = load('src/ideNew/src/lib/orm-migration.ts', {
     path: require('node:path'), 'node:module': require('node:module'),
   });
-  await assert.rejects(migrateOrmModels([{ path: 'invalid.js', code: 'while(true){' }], 'postgres', {}),
+  await assert.rejects(migrateOrmModels([{ path: 'invalid.js', code: 'while(true){' }], 'postgres', database.config),
     (error) => error.statusCode === 400 && /Failed to load ORM entities/.test(error.message));
 });
 
@@ -64,7 +67,7 @@ test('bundling the IDE helper preserves native runtime resolution and child vali
       }));
     });
     const { migrateOrmModels } = require(path.join(directory, 'bundle.cjs'));
-    await assert.rejects(migrateOrmModels([{ path: 'invalid.js', code: 'while(true){' }], 'postgres', {}),
+    await assert.rejects(migrateOrmModels([{ path: 'invalid.js', code: 'while(true){' }], 'postgres', database.config),
       (error) => error.statusCode === 400 && /Failed to load ORM entities/.test(error.message));
   } finally { fs.rmSync(directory, { recursive: true, force: true }); }
 });

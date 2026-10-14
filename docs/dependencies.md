@@ -53,20 +53,21 @@ patch/minor updates remain enabled.
 
 ## Current unresolved exposure
 
-The committed snapshot has no critical findings, but still reports high and lower
-severity advisories. High totals mostly propagate the `braces` advisory through
-packages that depend on glob matching; they are not counts of separate upstream
-bugs. Build-time glob inputs come from repository/configuration content. Keep builds
-of untrusted contributions in disposable CI, and review any runtime use that could
-accept attacker-selected patterns before internet exposure. This is an exposure
-assessment, not proof that the dependency is safe.
+The snapshot retains nonzero advisory results. `braces` has no upstream patched
+release; the shared dependency boundary rejects excessive string/AST nesting before
+its parser executes. The guarded native launch/build commands preload that boundary.
+The `sprintf-js` formatter similarly rejects excessive width/precision and input
+size. Regular glob expansion and formatting have compatibility checks. These are
+scoped mitigations, not claims that the upstream packages have become patched.
 
-`sprintf-js` remains in the SQL Server dependency chain. PostgreSQL integration
-tests do not establish safety of every SQL Server formatting path. DOMPurify is
-present in editor/assistant dependencies, and KaTeX in documentation dependencies;
-keep untrusted rendered content within the application's existing authorization and
-sanitization boundaries. AI provider utilities and Auth's development tooling also
-have lower-severity findings recorded in the snapshot.
+DOMPurify, KaTeX, modern AI provider utilities, SQL Server's tedious dependency and
+test serializers are pinned to patched versions in the reviewed locks. The older
+AI provider-utils v2 has no compatible patched release; its low-severity resource
+advisory remains visible. Default production assistant execution uses the isolated
+Codex gateway; alternate provider routes need their own production evaluation.
 
-Do not suppress the audit's nonzero exit code. These findings remain tracked work
-for the preview release and must be reassessed before a hosted production offering.
+The guard uses the Node CommonJS module boundary. It does not cover a separately
+bundled copy or an unguarded standalone command. Keep untrusted source builds in
+isolated CI, use the provided guarded native scripts and retain the audit's
+nonzero exit code. Reassess the upstream advisories before enabling arbitrary
+public tenant registration or accepting new provider/dependency integrations.
