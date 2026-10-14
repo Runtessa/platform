@@ -112,6 +112,20 @@ The IDE admin account and Auth's bootstrap account live in separate databases an
 can have different generated passwords. Configure tenant SSO separately; successful
 IDE login alone does not establish a Core tenant session.
 
+Studio's **Preview** uses a separate, short-lived credential for the signed-in
+developer and selected tenant. It does not require an end-user SSO session.
+Fresh generated environments include a dedicated `CORE_STUDIO_PREVIEW_TOKEN`
+shared by Core and Studio, and Studio's server-only `CORE_PREVIEW_INTERNAL_URL`
+points to `http://core:3005`. Existing installations must add these settings
+deliberately and restart the two services; never expose the service credential in
+a browser variable. Local processes can use `http://127.0.0.1:3005` instead.
+
+Open a UI entity, choose **Preview**, set the Runtime port (normally `3005`),
+and choose **Draft** to run unpublished changes. **Published** uses published
+resources and does not publish drafts. Preview credentials renew while the frame
+is open, are held only in memory, and cannot edit/publish Runtime resources or
+operate its administration APIs. Application requests still pass tenant ACL.
+
 ## 6. Stop, inspect or upgrade
 
 ```sh

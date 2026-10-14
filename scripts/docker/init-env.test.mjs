@@ -26,6 +26,11 @@ test('fresh setup produces coordinated credentials and leaves paid providers dis
   const auth = parse(directory, 'env/auth.env');
   const agent = parse(directory, 'env/container-agent.env');
   const monitoring = parse(directory, 'env/monitoring.env');
+  const gateway = parse(directory, 'env/codex-gateway.env');
+  assert.match(ide.ASSISTANT_GATEWAY_SECRET, /^[a-f0-9]{64}$/);
+  assert.equal(ide.ASSISTANT_GATEWAY_SECRET, gateway.ASSISTANT_GATEWAY_SECRET);
+  assert.equal(ide.ASSISTANT_GATEWAY_SECRET, agent.ASSISTANT_GATEWAY_SECRET);
+  assert.notEqual(ide.ASSISTANT_GATEWAY_SECRET, ide.AGENT_CONTAINER_MANAGER_TOKEN);
   assert.match(postgres.POSTGRES_PASSWORD, /^[a-f0-9]{64}$/);
   for (const url of [core.DATABASE_URL, ide.DATABASE_URL, ide.CORE_DATABASE_URL, auth.DATABASE_URL]) {
     assert.equal(new URL(url).password, postgres.POSTGRES_PASSWORD);
