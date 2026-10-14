@@ -52,8 +52,12 @@ the [architecture map](https://github.com/Runtessa/platform/blob/main/docs/site/
 ## Checks
 
 Use the [README verification commands](https://github.com/Runtessa/platform/blob/main/README.md#development-and-verification) relevant to your
-change. For cross-service or security changes, run the full listed checks. Database
-tests need Docker/Podman; runtime tests need Linux, bubblewrap and namespaces.
+change. For cross-service or security changes, cover the affected contracts and
+failure boundaries. Local builds and tests run natively: database checks use the
+shared PostgreSQL service with isolated test databases and roles. Runtime tests
+need Linux, bubblewrap and namespaces. See the
+[native database guide](/docs/operations/migrations); container-based fixtures are
+reserved for remote CI and must not be used for local development.
 
 Run `npm run quality:source` to locate reviewed duplicate candidates and syntax
 errors. Source comments use stable IDs from the [integrity audit](/docs/project/code-integrity).
@@ -62,7 +66,7 @@ the snapshot with `npm run quality:source -- --output docs/release/source-audit.
 Run shared/IDE builds before consumer checks: the IDE build recreates `shared/dist`,
 so running it alongside Core compilation or runtime tests can remove their inputs.
 Build the shared package before `npm run test:contracts`. Auth and Monitoring tests
-also need their separately installed dependencies and disposable container storage.
+also need their separately installed dependencies and isolated test storage.
 Run `npm run vscode:test` for an actual isolated extension host; headless Linux CI
 uses `xvfb-run --auto-servernum npm run vscode:test`.
 
@@ -84,6 +88,16 @@ welcome. Include the problem, resulting behavior, checks performed and limitatio
 Link the issue when one exists. Keep secrets, private backups, `.env`, build output
 and production data out of the diff. A maintainer reviews and merges the change;
 opening a PR does not authorize deployment.
+
+Write commit subjects and pull request descriptions in English. Use Conventional
+Commits such as `fix(publication): preserve submitted stylesheet snapshots`,
+`feat(assistant): add preview annotations`, or `docs(setup): explain native startup`.
+Choose the type and scope for the resulting change, and describe the behavior in
+the imperative. Avoid generic subjects such as "updates" or "fix bugs".
+
+Pull request descriptions should explain the concrete problem, resulting behavior,
+relevant validation, and material limitations. State which checks actually ran;
+do not equate a build with runtime verification or describe planned work as complete.
 
 By submitting a contribution, you confirm you have the right to submit it and agree
 to license it under Apache-2.0. No separate CLA is currently required. Respect

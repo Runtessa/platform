@@ -48,9 +48,11 @@ Repeat the native scenarios with `npm run test:data-safety` at the platform root
 Administrator connection settings stay in the workstation's private infrastructure
 file or private `TEST_PGUSER`/`TEST_PGPASSWORD` environment settings.
 
-The existing CI authorization job also runs these scenarios against its ephemeral
-PostgreSQL fixture on the GitHub runner. The updated remote workflow has not been
-executed for these local changes.
+The existing CI authorization job also ran these scenarios against its ephemeral
+PostgreSQL fixture on the GitHub runner. All six required checks passed on
+[Platform PR #27](https://github.com/Runtessa/platform/pull/27), which merged as
+`e0737081a287e6220bb00d3f44ae347c8e569ad5`. Packages #2, Runtime #3 and Studio #5
+merged first; their merge commits are pinned in that integration.
 
 ## Remaining boundaries
 

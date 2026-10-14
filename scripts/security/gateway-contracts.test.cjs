@@ -6,6 +6,10 @@ const path = require('node:path');
 const net = require('node:net');
 const { once } = require('node:events');
 const { spawn } = require('node:child_process');
+const crypto = require('node:crypto');
+const secret = crypto.randomBytes(32).toString('hex');
+const { load } = require('../../src/ideNew/tests/security-harness.cjs');
+const { fetchCodexGateway } = load('src/lib/assistant/gateway-fetch.ts', { 'node:crypto': crypto });
 
 const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'idp-gateway-contract-'));
 const root = path.join(directory, 'workspace');
@@ -45,7 +49,8 @@ test('Gateway HTTP supports JSON and SSE execution through the CLI adapter', asy
   const port = probe.address().port;
   await new Promise((resolve) => probe.close(resolve));
   const child = spawn(process.execPath, ['src/codex-gateway/index.js'], {
-    env: { PATH: process.env.PATH, PORT: String(port), WORKSPACE_ROOT: root, CODEX_BIN: fixture,
+    env: { PATH: process.env.PATH, HOST: '127.0.0.1', ASSISTANT_GATEWAY_SECRET: secret,
+      CODEX_GATEWAY_WORKSPACE_ACCESS_MODE: 'repo', PORT: String(port), WORKSPACE_ROOT: root, CODEX_BIN: fixture,
       CODEX_GATEWAY_PROFILES_DIR: path.join(directory, 'profiles'),
       CODEX_GATEWAY_WORKSPACES_DIR: path.join(directory, 'sessions'),
       CODEX_GATEWAY_HISTORY_FILE: path.join(directory, 'history.json') },
@@ -67,7 +72,10 @@ test('Gateway HTTP supports JSON and SSE execution through the CLI adapter', asy
   });
   const base = `http://127.0.0.1:${port}`;
   assert.equal((await fetch(`${base}/health`)).status, 200);
-  const execute = (payload) => fetch(`${base}/v1/exec`, {
+  const previous = process.env.ASSISTANT_GATEWAY_SECRET;
+  process.env.ASSISTANT_GATEWAY_SECRET = secret;
+  t.after(() => { if (previous === undefined) delete process.env.ASSISTANT_GATEWAY_SECRET; else process.env.ASSISTANT_GATEWAY_SECRET = previous; });
+  const execute = (payload) => fetchCodexGateway(`${base}/v1/exec`, { userId: 'contract-user', scope: 'repo' }, {
     method: 'POST', headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ prompt: 'synthetic contract', userId: 'contract-user', ...payload }),
     signal: AbortSignal.timeout(10000),

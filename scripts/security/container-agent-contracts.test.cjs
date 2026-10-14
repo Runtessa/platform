@@ -78,3 +78,21 @@ test('Agent requires configuration and a valid bearer token before invoking hand
     assert.equal(res.statusCode, expected); assert.equal(called, expected === 200);
   }
 });
+
+test('managed gateways require and receive the coordinated request secret before engine access', async () => {
+  const { createManagedServiceDefinitionResolver } = require('../../src/container-agent/lib/managedServiceDefinitions');
+  const secret = require('node:crypto').randomBytes(32).toString('hex');
+  let configured = ''; let inspected = false;
+  const resolver = createManagedServiceDefinitionResolver({
+    pickEnv: (key) => key === 'ASSISTANT_GATEWAY_SECRET' ? configured : '',
+    resolveCodexWorkspaceHostPath: async () => { inspected = true; return '/deployment/workspace'; },
+    codeGatewayImage: () => 'gateway:test', chooseCodexPort: () => 4040, defaultHealthPort: 4040,
+    codexContainerName: () => 'gateway-user', codexDataVolumeName: () => 'gateway-user-data',
+    codexGatewayIndexPath: () => '', codexGatewayIndexHostPath: () => '', codexPublicHost: () => '',
+  });
+  await assert.rejects(resolver.resolveManagedServiceDefinition('codex-gateway', 'user'), /ASSISTANT_GATEWAY_SECRET/);
+  assert.equal(inspected, false); configured = secret;
+  const definition = await resolver.resolveManagedServiceDefinition('codex-gateway', 'user');
+  assert.ok(definition.env.includes(`ASSISTANT_GATEWAY_SECRET=${secret}`));
+  assert.ok(definition.env.includes('HOST=0.0.0.0')); assert.ok(definition.env.includes('CODEX_GATEWAY_WORKSPACE_ACCESS_MODE=tenant'));
+});
