@@ -43,30 +43,16 @@ npm run db:status -- --target ide --env-file docker/env/ide.env
 npm run db:migrate -- --target ide --env-file docker/env/ide.env
 ```
 
-Docker environment files point at the Compose network's database hostname; they
-are not automatically reachable from a host shell. In an existing installation,
-run the packaged command inside its existing service container:
+For local work, run the applications and commands natively. Configure private host
+files with the shared PostgreSQL endpoint `127.0.0.1:5432` and dedicated project
+roles/databases. The workstation database map and private connection settings live
+under `$HOME/.local/share/local-infra/`; never print or commit those credentials.
+Do not start a project database container, Compose stack or another PostgreSQL
+instance. Use a DDL role to install the fresh schema, then start Core and Studio
+as native processes. No additional deployment service is introduced.
 
-```sh
-docker compose exec core npm run db:status
-docker compose exec core npm run db:migrate
-docker compose exec ide npm run db:status
-docker compose exec ide npm run db:migrate
-```
-
-For first installation, start the database first, then use an ephemeral invocation
-of the existing service image before starting application services:
-
-```sh
-docker compose up -d postgres
-docker compose run --rm --no-deps core npm run db:migrate
-docker compose run --rm --no-deps ide npm run db:migrate
-```
-
-Run Compose from the repository root with the appropriate Compose file and private
-environment options for the installation. No additional deployment service is used.
-The packages contain the compiled CLI and frozen SQL; they require no TypeScript
-compiler during deployment. Development starts no longer create schemas themselves.
+The packages contain the compiled CLI and frozen SQL. Application startup checks
+schema readiness and does not create tables itself.
 
 ## Existing installations
 
@@ -114,19 +100,41 @@ service-role privileges as part of deployment preparation.
 ## Live tenant models
 
 This stream manages platform tables, not dynamically authored tenant model tables.
-The authorized IDE model-migration action remains explicit and runs against the
-selected tenant database in the restricted child process. It does not synchronize
-the platform schema. Preserve staging/backups when using that action; it is not a
-versioned history for tenant-authored schemas.
+The authorized Studio model-migration action runs against the selected tenant
+adapter inside the existing restricted process. It computes a SQL plan and refuses
+non-additive or unknown operations before executing planned DDL. It does not run
+TypeORM `synchronize()` or mutate the platform schema.
 
-## Verification
+`POST /api/models/migrate` accepts `action: "plan"` for a read-only review. The
+response contains `plan.hash`, `plan.safe`, `plan.statements` and `plan.blocked`.
+`action: "apply"` optionally accepts `expectedPlanHash`; a changed plan returns 409.
+The default apply action retains safe creation of tables and nullable columns.
+Destructive changes require a separately reviewed migration rather than an
+automatic synchronization fallback.
+
+PostgreSQL uses an advisory lock, transactional DDL, bounded lock/statement timeouts
+and the `runtessa_model_migrations` history table in the selected adapter database.
+Failures roll back DDL and history together. SQL Server uses a transaction-owned
+application lock. MySQL uses a connection-owned advisory lock, but its DDL can
+commit implicitly: the response reports `transactional: false`, and earlier
+additions may remain after a later failure. Do not claim atomic MySQL recovery.
+Only PostgreSQL has been verified against the shared native service in this change.
+
+## Native data-safety verification
 
 ```sh
-npm run test:database
+npm run test:data-safety
 ```
 
-Tests create and remove their own PostgreSQL 17 container and synthetic credentials.
-They cover fresh installation, schema/metadata consistency, Core/IDE sharing,
-legacy adoption, rejected schema differences, checksums, rollback, concurrent
-execution, read-only startup, CLI packaging and lazy IDE initialization. They do not
-connect to deployment databases or use the installation's private environment files.
+The native tests reuse PostgreSQL at `127.0.0.1:5432`, allocate uniquely named
+`runtessa_safety_*` databases and roles, and remove only those fixtures on completion.
+They never start a database instance or access an application's existing data.
+Private administrator settings are read from the workstation infrastructure file;
+other hosts can provide `TEST_PGUSER` and `TEST_PGPASSWORD` privately for their
+existing service. No passwords are printed.
+
+The scenarios cover publication rollback, concurrent decisions, CSS/source
+snapshots, Redis cleanup failure, revision caches, read-only schema plans,
+additive changes, blocked destructive changes, stale plans and transactional DDL
+failure. The older full platform migration suite (`npm run test:database`) still
+uses a container fixture and must be adapted before running it on this workstation.
