@@ -33,6 +33,8 @@
     "tinypool": "2.2.0",
     "shell-quote": "1.12.0",
     "sockjs": "0.3.24",
-    "postcss-selector-parser": "7.1.6"
+    "postcss-selector-parser": "7.1.6",
+    "dompurify": "3.4.17",
+    "katex": "0.18.2"
   }
 }

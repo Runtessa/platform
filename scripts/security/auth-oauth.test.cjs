@@ -4,7 +4,7 @@ const path = require('node:path');
 const { createRequire } = require('node:module');
 const { randomBytes, createHash } = require('node:crypto');
 const { once } = require('node:events');
-const { disposablePostgres } = require('../database/disposable-postgres.cjs');
+const { nativePostgres: disposablePostgres } = require('../database/native-postgres.cjs');
 const authRequire = createRequire(path.resolve('src/auth/package.json'));
 
 test('Auth OAuth HTTP contracts against disposable PostgreSQL', { timeout: 60000 }, async (t) => {
@@ -15,7 +15,7 @@ test('Auth OAuth HTTP contracts against disposable PostgreSQL', { timeout: 60000
   const ssoToken = randomBytes(24).toString('hex');
   const redirectUri = 'http://localhost:39999/auth';
   Object.assign(process.env, {
-    NODE_ENV: 'test', DATABASE_URL: `postgresql://${db.config.username}:${db.config.password}@127.0.0.1:${db.config.port}/postgres`,
+    NODE_ENV: 'test', DATABASE_URL: `postgresql://${db.config.username}:${db.config.password}@127.0.0.1:${db.config.port}/${db.config.database}`,
     AUTH_SESSION_SECRET: secret, AUTH_MIGRATION_DIR: path.resolve('src/auth/migrations'),
     REDIS_URL: '', AUTH_TENANT_POLICY_URL: '', AUTH_TENANT_POLICY_REQUIRE_REMOTE: 'false',
     AUTH_COOKIE_SECURE: 'false', AUTH_ALLOW_INSECURE_LOCALHOST: 'true', AUTH_COOKIE_SAME_SITE: 'lax',

@@ -5,25 +5,17 @@ const { randomBytes } = require('node:crypto');
 const { once } = require('node:events');
 const { createRequire } = require('node:module');
 const path = require('node:path');
-const { findContainerEngine } = require('../database/disposable-postgres.cjs');
+
 const authRequire = createRequire(path.resolve('src/auth/package.json'));
 
 test('Auth Redis session cache preserves identity, idle TTL and both eviction keys', { timeout: 60000 }, async (t) => {
-  const engine = findContainerEngine();
   const name = `runtessa-auth-cache-${process.pid}-${randomBytes(4).toString('hex')}`;
-  execFileSync(engine, ['run', '--detach', '--rm', '--name', name, '--publish', '127.0.0.1::6379',
-    'docker.io/library/redis:8.8-alpine', 'redis-server', '--save', '', '--appendonly', 'no'], { stdio: 'ignore' });
   let client, cache;
   t.after(async () => {
-    try {
-      if (cache) await cache.closeSessionCache();
-      if (client) await client.quit();
-    } finally {
-      execFileSync(engine, ['rm', '--force', name], { stdio: 'ignore' });
-    }
+    if (cache) await cache.closeSessionCache();
+    if (client) { await client.del(`${name}:token:contract-hash`, `${name}:rand:contract-session`); await client.quit(); }
   });
-  const port = execFileSync(engine, ['port', name, '6379/tcp'], { encoding: 'utf8' }).trim().split(':').at(-1);
-  process.env.REDIS_URL = `redis://127.0.0.1:${port}`;
+  process.env.REDIS_URL = 'redis://127.0.0.1:6379';
   process.env.AUTH_SESSION_REDIS_PREFIX = name;
   const Redis = authRequire('ioredis');
   client = new Redis(process.env.REDIS_URL);

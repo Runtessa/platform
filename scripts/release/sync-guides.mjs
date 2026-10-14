@@ -23,6 +23,7 @@ const guides = {
   'docs/getting-started.md': ['getting-started', 'Getting started'],
   'SECURITY.md': ['security', 'Security'],
   'CONTRIBUTING.md': ['contributing', 'Contributing'],
+  'docs/operations-production.md': ['operations/production', 'Native production and recovery'],
   'scripts/database/README.md': ['operations/migrations', 'Platform migrations'],
   'docker/runtime/README.md': ['operations/runtime', 'Live execution boundary'],
   'ROADMAP.md': ['project/roadmap', 'Roadmap'],

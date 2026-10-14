@@ -1,15 +1,15 @@
 {
-  "date": "2026-10-11",
+  "date": "2026-10-14",
   "reports": [
     {
       "directory": ".",
       "counts": {
         "info": 0,
-        "low": 5,
-        "moderate": 7,
-        "high": 7,
+        "low": 2,
+        "moderate": 5,
+        "high": 5,
         "critical": 0,
-        "total": 19
+        "total": 12
       },
       "vulnerabilities": {
         "@ai-sdk/provider-utils": {
@@ -17,22 +17,6 @@
           "severity": "low",
           "isDirect": false,
           "via": [
-            {
-              "source": 1193659,
-              "name": "@ai-sdk/provider-utils",
-              "dependency": "@ai-sdk/provider-utils",
-              "title": "@ai-sdk/provider-utils has an Uncontrolled Resource Consumption issue",
-              "url": "https://github.com/advisories/GHSA-866g-f22w-33x8",
-              "severity": "low",
-              "cwe": [
-                "CWE-400"
-              ],
-              "cvss": {
-                "score": 4.3,
-                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:L"
-              },
-              "range": ">=4.0.0-beta.10 <4.0.33"
-            },
             {
               "source": 1193660,
               "name": "@ai-sdk/provider-utils",
@@ -51,14 +35,11 @@
             }
           ],
           "effects": [
-            "@ai-sdk/ui-utils",
-            "@mastra/core"
+            "@ai-sdk/ui-utils"
           ],
-          "range": ">=4.0.0-beta.10 <4.0.33 || <3.0.28",
+          "range": "<3.0.28",
           "nodes": [
-            "node_modules/@ai-sdk/provider-utils",
-            "node_modules/@ai-sdk/provider-utils-v5",
-            "node_modules/@ai-sdk/provider-utils-v6"
+            "node_modules/@ai-sdk/provider-utils"
           ],
           "fixAvailable": true
         },
@@ -69,7 +50,9 @@
           "via": [
             "@ai-sdk/provider-utils"
           ],
-          "effects": [],
+          "effects": [
+            "@mastra/core"
+          ],
           "range": "*",
           "nodes": [
             "node_modules/@ai-sdk/ui-utils-v5"
@@ -81,8 +64,6 @@
           "severity": "moderate",
           "isDirect": true,
           "via": [
-            "@ai-sdk/provider-utils",
-            "@ai-sdk/provider-utils",
             "@ai-sdk/ui-utils",
             "gray-matter"
           ],
@@ -140,8 +121,8 @@
             "node_modules/braces"
           ],
           "fixAvailable": {
-            "name": "http-proxy-middleware",
-            "version": "0.2.0",
+            "name": "tailwindcss",
+            "version": "4.3.3",
             "isSemVerMajor": true
           }
         },
@@ -162,93 +143,6 @@
           "fixAvailable": {
             "name": "tailwindcss",
             "version": "4.3.3",
-            "isSemVerMajor": true
-          }
-        },
-        "diff": {
-          "name": "diff",
-          "severity": "low",
-          "isDirect": false,
-          "via": [
-            {
-              "source": 1112706,
-              "name": "diff",
-              "dependency": "diff",
-              "title": "jsdiff has a Denial of Service vulnerability in parsePatch and applyPatch",
-              "url": "https://github.com/advisories/GHSA-73rr-hh4g-fpgx",
-              "severity": "low",
-              "cwe": [
-                "CWE-400",
-                "CWE-1333"
-              ],
-              "cvss": {
-                "score": 0,
-                "vectorString": null
-              },
-              "range": ">=6.0.0 <8.0.3"
-            }
-          ],
-          "effects": [
-            "mocha"
-          ],
-          "range": "6.0.0 - 8.0.2",
-          "nodes": [
-            "src/ide-vscode/node_modules/diff"
-          ],
-          "fixAvailable": {
-            "name": "mocha",
-            "version": "12.0.3",
-            "isSemVerMajor": true
-          }
-        },
-        "dompurify": {
-          "name": "dompurify",
-          "severity": "low",
-          "isDirect": false,
-          "via": [
-            {
-              "source": 1240621,
-              "name": "dompurify",
-              "dependency": "dompurify",
-              "title": "DOMPurify: IN_PLACE: node-removing afterSanitize hook leaves detached subtree event handlers armed, causing DOM XSS",
-              "url": "https://github.com/advisories/GHSA-p98j-92pf-mc4p",
-              "severity": "low",
-              "cwe": [
-                "CWE-79"
-              ],
-              "cvss": {
-                "score": 0,
-                "vectorString": null
-              },
-              "range": ">=3.4.13 <=3.4.15"
-            },
-            {
-              "source": 1241204,
-              "name": "dompurify",
-              "dependency": "dompurify",
-              "title": "DOMPurify: IN_PLACE returns a force-removed rawtext root whose text carries attacker markup — pure HTML reparse executes",
-              "url": "https://github.com/advisories/GHSA-6688-9rhm-gjv2",
-              "severity": "low",
-              "cwe": [
-                "CWE-79"
-              ],
-              "cvss": {
-                "score": 0,
-                "vectorString": null
-              },
-              "range": "<=3.4.15"
-            }
-          ],
-          "effects": [
-            "monaco-editor"
-          ],
-          "range": "<=3.4.15",
-          "nodes": [
-            "node_modules/dompurify"
-          ],
-          "fixAvailable": {
-            "name": "monaco-editor",
-            "version": "0.56.0",
             "isSemVerMajor": true
           }
         },
@@ -282,24 +176,6 @@
           ],
           "fixAvailable": true
         },
-        "http-proxy-middleware": {
-          "name": "http-proxy-middleware",
-          "severity": "high",
-          "isDirect": true,
-          "via": [
-            "micromatch"
-          ],
-          "effects": [],
-          "range": ">=0.3.0",
-          "nodes": [
-            "node_modules/http-proxy-middleware"
-          ],
-          "fixAvailable": {
-            "name": "http-proxy-middleware",
-            "version": "0.2.0",
-            "isSemVerMajor": true
-          }
-        },
         "js-yaml": {
           "name": "js-yaml",
           "severity": "moderate",
@@ -325,7 +201,6 @@
           ],
           "effects": [
             "fast-glob",
-            "http-proxy-middleware",
             "tailwindcss"
           ],
           "range": ">=0.2.0",
@@ -333,97 +208,8 @@
             "node_modules/micromatch"
           ],
           "fixAvailable": {
-            "name": "http-proxy-middleware",
-            "version": "0.2.0",
-            "isSemVerMajor": true
-          }
-        },
-        "mocha": {
-          "name": "mocha",
-          "severity": "moderate",
-          "isDirect": true,
-          "via": [
-            "diff",
-            "serialize-javascript"
-          ],
-          "effects": [],
-          "range": "8.2.0 - 12.0.0-beta-3",
-          "nodes": [
-            "src/ide-vscode/node_modules/mocha"
-          ],
-          "fixAvailable": {
-            "name": "mocha",
-            "version": "12.0.3",
-            "isSemVerMajor": true
-          }
-        },
-        "monaco-editor": {
-          "name": "monaco-editor",
-          "severity": "low",
-          "isDirect": true,
-          "via": [
-            "dompurify"
-          ],
-          "effects": [],
-          "range": ">=0.57.0-rc.2",
-          "nodes": [
-            "node_modules/monaco-editor"
-          ],
-          "fixAvailable": {
-            "name": "monaco-editor",
-            "version": "0.56.0",
-            "isSemVerMajor": true
-          }
-        },
-        "serialize-javascript": {
-          "name": "serialize-javascript",
-          "severity": "high",
-          "isDirect": false,
-          "via": [
-            {
-              "source": 1113686,
-              "name": "serialize-javascript",
-              "dependency": "serialize-javascript",
-              "title": "Serialize JavaScript is Vulnerable to RCE via RegExp.flags and Date.prototype.toISOString()",
-              "url": "https://github.com/advisories/GHSA-5c6j-r48x-rmvq",
-              "severity": "high",
-              "cwe": [
-                "CWE-96"
-              ],
-              "cvss": {
-                "score": 8.1,
-                "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H"
-              },
-              "range": "<=7.0.2"
-            },
-            {
-              "source": 1119440,
-              "name": "serialize-javascript",
-              "dependency": "serialize-javascript",
-              "title": "Serialize JavaScript has CPU Exhaustion Denial of Service via crafted array-like objects",
-              "url": "https://github.com/advisories/GHSA-qj8w-gfj5-8c6v",
-              "severity": "moderate",
-              "cwe": [
-                "CWE-400",
-                "CWE-834"
-              ],
-              "cvss": {
-                "score": 5.9,
-                "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
-              },
-              "range": ">=5.0.0 <7.0.5"
-            }
-          ],
-          "effects": [
-            "mocha"
-          ],
-          "range": "<=7.0.4",
-          "nodes": [
-            "src/ide-vscode/node_modules/serialize-javascript"
-          ],
-          "fixAvailable": {
-            "name": "mocha",
-            "version": "12.0.3",
+            "name": "tailwindcss",
+            "version": "4.3.3",
             "isSemVerMajor": true
           }
         },
@@ -450,19 +236,13 @@
             }
           ],
           "effects": [
-            "argparse",
-            "tedious"
+            "argparse"
           ],
           "range": "*",
           "nodes": [
-            "node_modules/sprintf-js",
-            "node_modules/tedious/node_modules/sprintf-js"
+            "node_modules/sprintf-js"
           ],
-          "fixAvailable": {
-            "name": "tedious",
-            "version": "20.3.7",
-            "isSemVerMajor": false
-          }
+          "fixAvailable": true
         },
         "tailwindcss": {
           "name": "tailwindcss",
@@ -483,24 +263,6 @@
             "version": "4.3.3",
             "isSemVerMajor": true
           }
-        },
-        "tedious": {
-          "name": "tedious",
-          "severity": "moderate",
-          "isDirect": true,
-          "via": [
-            "sprintf-js"
-          ],
-          "effects": [],
-          "range": "0.0.0-dev || 2.4.0 - 20.3.5",
-          "nodes": [
-            "node_modules/tedious"
-          ],
-          "fixAvailable": {
-            "name": "tedious",
-            "version": "20.3.7",
-            "isSemVerMajor": false
-          }
         }
       }
     },
@@ -509,141 +271,22 @@
       "counts": {
         "info": 0,
         "low": 0,
-        "moderate": 2,
-        "high": 3,
+        "moderate": 0,
+        "high": 0,
         "critical": 0,
-        "total": 5
+        "total": 0
       },
-      "vulnerabilities": {
-        "braces": {
-          "name": "braces",
-          "severity": "high",
-          "isDirect": false,
-          "via": [
-            {
-              "source": 1240992,
-              "name": "braces",
-              "dependency": "braces",
-              "title": "braces vulnerable to stack-exhaustion denial of service through deeply nested patterns",
-              "url": "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
-              "severity": "high",
-              "cwe": [
-                "CWE-674"
-              ],
-              "cvss": {
-                "score": 7.5,
-                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
-              },
-              "range": "<=3.0.3"
-            }
-          ],
-          "effects": [
-            "micromatch"
-          ],
-          "range": "*",
-          "nodes": [
-            "node_modules/braces"
-          ],
-          "fixAvailable": {
-            "name": "http-proxy-middleware",
-            "version": "0.2.0",
-            "isSemVerMajor": true
-          }
-        },
-        "http-proxy-middleware": {
-          "name": "http-proxy-middleware",
-          "severity": "high",
-          "isDirect": true,
-          "via": [
-            "micromatch"
-          ],
-          "effects": [],
-          "range": ">=0.3.0",
-          "nodes": [
-            "node_modules/http-proxy-middleware"
-          ],
-          "fixAvailable": {
-            "name": "http-proxy-middleware",
-            "version": "0.2.0",
-            "isSemVerMajor": true
-          }
-        },
-        "micromatch": {
-          "name": "micromatch",
-          "severity": "high",
-          "isDirect": false,
-          "via": [
-            "braces"
-          ],
-          "effects": [
-            "http-proxy-middleware"
-          ],
-          "range": ">=0.2.0",
-          "nodes": [
-            "node_modules/micromatch"
-          ],
-          "fixAvailable": {
-            "name": "http-proxy-middleware",
-            "version": "0.2.0",
-            "isSemVerMajor": true
-          }
-        },
-        "sprintf-js": {
-          "name": "sprintf-js",
-          "severity": "moderate",
-          "isDirect": false,
-          "via": [
-            {
-              "source": 1241202,
-              "name": "sprintf-js",
-              "dependency": "sprintf-js",
-              "title": "sprintf-js vulnerable to denial of service through unbounded precision specifiers",
-              "url": "https://github.com/advisories/GHSA-hp3w-g68c-fv3c",
-              "severity": "moderate",
-              "cwe": [
-                "CWE-1284"
-              ],
-              "cvss": {
-                "score": 5.3,
-                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
-              },
-              "range": "<=1.1.3"
-            }
-          ],
-          "effects": [
-            "tedious"
-          ],
-          "range": "*",
-          "nodes": [
-            "node_modules/sprintf-js"
-          ],
-          "fixAvailable": true
-        },
-        "tedious": {
-          "name": "tedious",
-          "severity": "moderate",
-          "isDirect": false,
-          "via": [
-            "sprintf-js"
-          ],
-          "effects": [],
-          "range": "0.0.0-dev || 2.4.0 - 20.3.5",
-          "nodes": [
-            "node_modules/tedious"
-          ],
-          "fixAvailable": true
-        }
-      }
+      "vulnerabilities": {}
     },
     {
       "directory": "src/ideNew",
       "counts": {
         "info": 0,
-        "low": 4,
-        "moderate": 6,
+        "low": 2,
+        "moderate": 5,
         "high": 5,
         "critical": 0,
-        "total": 15
+        "total": 12
       },
       "vulnerabilities": {
         "@ai-sdk/provider-utils": {
@@ -651,22 +294,6 @@
           "severity": "low",
           "isDirect": false,
           "via": [
-            {
-              "source": 1193659,
-              "name": "@ai-sdk/provider-utils",
-              "dependency": "@ai-sdk/provider-utils",
-              "title": "@ai-sdk/provider-utils has an Uncontrolled Resource Consumption issue",
-              "url": "https://github.com/advisories/GHSA-866g-f22w-33x8",
-              "severity": "low",
-              "cwe": [
-                "CWE-400"
-              ],
-              "cvss": {
-                "score": 4.3,
-                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:L"
-              },
-              "range": ">=4.0.0-beta.10 <4.0.33"
-            },
             {
               "source": 1193660,
               "name": "@ai-sdk/provider-utils",
@@ -685,14 +312,11 @@
             }
           ],
           "effects": [
-            "@ai-sdk/ui-utils",
-            "@mastra/core"
+            "@ai-sdk/ui-utils"
           ],
-          "range": ">=4.0.0-beta.10 <4.0.33 || <3.0.28",
+          "range": "<3.0.28",
           "nodes": [
-            "node_modules/@ai-sdk/provider-utils",
-            "node_modules/@ai-sdk/provider-utils-v5",
-            "node_modules/@ai-sdk/provider-utils-v6"
+            "node_modules/@ai-sdk/provider-utils"
           ],
           "fixAvailable": true
         },
@@ -703,7 +327,9 @@
           "via": [
             "@ai-sdk/provider-utils"
           ],
-          "effects": [],
+          "effects": [
+            "@mastra/core"
+          ],
           "range": "*",
           "nodes": [
             "node_modules/@ai-sdk/ui-utils-v5"
@@ -715,8 +341,6 @@
           "severity": "moderate",
           "isDirect": true,
           "via": [
-            "@ai-sdk/provider-utils",
-            "@ai-sdk/provider-utils",
             "@ai-sdk/ui-utils",
             "gray-matter"
           ],
@@ -799,57 +423,6 @@
             "isSemVerMajor": true
           }
         },
-        "dompurify": {
-          "name": "dompurify",
-          "severity": "low",
-          "isDirect": false,
-          "via": [
-            {
-              "source": 1240621,
-              "name": "dompurify",
-              "dependency": "dompurify",
-              "title": "DOMPurify: IN_PLACE: node-removing afterSanitize hook leaves detached subtree event handlers armed, causing DOM XSS",
-              "url": "https://github.com/advisories/GHSA-p98j-92pf-mc4p",
-              "severity": "low",
-              "cwe": [
-                "CWE-79"
-              ],
-              "cvss": {
-                "score": 0,
-                "vectorString": null
-              },
-              "range": ">=3.4.13 <=3.4.15"
-            },
-            {
-              "source": 1241204,
-              "name": "dompurify",
-              "dependency": "dompurify",
-              "title": "DOMPurify: IN_PLACE returns a force-removed rawtext root whose text carries attacker markup — pure HTML reparse executes",
-              "url": "https://github.com/advisories/GHSA-6688-9rhm-gjv2",
-              "severity": "low",
-              "cwe": [
-                "CWE-79"
-              ],
-              "cvss": {
-                "score": 0,
-                "vectorString": null
-              },
-              "range": "<=3.4.15"
-            }
-          ],
-          "effects": [
-            "monaco-editor"
-          ],
-          "range": "<=3.4.15",
-          "nodes": [
-            "node_modules/dompurify"
-          ],
-          "fixAvailable": {
-            "name": "monaco-editor",
-            "version": "0.56.0",
-            "isSemVerMajor": true
-          }
-        },
         "fast-glob": {
           "name": "fast-glob",
           "severity": "high",
@@ -917,24 +490,6 @@
             "isSemVerMajor": true
           }
         },
-        "monaco-editor": {
-          "name": "monaco-editor",
-          "severity": "low",
-          "isDirect": true,
-          "via": [
-            "dompurify"
-          ],
-          "effects": [],
-          "range": ">=0.57.0-rc.2",
-          "nodes": [
-            "node_modules/monaco-editor"
-          ],
-          "fixAvailable": {
-            "name": "monaco-editor",
-            "version": "0.56.0",
-            "isSemVerMajor": true
-          }
-        },
         "sprintf-js": {
           "name": "sprintf-js",
           "severity": "moderate",
@@ -958,19 +513,13 @@
             }
           ],
           "effects": [
-            "argparse",
-            "tedious"
+            "argparse"
           ],
           "range": "*",
           "nodes": [
-            "node_modules/sprintf-js",
-            "node_modules/tedious/node_modules/sprintf-js"
+            "node_modules/sprintf-js"
           ],
-          "fixAvailable": {
-            "name": "tedious",
-            "version": "20.3.7",
-            "isSemVerMajor": false
-          }
+          "fixAvailable": true
         },
         "tailwindcss": {
           "name": "tailwindcss",
@@ -990,24 +539,6 @@
             "name": "tailwindcss",
             "version": "4.3.3",
             "isSemVerMajor": true
-          }
-        },
-        "tedious": {
-          "name": "tedious",
-          "severity": "moderate",
-          "isDirect": true,
-          "via": [
-            "sprintf-js"
-          ],
-          "effects": [],
-          "range": "0.0.0-dev || 2.4.0 - 20.3.5",
-          "nodes": [
-            "node_modules/tedious"
-          ],
-          "fixAvailable": {
-            "name": "tedious",
-            "version": "20.3.7",
-            "isSemVerMajor": false
           }
         }
       }
@@ -1188,11 +719,11 @@
       "directory": "docs/site",
       "counts": {
         "info": 0,
-        "low": 3,
+        "low": 0,
         "moderate": 0,
         "high": 29,
         "critical": 0,
-        "total": 32
+        "total": 29
       },
       "vulnerabilities": {
         "@docusaurus/babel": {
@@ -1241,20 +772,12 @@
             "webpack-dev-server"
           ],
           "effects": [
-            "@docusaurus/plugin-content-blog",
-            "@docusaurus/plugin-content-docs",
-            "@docusaurus/plugin-content-pages",
             "@docusaurus/plugin-css-cascade-layers",
-            "@docusaurus/plugin-debug",
             "@docusaurus/plugin-google-analytics",
             "@docusaurus/plugin-google-gtag",
             "@docusaurus/plugin-google-tag-manager",
-            "@docusaurus/plugin-sitemap",
-            "@docusaurus/plugin-svgr",
             "@docusaurus/preset-classic",
-            "@docusaurus/theme-classic",
-            "@docusaurus/theme-mermaid",
-            "@docusaurus/theme-search-algolia"
+            "@docusaurus/theme-mermaid"
           ],
           "range": "<=4.0.0-canary-6835",
           "nodes": [
@@ -1524,20 +1047,14 @@
           "via": [
             "@docusaurus/core",
             "@docusaurus/theme-common",
-            "@docusaurus/utils-validation",
-            "@mermaid-js/layout-elk",
-            "mermaid"
+            "@docusaurus/utils-validation"
           ],
           "effects": [],
-          "range": "*",
+          "range": "<=4.0.0-canary-6835",
           "nodes": [
             "node_modules/@docusaurus/theme-mermaid"
           ],
-          "fixAvailable": {
-            "name": "@docusaurus/theme-mermaid",
-            "version": "3.7.0",
-            "isSemVerMajor": true
-          }
+          "fixAvailable": false
         },
         "@docusaurus/theme-search-algolia": {
           "name": "@docusaurus/theme-search-algolia",
@@ -1569,8 +1086,16 @@
             "@docusaurus/babel",
             "@docusaurus/bundler",
             "@docusaurus/mdx-loader",
+            "@docusaurus/plugin-content-blog",
+            "@docusaurus/plugin-content-docs",
+            "@docusaurus/plugin-content-pages",
             "@docusaurus/plugin-css-cascade-layers",
+            "@docusaurus/plugin-debug",
+            "@docusaurus/plugin-sitemap",
+            "@docusaurus/plugin-svgr",
+            "@docusaurus/theme-classic",
             "@docusaurus/theme-common",
+            "@docusaurus/theme-search-algolia",
             "@docusaurus/utils-validation"
           ],
           "range": "<=4.0.0-canary-6835",
@@ -1594,26 +1119,6 @@
             "node_modules/@docusaurus/utils-validation"
           ],
           "fixAvailable": true
-        },
-        "@mermaid-js/layout-elk": {
-          "name": "@mermaid-js/layout-elk",
-          "severity": "low",
-          "isDirect": true,
-          "via": [
-            "mermaid"
-          ],
-          "effects": [
-            "@docusaurus/theme-mermaid"
-          ],
-          "range": "*",
-          "nodes": [
-            "node_modules/@mermaid-js/layout-elk"
-          ],
-          "fixAvailable": {
-            "name": "@docusaurus/theme-mermaid",
-            "version": "3.7.0",
-            "isSemVerMajor": true
-          }
         },
         "braces": {
           "name": "braces",
@@ -1731,62 +1236,6 @@
             "node_modules/http-proxy-middleware"
           ],
           "fixAvailable": false
-        },
-        "katex": {
-          "name": "katex",
-          "severity": "low",
-          "isDirect": false,
-          "via": [
-            {
-              "source": 1241206,
-              "name": "katex",
-              "dependency": "katex",
-              "title": "KaTeX: Existing prototype pollution can bypass trust restrictions",
-              "url": "https://github.com/advisories/GHSA-238p-pmpm-9mq7",
-              "severity": "low",
-              "cwe": [
-                "CWE-807"
-              ],
-              "cvss": {
-                "score": 0,
-                "vectorString": null
-              },
-              "range": ">=0.11.0 <0.18.2"
-            }
-          ],
-          "effects": [
-            "mermaid"
-          ],
-          "range": "0.11.0 - 0.18.1",
-          "nodes": [
-            "node_modules/katex"
-          ],
-          "fixAvailable": {
-            "name": "@docusaurus/theme-mermaid",
-            "version": "3.7.0",
-            "isSemVerMajor": true
-          }
-        },
-        "mermaid": {
-          "name": "mermaid",
-          "severity": "low",
-          "isDirect": false,
-          "via": [
-            "katex"
-          ],
-          "effects": [
-            "@docusaurus/theme-mermaid",
-            "@mermaid-js/layout-elk"
-          ],
-          "range": ">=10.9.0-rc.1",
-          "nodes": [
-            "node_modules/mermaid"
-          ],
-          "fixAvailable": {
-            "name": "@docusaurus/theme-mermaid",
-            "version": "3.7.0",
-            "isSemVerMajor": true
-          }
         },
         "micromatch": {
           "name": "micromatch",

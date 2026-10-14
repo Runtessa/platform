@@ -1110,6 +1110,21 @@
         "x-source-file": "src/core/app/routes/authSsoRoutes.ts"
       }
     },
+    "/auth/studio-preview": {
+      "post": {
+        "tags": [
+          "core"
+        ],
+        "summary": "core POST /auth/studio-preview",
+        "operationId": "core_post__auth_studio_preview",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/core/app/routes/studioPreviewRoutes.ts"
+      }
+    },
     "/health": {
       "get": {
         "tags": [
@@ -2847,6 +2862,36 @@
         "x-source-file": "src/ideNew/src/pages/api/admin/tenants/[id]/secrets/[keyName].ts"
       }
     },
+    "/api/assistant/attachments": {
+      "post": {
+        "tags": [
+          "ide"
+        ],
+        "summary": "ide ANY /api/assistant/attachments",
+        "operationId": "ide_post__api_assistant_attachments",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/ideNew/src/pages/api/assistant/attachments/index.ts"
+      }
+    },
+    "/api/assistant/attachments/[id]": {
+      "delete": {
+        "tags": [
+          "ide"
+        ],
+        "summary": "ide DELETE /api/assistant/attachments/[id]",
+        "operationId": "ide_delete__api_assistant_attachments__id_",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/ideNew/src/pages/api/assistant/attachments/[id].ts"
+      }
+    },
     "/api/assistant/auth/callback": {
       "post": {
         "tags": [
@@ -3068,6 +3113,21 @@
           }
         },
         "x-source-file": "src/ideNew/src/pages/api/assistant/runs/[runId].ts"
+      }
+    },
+    "/api/assistant/runs/[runId]/stop": {
+      "post": {
+        "tags": [
+          "ide"
+        ],
+        "summary": "ide ANY /api/assistant/runs/[runId]/stop",
+        "operationId": "ide_post__api_assistant_runs__runId__stop",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/ideNew/src/pages/api/assistant/runs/[runId]/stop.ts"
       }
     },
     "/api/assistant/tenant-dump": {
@@ -3356,6 +3416,21 @@
           }
         },
         "x-source-file": "src/ideNew/src/pages/api/modules/[id]/versions.ts"
+      }
+    },
+    "/api/preview/session": {
+      "post": {
+        "tags": [
+          "ide"
+        ],
+        "summary": "ide ANY /api/preview/session",
+        "operationId": "ide_post__api_preview_session",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-source-file": "src/ideNew/src/pages/api/preview/session.ts"
       }
     },
     "/api/publish-requests": {

@@ -7,7 +7,7 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const { DataSource } = require('typeorm');
-const { disposablePostgres } = require('./disposable-postgres.cjs');
+const { nativePostgres: disposablePostgres } = require('./native-postgres.cjs');
 const { coreEntities } = require('@idp/shared/dist/database/entities');
 const exec = promisify(execFile);
 let database, source, directory, envFile;
@@ -19,7 +19,7 @@ before(async () => {
   source = new DataSource({ ...database.config, entities: coreEntities }); await source.initialize();
   directory = fs.mkdtempSync(path.join(os.tmpdir(), 'idpcore-schema-cli-'));
   envFile = path.join(directory, 'test.env');
-  fs.writeFileSync(envFile, `DB_HOST=127.0.0.1\nDB_PORT=${database.config.port}\nDB_USER=${database.config.username}\nDB_PASS=${database.config.password}\nDB_NAME=postgres\nCORE_DB_SYNC=true\n`, { mode: 0o600 });
+  fs.writeFileSync(envFile, `DB_HOST=127.0.0.1\nDB_PORT=${database.config.port}\nDB_USER=${database.config.username}\nDB_PASS=${database.config.password}\nDB_NAME=${database.config.database}\nCORE_DB_SYNC=true\n`, { mode: 0o600 });
 });
 after(async () => {
   if (source?.isInitialized) await source.destroy().catch(() => {});
@@ -41,7 +41,7 @@ test('status, plan and diff are read-only and omit credentials', async () => {
 
 test('explicit CLI migration works with a packaged native entrypoint and repeats safely', async () => {
   const result = await cli('migrate');
-  assert.equal(JSON.parse(result.stdout).applied.length, 3);
+  assert.equal(JSON.parse(result.stdout).applied.length, 4);
   assert.deepEqual(JSON.parse((await cli('migrate')).stdout).applied, []);
   const status = JSON.parse((await cli('status')).stdout);
   assert.ok(status.migrations.every((migration) => migration.applied));

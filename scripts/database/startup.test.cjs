@@ -11,7 +11,7 @@ test('migration dependencies are validated before SQL while independent catalog 
   assert.throws(() => pendingMigrations([], [migrations[2]]), /misordered dependencies/);
   const catalog = migrations[1];
   assert.deepEqual(pendingMigrations([{ id: catalog.id, checksum: migrationChecksum(catalog) }], migrations)
-    .map((migration) => migration.id), ['0001_platform_users', '0003_platform_core']);
+    .map((migration) => migration.id), ['0001_platform_users', '0003_platform_core', '0005_model_activation']);
 });
 
 test('a dedicated Core URL keeps its database, host, port and credentials separate from IDE settings', () => {
