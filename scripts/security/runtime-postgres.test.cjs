@@ -23,7 +23,7 @@ const main = async () => {
     const migration = await runRestrictedProcess({ entrypoint,
       readOnlyRoots: [...runtimeDependencyRoots()], input: { models: modelSources, adapter: 'postgres', config },
       timeoutMs: 10000, memoryMb: 128 });
-    assert.deepEqual(migration, { ok: true, entities: 1 });
+    assert.equal(migration.ok, true); assert.equal(migration.entities, 1); assert.equal(migration.applied, true);
     await client.query(`CREATE USER idpcore_read PASSWORD '${readPassword}'`);
     await client.query('GRANT USAGE ON SCHEMA public TO idpcore_read');
     await client.query('GRANT SELECT ON runtime_notes TO idpcore_read');
