@@ -17,7 +17,7 @@ installation, not a certification of arbitrary hosting or untested adapters.
 - PostgreSQL `127.0.0.1:5432`; Redis `127.0.0.1:6379`.
 - Restored four database parts and one persistent-file part; recovered ciphertext
   decrypted with the restored key and a published ORM route read recovered data.
-- 24 successful HTTP requests at concurrency four: p50 **1541 ms**, p95 **1793 ms**.
+- 24 successful HTTP requests at concurrency four: p50 **1685 ms**, p95 **4543 ms**.
 - A 20-request saturation burst accepted eight and rejected twelve with 503;
   a subsequent normal request succeeded.
 - An actual logged-in official Codex read-only execution returned the exact content
@@ -29,7 +29,7 @@ cost is material; this record does not promise low-latency/high-throughput hosti
 
 ## Regression coverage
 
-The focused production suite passed 12 scenarios. Platform migration/CLI/readiness
+The focused production suite passed 13 scenarios. Platform migration/CLI/readiness
 checks passed 17 scenarios. Studio security and input checks passed 173; Gateway
 native protocol checks passed 12; shared/Gateway/Agent contracts passed 20; Auth
 OAuth and real Redis cache checks passed eight. Core dispatch, preview, tenant

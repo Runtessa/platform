@@ -14,4 +14,5 @@ test('unpatched brace parsers reject adversarial depth while ordinary build glob
   const { sprintf, vsprintf } = require('sprintf-js');
   assert.equal(sprintf('%.2f', 1.234), '1.23'); assert.equal(vsprintf('%s:%d', ['note', 3]), 'note:3');
   assert.throws(() => sprintf('%.100000000f', 1), /budget/);
+  assert.throws(() => sprintf('%.' + '0'.repeat(200) + '100000000f', 1), /budget/);
 });
