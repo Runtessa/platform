@@ -2,6 +2,9 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const http = require('node:http');
 const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
+const { execFileSync } = require('node:child_process');
 const { once } = require('node:events');
 const { fixture } = require('./runtime-harness.cjs');
 const { authorizeNetworkTarget } = require('@idp/shared/dist/runtime/network-policy');
@@ -42,4 +45,18 @@ test('missing resource delegation fails closed before tenant code', async () => 
   process.env.RUNTIME_CGROUP_ROOT = '/tmp/not-a-cgroup';
   try { await assert.rejects(fixture({ operation: 'echo' }), /delegated cgroup/); }
   finally { if (previous === undefined) delete process.env.RUNTIME_CGROUP_ROOT; else process.env.RUNTIME_CGROUP_ROOT = previous; }
+});
+
+test('the verified sandbox executable remains available when the launcher clears PATH', () => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'runtessa-host-path-'));
+  const binary = process.env.PATH.split(path.delimiter).map(entry => path.join(entry, 'bwrap')).find(file => fs.existsSync(file));
+  const marker = path.join(directory, 'launched'), wrapper = path.join(directory, 'bwrap');
+  const quote = value => "'" + value.replaceAll("'", "'\\''") + "'";
+  try {
+    fs.writeFileSync(wrapper, `#!/bin/sh\nprintf '%s\\n' "$1" >> ${quote(marker)}\nexec ${quote(fs.realpathSync(binary))} "$@"\n`, {mode:0o700});
+    const script = `require(${JSON.stringify(path.join(__dirname,'runtime-harness.cjs'))}).fixture({operation:'echo',version:'custom-path'}).then(result=>{process.stdout.write(result.version);}).catch(()=>process.exit(1));`;
+    const output = execFileSync(process.execPath, ['-e',script], {env:{...process.env,PATH:directory},encoding:'utf8',timeout:10000});
+    assert.equal(output,'custom-path');
+    assert.match(fs.readFileSync(marker,'utf8'), /--version\n--unshare-user/);
+  } finally {fs.rmSync(directory,{recursive:true,force:true});}
 });
